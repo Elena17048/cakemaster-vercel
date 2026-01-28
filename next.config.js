@@ -1,8 +1,7 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  // output: "export",      // ❌ vypnuto
-  // trailingSlash: true,   // ❌ vypnuto (jen pro export)
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // output: "export",
+  // trailingSlash: true,
 
   typescript: {
     ignoreBuildErrors: true,
@@ -32,4 +31,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+module.exports = nextConfig;
