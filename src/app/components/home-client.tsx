@@ -7,17 +7,6 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { useInView } from "@/hooks/use-in-view";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
-import { CustomCakeForm } from "@/app/components/custom-cake-form";
-import { OrderQuestionnaireModal } from "@/app/components/order-questionnaire-modal";
-
 export default function Home() {
   const { t } = useTranslation(["home", "contact"]);
 
@@ -25,14 +14,6 @@ export default function Home() {
     threshold: 0.1,
     triggerOnce: true,
   });
-
-  const [isCustomCakeFormOpen, setCustomCakeFormOpen] = useState(false);
-  const [isQuestionnaireOpen, setQuestionnaireOpen] = useState(false);
-
-  const openCustomCakeForm = () => {
-    setQuestionnaireOpen(false);
-    setCustomCakeFormOpen(true);
-  };
 
   return (
     <div className="flex flex-col">
@@ -44,8 +25,8 @@ export default function Home() {
               <Image
                 src="https://firebasestorage.googleapis.com/v0/b/cake-canvas-hr6n0.firebasestorage.app/o/assets%2Flogo_transparent.svg?alt=media"
                 alt="Cake Master Logo"
-                width={200}
-                height={100}
+                width={400}
+                height={400}
                 className="mb-4"
               />
 
@@ -114,23 +95,95 @@ export default function Home() {
         </div>
       </section>
 
-      {/* GALLERY */}
-      <section ref={galleryRef} className="w-full py-16 md:py-24 bg-background">
-        <div className="container mx-auto px-4 md:px-6">
-          <div
-            className={cn(
-              "text-center transition-all duration-1000",
-              galleryInView
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-10"
-            )}
-          >
-            <h2 className="text-3xl md:text-4xl font-headline font-bold">
-              {t("gallery.title", { ns: "home" })}
-            </h2>
-          </div>
-        </div>
-      </section>
+      {/* Gallery Section */}
+<section
+  ref={galleryRef}
+  className="w-full py-16 md:py-24 bg-background"
+>
+  <div className="container mx-auto px-4 md:px-6">
+    <div
+      className={cn(
+        "text-center transition-all duration-1000",
+        galleryInView
+          ? "opacity-100 translate-y-0"
+          : "opacity-0 translate-y-10"
+      )}
+    >
+      <h2 className="text-3xl md:text-4xl font-headline font-bold">
+        {t("gallery.title", { ns: "home" })}
+      </h2>
+      <p className="mt-4 max-w-2xl mx-auto text-muted-foreground">
+        {t("gallery.subtitle", { ns: "home" })}
+      </p>
+    </div>
+
+    <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {/* Image 1 */}
+      <div
+        className={cn(
+          "overflow-hidden transition-all duration-1000 delay-200",
+          galleryInView
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 translate-y-10"
+        )}
+      >
+        <Link href="/gallery" className="block group">
+          <Image
+            src="https://firebasestorage.googleapis.com/v0/b/cake-canvas-hr6n0.firebasestorage.app/o/assets%2Fcakes%2Fhero1.jpg?alt=media"
+            alt="Bento cake"
+            width={600}
+            height={400}
+            className="w-full max-w-md mx-auto object-cover rounded-xl transition-transform duration-300 ease-in-out group-hover:scale-105"
+            data-ai-hint="bento cake"
+          />
+        </Link>
+      </div>
+
+      {/* Image 2 */}
+      <div
+        className={cn(
+          "overflow-hidden transition-all duration-1000 delay-300",
+          galleryInView
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 translate-y-10"
+        )}
+      >
+        <Link href="/gallery" className="block group">
+          <Image
+            src="https://firebasestorage.googleapis.com/v0/b/cake-canvas-hr6n0.firebasestorage.app/o/assets%2Fcakes%2Fhero2.jpg?alt=media"
+            alt="Colorful birthday cake"
+            width={600}
+            height={400}
+            className="w-full max-w-md mx-auto object-cover rounded-xl transition-transform duration-300 ease-in-out group-hover:scale-105"
+            data-ai-hint="birthday cake"
+          />
+        </Link>
+      </div>
+
+      {/* Image 3 */}
+      <div
+        className={cn(
+          "overflow-hidden sm:col-span-2 lg:col-span-1 transition-all duration-1000 delay-500",
+          galleryInView
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 translate-y-10"
+        )}
+      >
+        <Link href="/gallery" className="block group">
+          <Image
+            src="https://firebasestorage.googleapis.com/v0/b/cake-canvas-hr6n0.firebasestorage.app/o/assets%2Fcakes%2Fhero3.jpg?alt=media"
+            alt="Chocolate cake"
+            width={600}
+            height={600}
+            className="w-full max-w-md mx-auto object-cover rounded-xl transition-transform duration-300 ease-in-out group-hover:scale-105"
+            data-ai-hint="chocolate cake"
+          />
+        </Link>
+      </div>
+    </div>
+  </div>
+</section>
+
 
           {/* GOOGLE REVIEWS */}
       <section className="w-full py-16 md:py-24 bg-background">
