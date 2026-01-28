@@ -1,17 +1,26 @@
 'use client';
 
-import { AuthProvider } from '@/hooks/use-auth';
-import { TranslationsProvider } from './translations-provider';
+import { ReactNode, useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useState } from 'react';
+import { TranslationsProvider } from './translations-provider';
 
-export function AppProviders({ children }: { children: React.ReactNode }) {
-  const [queryClient] = useState(() => new QueryClient());
+export function AppProviders({ children }: { children: ReactNode }) {
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            retry: 1,
+            refetchOnWindowFocus: false,
+          },
+        },
+      })
+  );
 
   return (
     <QueryClientProvider client={queryClient}>
       <TranslationsProvider>
-        <AuthProvider>{children}</AuthProvider>
+        {children}
       </TranslationsProvider>
     </QueryClientProvider>
   );
