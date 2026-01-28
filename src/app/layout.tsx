@@ -2,15 +2,7 @@
 
 import "./globals.css";
 import { LayoutClient } from "@/app/components/layout-client";
-import type { Metadata } from "next";
 import Script from "next/script";
-
-export const metadata: Metadata = {
-  title: "Cakemaster",
-  description:
-    "Design your dream cake at cakemaster.cz. We specialize in custom cakes, baking courses, and edible paper printing.",
-};
-
 
 export default function RootLayout({
   children,
