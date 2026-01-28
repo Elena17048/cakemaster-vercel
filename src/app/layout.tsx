@@ -1,8 +1,6 @@
-"use client";
-
 import "./globals.css";
-import { LayoutClient } from "@/app/components/layout-client";
 import Script from "next/script";
+import { LayoutClient } from "@/app/components/layout-client";
 
 export default function RootLayout({
   children,
@@ -12,7 +10,6 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className="font-body antialiased">
-        {/* Elfsight Google Reviews – načte se jednou pro celý web */}
         <Script
           src="https://elfsightcdn.com/platform.js"
           strategy="lazyOnload"
