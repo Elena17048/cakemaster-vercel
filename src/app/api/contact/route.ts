@@ -1,29 +1,21 @@
 import { NextResponse } from "next/server";
-import { initializeApp, getApps, cert } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
-
-if (!getApps().length) {
-  initializeApp({
-    credential: cert({
-      projectId: process.env.FIREBASE_PROJECT_ID,
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
-    }),
-  });
-}
-
-const db = getFirestore();
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 export async function POST(req: Request) {
   try {
+    if (!db) {
+      throw new Error("Firestore not initialized");
+    }
+
     const body = await req.json();
 
-    await db.collection("contactMessages").add({
-      name: body.name,
-      email: body.email,
-      subject: body.subject,
-      message: body.message,
-      createdAt: new Date(),
+    await addDoc(collection(db, "contactMessages"), {
+      name: body.name ?? "",
+      email: body.email ?? "",
+      subject: body.subject ?? "",
+      message: body.message ?? "",
+      createdAt: serverTimestamp(),
     });
 
     return NextResponse.json({ ok: true });
