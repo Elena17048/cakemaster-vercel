@@ -19,6 +19,7 @@ import {
 
 import { CustomCakeForm } from "@/app/components/custom-cake-form";
 import { OrderQuestionnaireModal } from "@/app/components/order-questionnaire-modal";
+export const runtime = "nodejs";
 
 export default function Home() {
   const lang = "cs";

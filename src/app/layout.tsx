@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   description:
     "Design your dream cake at cakemaster.cz. We specialize in custom cakes, baking courses, and edible paper printing.",
 };
+export const runtime = "nodejs";
 
 export default function RootLayout({
   children,
