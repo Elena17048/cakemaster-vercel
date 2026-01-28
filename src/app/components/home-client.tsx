@@ -122,61 +122,7 @@ export default function HomeClient() {
             </Button>
           </div>
         </div>
-      </section>
-
-      {/* SLUŽBY */}
-      <section ref={servicesRef} className="w-full py-16 md:py-24 bg-card">
-        <div className="container mx-auto px-4 md:px-6">
-          <h2 className="text-center text-3xl md:text-4xl font-headline font-bold">
-            {t("services.title", { ns: "home" })}
-          </h2>
-
-          <div className="mt-12 grid gap-8 md:grid-cols-2 text-center">
-            <div>
-              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                <CakeSlice />
-              </div>
-              <h3 className="text-2xl font-headline font-semibold">
-                {t("services.customDesigns.title", { ns: "home" })}
-              </h3>
-              <p className="mt-2 text-muted-foreground">
-                {t("services.customDesigns.description", { ns: "home" })}
-              </p>
-            </div>
-
-            <div>
-              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                <Printer />
-              </div>
-              <h3 className="text-2xl font-headline font-semibold">
-                {t("services.ediblePrinting.title", { ns: "home" })}
-              </h3>
-              <p className="mt-2 text-muted-foreground">
-                {t("services.ediblePrinting.description", { ns: "home" })}
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-16 md:py-24 bg-background text-center">
-        <div className="container mx-auto px-4 md:px-6">
-          <h2 className="text-3xl md:text-4xl font-headline font-bold">
-            {t("cta.title", { ns: "contact" })}
-          </h2>
-          <p className="mt-4 max-w-2xl mx-auto text-muted-foreground">
-            {t("cta.subtitle", { ns: "contact" })}
-          </p>
-
-          <Button size="lg" className="mt-8" asChild>
-            <Link href="/contact">
-              <Mail className="mr-2 h-5 w-5" />
-              {t("cta.button", { ns: "contact" })}
-            </Link>
-          </Button>
-        </div>
-      </section>
+      </section>     
     </div>
   );
 }
