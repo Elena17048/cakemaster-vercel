@@ -1,0 +1,14 @@
+{
+    "title": "Cake Gallery",
+    "subtitle": "Discover the artistry and passion baked into every one of our custom cakes. From elegant wedding tiers to whimsical birthday creations, find inspiration for your next celebration.",
+    "backToCategories": "Back to Categories",
+    "error": "There was an error loading the images. Please try again later.",
+    "noImages": {
+        "title": "No Cakes Here... Yet!",
+        "subtitle": "This category is waiting for its first masterpiece. Be the first to add a cake!"
+    },
+    "noCategories": "No categories found. Check back soon!",
+    "showMoreButton": "Show More",
+    "loadingButton": "Loading...",
+    "viewAll": "View Gallery"
+}

@@ -1,0 +1,48 @@
+{
+    "title": "Edible Paper Printing",
+    "subtitle": "Bring your images to life on our high-quality edible sugar paper. Perfect for personalizing cakes, cupcakes, and cookies.",
+    "details": {
+        "title": "Printing Details",
+        "subtitle": "Everything you need to know to get started.",
+        "fileTypes": {
+            "title": "File Types",
+            "description": "We accept PDF, JPG, and PNG files. For best results, please provide high-resolution images."
+        },
+        "quality": {
+            "title": "Image Quality",
+            "description": "The final print quality depends on your original image. We recommend a resolution of at least 300 DPI."
+        },
+        "pricing": {
+            "title": "Sizing & Pricing",
+            "description": "We print on A4 edible sheets for 250 CZK per page. We can help you arrange multiple smaller images on a single sheet."
+        }
+    },
+    "request": {
+        "title": "Request a Print",
+        "subtitle": "Fill out the form below, and we'll get back to you with a confirmation and payment details."
+    },
+    "form": {
+        "name": {
+            "label": "Name",
+            "placeholder": "Your Name"
+        },
+        "email": {
+            "label": "Email",
+            "placeholder": "your.email@example.com"
+        },
+        "upload": {
+            "label": "Design File",
+            "button": "Upload a file",
+            "drag": "or drag and drop",
+            "hint": "PDF, PNG, JPG up to 10MB."
+        },
+        "notes": {
+            "label": "Notes",
+            "placeholder": "Any special instructions? e.g., 'I need two circles, 10cm in diameter, from this image.'"
+        },
+        "submit": "Send Print Request",
+        "altEmail": {
+            "text": "Alternatively, you can email your file and instructions to "
+        }
+    }
+}

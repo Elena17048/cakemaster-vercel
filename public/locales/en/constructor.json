@@ -1,0 +1,54 @@
+{
+    "title": "Classic Cake Fast Order",
+    "description": "Our classic cakes are always decorated with macarons and fresh fruit. Choose your favorite flavor and size, and let us know about any special decoration wishes.",
+    "form": {
+        "title": "Build Your Classic Cake",
+        "subtitle": "Follow the steps to configure your classic cake order.",
+        "labels": {
+            "flavor": "Choose a Flavor",
+            "size": "Choose a Size",
+            "decorations": "Fixed Decorations",
+            "decorationWishes": "Decoration Wishes",
+            "chocolateDrip": "Chocolate Drip",
+            "pickupDate": "Pickup Date",
+            "email": "Your Email",
+            "phone": "Phone Number (Optional)"
+        },
+        "fixedDecorations": "Decorated with macarons and fresh fruit.",
+        "descriptions": {
+            "decorations": "e.g., the inscription 'Happy Birthday', or the number 5"
+        },
+        "placeholders": {
+            "decorations": "Describe any text or numbers you'd like on the cake...",
+            "pickupDate": "Pick a date",
+            "email": "your.email@example.com",
+            "phone": "+420 123 456 789"
+        },
+        "total": "Total Price",
+        "selectSizePrompt": "Select a size",
+        "submitButton": "Submit Order",
+        "toast": {
+            "title": "Order Submitted!",
+            "description": "We've received your order and will send a confirmation email shortly."
+        }
+    },
+    "options": {
+        "flavors": {
+            "chocoRaspberry": "Chocolate with raspberries",
+            "tropicalMangoPassion": "Tropical with mango and passion fruit",
+            "oreoCheesecake": "Oreo with cheesecake",
+            "pistachioRaspberryStrawberry": "Pistachio with raspberries and strawberries",
+            "carrotCherry": "Carrot with cherries",
+            "strawberryVanillaCheesecake": "Strawberry with vanilla cheesecake"
+        },
+        "sizes": {
+            "small_1_5kg": "For 7-8 guests (1.5 kg)",
+            "medium_2_5kg": "For 12-13 guests (2.5 kg)"
+        },
+        "chocolateDrips": {
+            "none": "None",
+            "white": "White chocolate",
+            "dark": "Dark chocolate"
+        }
+    }
+}

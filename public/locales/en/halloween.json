@@ -1,0 +1,59 @@
+{
+    "title": "Halloween Cupcakes",
+    "subtitle": "Get into the spooky spirit with our limited edition Halloween cupcakes!",
+    "description": {
+        "title": "A Spooky Selection in Every Box",
+        "p1": "This year we have prepared a special Halloween cupcake box for you. What can you look forward to?",
+        "flavors": [
+            "Chocolate with raspberries",
+            "Chocolate with salted caramel",
+            "Blueberry",
+            "Lemon with poppy seeds",
+            "Red velvet with cherries",
+            "Carrot with caramel"
+        ],
+        "pickup": "Order pickup will take place on October 30th and 31st."
+    },
+    "boxes": {
+        "selectTitle": "Choose your box size",
+        "box_6": {
+            "title": "Box of 6",
+            "price": "540 CZK"
+        },
+        "box_12": {
+            "title": "Box of 12",
+            "price": "1050 CZK"
+        }
+    },
+    "form": {
+        "quantity": "Quantity of boxes",
+        "total": "Total Price"
+    },
+    "orderButton": {
+        "available": "Order Now",
+        "soldOut": "Sold Out"
+    },
+    "modal": {
+        "title": "Complete Your Order",
+        "subtitle": "Please fill in your contact details to finalize your spooky treat order.",
+        "form": {
+            "name": "Full Name",
+            "email": "Email Address",
+            "phone": "Phone Number (Optional)"
+        },
+        "date": {
+            "label": "When would you like to pick up your order?",
+            "placeholder": "Select a date"
+        },
+        "total": "Total",
+        "confirmButton": "Confirm Order",
+        "toast": {
+            "title": "Order Placed!",
+            "description": "Your order for {{count}} cupcakes has been received. We will contact you shortly to confirm."
+        }
+    },
+    "banner": {
+        "text": "Spooky Savings! Order Your Halloween Cupcake Box Now!",
+        "textShort": "Halloween Cupcakes"
+    }
+}

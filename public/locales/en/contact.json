@@ -1,0 +1,30 @@
+
+{
+    "title": "Contact information ",
+    "subtitle": "Do you have a question, would you like to place an order, or need some advice? Feel free to get in touch with me through the channels below.",
+    "telefon": {
+        "title": "Phone",
+        "subtitle": "Call, send messages or text me on WhatsApp"
+    },
+    "email": {
+    "title": "E-mail",
+    "subtitle": "Send me an e-mail"
+    },
+    "social": {
+        "title": "Join Me on Social Media",
+        "subtitle": "The latest updates from behind the scenes of my bakery"
+    },
+    "location": {
+        "title": "Where to Find Me",
+        "subtitle": "You can pick up your orders here."
+    },
+    "modal": {
+        "title": "Get in Touch",
+        "subtitle": "Let's talk about your dream cake or any other questions you might have."
+    },
+    "cta": {
+        "title": "Have a Question or an Idea?",
+        "subtitle": "We're here to help you with custom orders, questions about our courses, or anything else.",
+        "button": "Contact Us"
+    }
+}

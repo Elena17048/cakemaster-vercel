@@ -1,0 +1,55 @@
+
+{
+  "title": "Fast Order",
+  "description": "Our most popular flavor combinations, ready for you in record time. Perfect for when you need a delicious and beautiful cake without a long decision process. The decoration is always a beautiful mix of fresh fruit and macarons.",
+  "form": {
+    "title": "Build Your Fast-Track Cake",
+    "subtitle": "Choose your favorites and we'll handle the rest.",
+    "labels": {
+      "flavor": "Choose a Flavor",
+      "size": "Select Size",
+      "decorations": "Fixed Decorations: Fresh Fruit & Macarons",
+      "decorationWishes": "Do you have any specific requests for the decorations?",
+      "chocolateDrip": "Chocolate Drip",
+      "pickupDate": "Pickup Date",
+      "email": "Email",
+      "phone": "Phone (Optional)"
+    },
+    "placeholders": {
+      "decorations": "e.g., 'Please no strawberries', 'I would like the number 30 on the cake', etc.",
+      "pickupDate": "Select a pickup date",
+      "email": "your.email@example.com",
+      "phone": "+420 123 456 789"
+    },
+    "descriptions": {
+      "decorations": "Let us know if you have any color preferences or small details you'd like us to consider."
+    },
+    "toast": {
+      "title": "🎉 Order Submitted!",
+      "description": "We've received your fast order request and will be in touch shortly to confirm."
+    },
+    "total": "Total",
+    "selectSizePrompt": "Select a size",
+    "submitButton": "Submit Fast Order",
+    "fixedDecorations": "The cake will be decorated with a mix of fresh seasonal fruit and macarons."
+  },
+  "options": {
+    "flavors": {
+      "chocoRaspberry": "Chocolate with raspberries",
+      "tropicalMangoPassion": "Tropical (mango and passion fruit)",
+      "oreoCheesecake": "Oreo cheesecake",
+      "pistachioRaspberryStrawberry": "Pistachio with raspberry and strawberry",
+      "carrotCherry": "Carrot with cherry",
+      "strawberryVanillaCheesecake": "Strawberry vanilla cheesecake"
+    },
+    "sizes": {
+      "small_1_5kg": "Small (1.5 kg, approx. 8 servings)",
+      "medium_2_5kg": "Medium (2.5 kg, approx. 12-15 servings)"
+    },
+    "chocolateDrips": {
+      "none": "None",
+      "white": "White Chocolate",
+      "dark": "Dark Chocolate"
+    }
+  }
+}
