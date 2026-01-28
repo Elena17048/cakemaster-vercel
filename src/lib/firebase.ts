@@ -13,13 +13,19 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID!,
 };
 
-// 🔒 inicializace app (singleton)
+// 🔒 Firebase app (singleton – OK)
 const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 
-// 🔥 služby – NIKDY null
-const auth = getAuth(app);
-const db = getFirestore(app, "cakemaster");
-const storage = getStorage(app);
-const functions = getFunctions(app, "europe-west1");
+// 🔥 Firebase services
+export const auth = getAuth(app);
 
-export { app, auth, db, storage, functions };
+// ❗❗ DŮLEŽITÉ: BEZ druhého parametru
+// jinak Firestore v produkci nefunguje
+export const db = getFirestore(app);
+
+export const storage = getStorage(app);
+
+// region je OK
+export const functions = getFunctions(app, "europe-west1");
+
+export { app };
