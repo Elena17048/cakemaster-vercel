@@ -32,10 +32,14 @@ import type {
   OrderStatus,
 } from "@/lib/types";
 
+const categoriesCollectionRef = collection(
+  doc(db, "cakemaster", "cakemaster"),
+  "categories"
+);
+
 const coursesCollectionRef = collection(db, "courses");
 const sizesCollectionRef = collection(db, "sizes");
 const galleryCollectionRef = collection(db, "gallery");
-const categoriesCollectionRef = collection(db, "categories");
 const settingsCollectionRef = collection(db, "site_settings");
 const contentCollectionRef = collection(db, "site_content");
 const ordersCollectionRef = collection(db, "orders");
