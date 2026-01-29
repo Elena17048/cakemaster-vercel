@@ -58,7 +58,7 @@ export default function CorporatePage() {
   /* ===================== */
   /* ERROR STATE */
   /* ===================== */
-  if (isError || !content) {
+  if (isError) {
     return (
       <div className="container mx-auto text-center py-20 text-destructive">
         <p>{t("error")}</p>
@@ -66,7 +66,10 @@ export default function CorporatePage() {
     );
   }
 
-  const { reviews, galleryImages } = content;
+  /* ===================== */
+  /* SAFE DATA FALLBACK */
+  /* ===================== */
+  const { reviews = [], galleryImages = [] } = content ?? {};
 
   return (
     <div className="container mx-auto px-4 md:px-6 py-16 md:py-24 space-y-24">
@@ -93,13 +96,13 @@ export default function CorporatePage() {
                 </li>
               ))}
             </ul>
-            {/* CTA BUTTON */}
+
             <Button size="lg" className="mt-6" asChild>
-  <Link href="/kontakt">
-    <Mail className="mr-2 h-5 w-5" />
-    Kontaktujte mě
-  </Link>
-</Button>
+              <Link href="/kontakt">
+                <Mail className="mr-2 h-5 w-5" />
+                Kontaktujte mě
+              </Link>
+            </Button>
           </div>
         </div>
 
@@ -116,7 +119,7 @@ export default function CorporatePage() {
       {/* ===================== */}
       {/* REVIEWS */}
       {/* ===================== */}
-      {reviews?.length > 0 && (
+      {reviews.length > 0 && (
         <section>
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-headline font-bold">
@@ -159,7 +162,7 @@ export default function CorporatePage() {
       {/* ===================== */}
       {/* GALLERY */}
       {/* ===================== */}
-      {galleryImages?.length > 0 && (
+      {galleryImages.length > 0 && (
         <section>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {galleryImages.map(

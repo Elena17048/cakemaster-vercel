@@ -1,9 +1,15 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import {
+  initializeFirestore,
+  enableNetwork,
+} from "firebase/firestore";
 import { getStorage } from "firebase/storage";
-import { getFunctions } from "firebase/functions";
 
+/**
+ * Firebase client config
+ * Pouze NEXT_PUBLIC_* proměnné
+ */
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY!,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN!,
@@ -13,19 +19,25 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID!,
 };
 
-// 🔒 Firebase app (singleton – OK)
+/**
+ * Firebase app – singleton
+ */
 const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 
-// 🔥 Firebase services
+/**
+ * 🔥 Firestore – důležité nastavení pro Vercel
+ * (řeší "client is offline" + 30s čekání)
+ */
+export const db = initializeFirestore(app, {
+  experimentalForceLongPolling: true,
+});
+
+enableNetwork(db);
+
+/**
+ * Ostatní Firebase služby
+ */
 export const auth = getAuth(app);
-
-// ❗❗ DŮLEŽITÉ: BEZ druhého parametru
-// jinak Firestore v produkci nefunguje
-export const db = getFirestore(app);
-
 export const storage = getStorage(app);
-
-// region je OK
-export const functions = getFunctions(app, "europe-west1");
 
 export { app };
