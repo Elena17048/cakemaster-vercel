@@ -10,49 +10,44 @@ type Props = {
 
 export default function FlavorSelect({ value, onChange }: Props) {
   return (
-    <section className="mb-20">
-      {/* TITULEK – STEJNÝ RYTMUS JAKO ZBYTEK WEBU */}
-      <div className="mx-auto max-w-6xl px-4">
-        <h2 className="mb-2 text-xl font-semibold text-[#2B2B2B]">
-          Vyberte příchuť
-        </h2>
-        <p className="mb-8 text-sm text-[#6D6D6D]">
-          Příchutě není možné kombinovat ani dodatečně upravovat.
-        </p>
-      </div>
+    <section className="mb-16">
+      <h2 className="text-xl font-semibold mb-2">
+        Vyberte příchuť
+      </h2>
 
-      {/* PŘÍCHUTĚ */}
-      <div className="mx-auto max-w-7xl px-4">
-        <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-5">
+      <p className="text-sm text-[#6D6D6D] mb-6">
+        Příchutě není možné kombinovat ani dodatečně upravovat.
+      </p>
+
+      <div className="mx-auto max-w-6xl">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
           {BENTO_FLAVORS.map((flavor) => {
             const isActive = value === flavor.id;
 
             return (
               <div
                 key={flavor.id}
-                className={`flex flex-col rounded-2xl border p-4 transition
+                className={`mx-auto flex w-full max-w-[220px] flex-col rounded-2xl border p-4 transition
                   ${
                     isActive
                       ? "border-[#A79E6F]"
                       : "border-[#E2E2E2] hover:border-[#BEB58A]"
                   }`}
               >
-                {/* FOTO – MENŠÍ, NEOŘEZANÁ */}
-                <div className="relative mb-4 h-40 w-full rounded-xl bg-[#FFF9E6]">
+                <div className="relative w-full h-56 mb-4 rounded-xl bg-[#FFF9E6] flex items-center justify-center overflow-hidden">
                   <Image
                     src={flavor.image}
                     alt={flavor.name}
-                    fill
-                    className="object-contain"
+                    width={180}
+                    height={240}
+                    className="object-contain max-h-full w-auto"
                   />
                 </div>
 
-                {/* ALERGENY */}
-                <div className="mb-4 text-center text-xs text-[#6D6D6D]">
+                <div className="text-xs text-[#6D6D6D] mb-4 text-center">
                   Alergeny: {flavor.allergens.join(", ")}
                 </div>
 
-                {/* CTA */}
                 <button
                   type="button"
                   onClick={() => onChange(flavor.id)}
