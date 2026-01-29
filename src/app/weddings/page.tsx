@@ -13,30 +13,23 @@ import { PaymentSection } from "./components/PaymentSection";
 import { useQuery } from "@tanstack/react-query";
 import { getWeddingPageContent } from "@/lib/api";
 import type { WeddingPageContent } from "@/lib/types";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function WeddingsPage() {
-  const { data, isError } = useQuery<WeddingPageContent>({
+  const { data, isLoading, isError } = useQuery<WeddingPageContent>({
     queryKey: ["weddingPageContent"],
     queryFn: getWeddingPageContent,
-
-    // 🚀 OKAMŽITÝ RENDER
-    initialData: {
-      reviews: [],
-      galleryImages: [],
-    },
-
-    // ⛔ Firebase offline = žádné zdržování
-    retry: false,
-
-    // 🧠 cache
-    staleTime: 10 * 60 * 1000, // 10 minut
   });
 
-  if (isError && process.env.NODE_ENV === "development") {
-    console.warn("Wedding page content unavailable");
+  if (isLoading) {
+    return <Skeleton className="h-[400px] w-full" />;
   }
 
-  const { reviews = [], galleryImages = [] } = data ?? {};
+  if (isError || !data) {
+    return null;
+  }
+
+  const { reviews, galleryImages } = data;
 
   return (
     <main className="flex flex-col">
@@ -47,18 +40,14 @@ export default function WeddingsPage() {
       </section>
 
       {/* 2. Co říkají zákazníci – BÉŽOVÁ */}
-      {reviews.length > 0 && (
-        <section className="bg-[#faf7f0] py-6 md:py-8">
-          <ReviewsSection reviews={reviews} />
-        </section>
-      )}
+      <section className="bg-[#faf7f0] py-6 md:py-8">
+        <ReviewsSection reviews={reviews} />
+      </section>
 
       {/* 3. Galerie – BÍLÁ */}
-      {galleryImages.length > 0 && (
-        <section className="bg-white py-6 md:py-8">
-          <GallerySection images={galleryImages} />
-        </section>
-      )}
+      <section className="bg-white py-6 md:py-8">
+        <GallerySection images={galleryImages} />
+      </section>
 
       {/* 4. Svatební dorty – BÉŽOVÁ */}
       <section className="bg-[#faf7f0] py-6 md:py-8">

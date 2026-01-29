@@ -30,14 +30,15 @@ import type {
 /* 🔑 FIRESTORE ROOT */
 /* ===================== */
 
-const categoriesCollectionRef = collection(db, "categories");
-const galleryCollectionRef = collection(db, "gallery");
-const settingsCollectionRef = collection(db, "site_settings");
-const contentCollectionRef = collection(db, "site_content");
-const ordersCollectionRef = collection(db, "orders");
-const coursesCollectionRef = collection(db, "courses");
-const sizesCollectionRef = collection(db, "sizes");
+const rootDocRef = doc(db, "cakemaster", "cakemaster");
 
+const categoriesCollectionRef = collection(rootDocRef, "categories");
+const galleryCollectionRef = collection(rootDocRef, "gallery");
+const settingsCollectionRef = collection(rootDocRef, "site_settings");
+const contentCollectionRef = collection(rootDocRef, "site_content");
+const ordersCollectionRef = collection(rootDocRef, "orders");
+const coursesCollectionRef = collection(rootDocRef, "courses");
+const sizesCollectionRef = collection(rootDocRef, "sizes");
 
 /* ===================== */
 /* HELPERS */

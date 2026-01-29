@@ -11,46 +11,45 @@ type Props = {
 export default function FlavorSelect({ value, onChange }: Props) {
   return (
     <section className="mb-16">
-      {/* NADPIS */}
-      <h2 className="mb-2 text-xl font-semibold">
-        Vyberte příchuť
-      </h2>
+      <h2 className="text-xl font-semibold mb-2">
+  Vyberte příchuť
+</h2>
 
-      <p className="mb-6 text-sm text-[#6D6D6D]">
-        Příchutě není možné kombinovat ani dodatečně upravovat.
-      </p>
+<p className="text-sm text-[#6D6D6D] mb-6">
+  Příchutě není možné kombinovat ani dodatečně upravovat.
+</p>
 
-      {/* FULL WIDTH WRAPPER */}
-      <div className="mx-auto max-w-none px-4 lg:px-12 xl:px-20">
+
+      {/* OMEZENÁ ŠÍŘKA – KLÍČ K ŘEŠENÍ */}
+      <div className="mx-auto max-w-6xl">
         {/* GRID */}
-        <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-5 lg:gap-10">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
           {BENTO_FLAVORS.map((flavor) => {
             const isActive = value === flavor.id;
 
             return (
               <div
                 key={flavor.id}
-                className={`group flex w-full flex-col rounded-2xl border p-4 transition
+                className={`mx-auto flex w-full max-w-[220px] flex-col rounded-2xl border p-4 transition
                   ${
                     isActive
                       ? "border-[#A79E6F]"
                       : "border-[#E2E2E2] hover:border-[#BEB58A]"
                   }`}
               >
-                {/* FOTO */}
-                <div className="relative mb-4 w-full aspect-[3/5] overflow-hidden rounded-xl bg-[#FFF9E6]">
+                {/* FOTO – KOMPAKTNÍ, S PROSTOREM OKOLO */}
+                <div className="relative w-full h-56 mb-4 rounded-xl bg-[#FFF9E6] flex items-center justify-center overflow-hidden">
                   <Image
                     src={flavor.image}
                     alt={flavor.name}
-                    fill
-                    sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
-                    priority={isActive}
+                    width={180}
+                    height={240}
+                    className="object-contain max-h-full w-auto"
                   />
                 </div>
 
                 {/* ALERGENY */}
-                <div className="mb-4 text-center text-xs text-[#6D6D6D]">
+                <div className="text-xs text-[#6D6D6D] mb-4 text-center">
                   Alergeny: {flavor.allergens.join(", ")}
                 </div>
 
