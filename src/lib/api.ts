@@ -1,24 +1,18 @@
 import {
   collection,
   getDocs,
-  addDoc,
   updateDoc,
-  deleteDoc,
   doc,
   DocumentData,
   QueryDocumentSnapshot,
-  serverTimestamp,
   query,
   where,
   orderBy,
   limit,
   startAfter,
   getDoc,
-  setDoc,
-  getCountFromServer,
-  writeBatch,
 } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
+import { ref, deleteObject } from "firebase/storage";
 import { db, storage } from "@/lib/firebase";
 import type {
   Course,
@@ -32,17 +26,19 @@ import type {
   OrderStatus,
 } from "@/lib/types";
 
-const categoriesCollectionRef = collection(
-  doc(db, "cakemaster", "cakemaster"),
-  "categories"
-);
+/* ===================== */
+/* 🔑 FIRESTORE ROOT */
+/* ===================== */
 
-const coursesCollectionRef = collection(db, "courses");
-const sizesCollectionRef = collection(db, "sizes");
-const galleryCollectionRef = collection(db, "gallery");
-const settingsCollectionRef = collection(db, "site_settings");
-const contentCollectionRef = collection(db, "site_content");
-const ordersCollectionRef = collection(db, "orders");
+const rootDocRef = doc(db, "cakemaster", "cakemaster");
+
+const categoriesCollectionRef = collection(rootDocRef, "categories");
+const galleryCollectionRef = collection(rootDocRef, "gallery");
+const settingsCollectionRef = collection(rootDocRef, "site_settings");
+const contentCollectionRef = collection(rootDocRef, "site_content");
+const ordersCollectionRef = collection(rootDocRef, "orders");
+const coursesCollectionRef = collection(rootDocRef, "courses");
+const sizesCollectionRef = collection(rootDocRef, "sizes");
 
 /* ===================== */
 /* HELPERS */
@@ -53,8 +49,9 @@ const deleteImageFromStorage = async (imageUrl: string) => {
     !imageUrl ||
     (!imageUrl.startsWith("gs://") &&
       !imageUrl.startsWith("https://firebasestorage.googleapis.com"))
-  )
+  ) {
     return;
+  }
 
   try {
     const imageRef = ref(storage, imageUrl);
@@ -97,10 +94,10 @@ export const getBannerSettings = async (): Promise<BannerSettings> => {
 /* ===================== */
 
 export const getCourses = async (): Promise<Course[]> => {
-  const data = await getDocs(coursesCollectionRef);
-  return data.docs.map(doc => ({
-    id: doc.id,
-    ...doc.data(),
+  const snapshot = await getDocs(coursesCollectionRef);
+  return snapshot.docs.map(docSnap => ({
+    id: docSnap.id,
+    ...docSnap.data(),
   })) as Course[];
 };
 
@@ -109,11 +106,11 @@ export const getCourses = async (): Promise<Course[]> => {
 /* ===================== */
 
 export const getSizes = async (): Promise<SizeOption[]> => {
-  const data = await getDocs(sizesCollectionRef);
-  return data.docs.map(doc => ({
-    id: doc.id,
-    label: doc.data().label,
-    price: doc.data().price,
+  const snapshot = await getDocs(sizesCollectionRef);
+  return snapshot.docs.map(docSnap => ({
+    id: docSnap.id,
+    label: docSnap.data().label,
+    price: docSnap.data().price,
   })) as SizeOption[];
 };
 
@@ -122,20 +119,16 @@ export const getSizes = async (): Promise<SizeOption[]> => {
 /* ===================== */
 
 export const getCategories = async (): Promise<Category[]> => {
-  console.log("✅ getCategories CALLED on Vercel");
-
   const snapshot = await getDocs(categoriesCollectionRef);
 
-  console.log("✅ categories count:", snapshot.size);
-
-  return snapshot.docs.map(doc => ({
-    id: doc.id,
-    ...doc.data(),
+  return snapshot.docs.map(docSnap => ({
+    id: docSnap.id,
+    ...docSnap.data(),
   })) as Category[];
 };
 
 /* ===================== */
-/* 🖼️ GALLERY IMAGES API – DŮLEŽITÉ */
+/* 🖼️ GALLERY IMAGES */
 /* ===================== */
 
 export const getGalleryImages = async ({
@@ -150,7 +143,7 @@ export const getGalleryImages = async ({
   images: GalleryImage[];
   lastVisible?: QueryDocumentSnapshot<DocumentData>;
 }> => {
-  const baseConstraints = [
+  const baseQuery = [
     where("categories", "array-contains", categoryId),
     orderBy("createdAt", "desc"),
   ];
@@ -158,21 +151,17 @@ export const getGalleryImages = async ({
   const q = lastVisible
     ? query(
         galleryCollectionRef,
-        ...baseConstraints,
+        ...baseQuery,
         startAfter(lastVisible),
         limit(pageSize)
       )
-    : query(
-        galleryCollectionRef,
-        ...baseConstraints,
-        limit(pageSize)
-      );
+    : query(galleryCollectionRef, ...baseQuery, limit(pageSize));
 
   const snapshot = await getDocs(q);
 
-  const images = snapshot.docs.map(doc => ({
-    id: doc.id,
-    ...doc.data(),
+  const images = snapshot.docs.map(docSnap => ({
+    id: docSnap.id,
+    ...docSnap.data(),
   })) as GalleryImage[];
 
   return {
@@ -180,6 +169,7 @@ export const getGalleryImages = async ({
     lastVisible: snapshot.docs[snapshot.docs.length - 1],
   };
 };
+
 /* ===================== */
 /* WEDDINGS */
 /* ===================== */
@@ -193,7 +183,6 @@ export const getWeddingPageContent = async (): Promise<WeddingPageContent> => {
       return docSnap.data() as WeddingPageContent;
     }
 
-    // fallback – stránka se vždy vykreslí
     return {
       reviews: [],
       galleryImages: [],
@@ -207,26 +196,26 @@ export const getWeddingPageContent = async (): Promise<WeddingPageContent> => {
   }
 };
 
-
 /* ===================== */
 /* CORPORATE */
 /* ===================== */
 
-export const getCorporatePageContent = async (): Promise<CorporatePageContent> => {
-  try {
-    const docRef = doc(contentCollectionRef, "corporate");
-    const docSnap = await getDoc(docRef);
+export const getCorporatePageContent =
+  async (): Promise<CorporatePageContent> => {
+    try {
+      const docRef = doc(contentCollectionRef, "corporate");
+      const docSnap = await getDoc(docRef);
 
-    if (docSnap.exists()) {
-      return docSnap.data() as CorporatePageContent;
+      if (docSnap.exists()) {
+        return docSnap.data() as CorporatePageContent;
+      }
+
+      return { reviews: [], galleryImages: [] };
+    } catch (error) {
+      console.error("Failed to load corporate page content:", error);
+      return { reviews: [], galleryImages: [] };
     }
-
-    return { reviews: [], galleryImages: [] };
-  } catch (error) {
-    console.error("Failed to load corporate page content:", error);
-    return { reviews: [], galleryImages: [] };
-  }
-};
+  };
 
 /* ===================== */
 /* ORDERS */
@@ -236,9 +225,9 @@ export const getOrders = async (): Promise<Order[]> => {
   const q = query(ordersCollectionRef, orderBy("createdAt", "desc"));
   const snapshot = await getDocs(q);
 
-  return snapshot.docs.map(doc => ({
-    id: doc.id,
-    ...doc.data(),
+  return snapshot.docs.map(docSnap => ({
+    id: docSnap.id,
+    ...docSnap.data(),
   })) as Order[];
 };
 
@@ -249,5 +238,5 @@ export const updateOrderStatus = async ({
   orderId: string;
   status: OrderStatus;
 }) => {
-  await updateDoc(doc(db, "orders", orderId), { status });
+  await updateDoc(doc(ordersCollectionRef, orderId), { status });
 };
