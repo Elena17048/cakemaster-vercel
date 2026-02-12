@@ -1,30 +1,33 @@
-import { getBannerSettings } from "@/lib/api";
+"use client";
+
 import { HalloweenBanner } from "@/app/components/halloween-banner";
 import { ChristmasBanner } from "@/app/components/christmas-banner";
 
 type Props = {
   pathname: string;
+  showHalloweenBanner: boolean;
+  showChristmasBanner: boolean;
 };
 
-export async function DynamicBanners({ pathname }: Props) {
-  // Načtení banner nastavení serverově (NE klientsky)
-  const bannerSettings = await getBannerSettings();
-
-  // Na homepage malé bannery nezobrazujeme
+export function DynamicBanners({
+  pathname,
+  showHalloweenBanner,
+  showChristmasBanner,
+}: Props) {
   if (pathname === "/") {
     return null;
   }
 
-  const showHalloweenBanner =
-    bannerSettings?.showHalloweenBanner && pathname !== "/halloween";
+  const showHalloween =
+    showHalloweenBanner && pathname !== "/halloween";
 
-  const showChristmasBanner =
-    bannerSettings?.showChristmasBanner && pathname !== "/christmas";
+  const showChristmas =
+    showChristmasBanner && pathname !== "/christmas";
 
   return (
     <>
-      {showHalloweenBanner && <HalloweenBanner />}
-      {showChristmasBanner && <ChristmasBanner />}
+      {showHalloween && <HalloweenBanner />}
+      {showChristmas && <ChristmasBanner />}
     </>
   );
 }
