@@ -371,3 +371,46 @@ export const updateBannerSettings = async (
 ) => {
   await setDoc(doc(settingsCollectionRef, "banners"), data);
 };
+/* ===================== */
+/* ADMIN – WEDDING IMAGES */
+/* ===================== */
+
+export const uploadWeddingImage = async (
+  file: File
+): Promise<string> => {
+  const storageRef = ref(
+    storage,
+    `weddings/${Date.now()}_${file.name}`
+  );
+
+  await uploadBytes(storageRef, file);
+  return await getDownloadURL(storageRef);
+};
+
+export const deleteWeddingImage = async (
+  imageUrl: string
+) => {
+  await deleteImageFromStorage(imageUrl);
+};
+
+/* ===================== */
+/* ADMIN – CORPORATE IMAGES */
+/* ===================== */
+
+export const uploadCorporateImage = async (
+  file: File
+): Promise<string> => {
+  const storageRef = ref(
+    storage,
+    `corporate/${Date.now()}_${file.name}`
+  );
+
+  await uploadBytes(storageRef, file);
+  return await getDownloadURL(storageRef);
+};
+
+export const deleteCorporateImage = async (
+  imageUrl: string
+) => {
+  await deleteImageFromStorage(imageUrl);
+};
