@@ -23,52 +23,52 @@ export default async function WeddingsPage() {
 
   return (
     <main className="flex flex-col">
-
+  
       {/* 1. Svatební dort a sweet bar – BÍLÁ */}
-      <section className="bg-white">
+      <section className="bg-white pb-6 md:pb-8">
         <HeroSection />
       </section>
-
+  
       {/* 2. Co říkají zákazníci – BÉŽOVÁ */}
-      <section className="bg-[#faf7f0] py-6 md:py-8">
+      <section className="bg-[#faf7f0] pb-6 md:pb-8">
         <ReviewsSection reviews={reviews} />
       </section>
-
+  
       {/* 3. Galerie – BÍLÁ */}
-      <section className="bg-white py-6 md:py-8">
+      <section className="bg-white pb-6 md:pb-8">
         <GallerySection images={galleryImages} />
       </section>
-
+  
       {/* 4. Svatební dorty – BÉŽOVÁ */}
-      <section className="bg-[#faf7f0] py-6 md:py-8">
+      <section className="bg-[#faf7f0] pb-6 md:pb-8">
         <WeddingCakeSection />
       </section>
-
+  
       {/* 5. Sweet bar – BÍLÁ */}
-      <section className="bg-white py-6 md:py-8">
+      <section className="bg-white pb-6 md:pb-8">
         <SweetBarSection />
       </section>
-
+  
       {/* 6. Velikost dortu a sweet baru – BÉŽOVÁ */}
-      <section className="bg-[#faf7f0] py-6 md:py-8">
+      <section className="bg-[#faf7f0] pb-6 md:pb-8">
         <SizeSection />
       </section>
-
+  
       {/* 7. Alergeny – BÍLÁ */}
-      <section className="bg-white py-6 md:py-8">
+      <section className="bg-white pb-6 md:pb-8">
         <AllergensSection />
       </section>
-
+  
       {/* 8. Doprava – BÉŽOVÁ */}
-      <section className="bg-[#faf7f0] py-6 md:py-8">
+      <section className="bg-[#faf7f0] pb-6 md:pb-8">
         <DeliverySection />
       </section>
-
+  
       {/* 9. Platby – BÍLÁ */}
       <section className="bg-white">
         <PaymentSection />
       </section>
-
+  
     </main>
   );
 }
