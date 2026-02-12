@@ -9,7 +9,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className="font-body antialiased">
+      <body className="font-body antialiased bg-white">
         <Script
           src="https://elfsightcdn.com/platform.js"
           strategy="lazyOnload"
