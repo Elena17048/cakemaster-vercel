@@ -240,3 +240,134 @@ export const updateOrderStatus = async ({
 }) => {
   await updateDoc(doc(ordersCollectionRef, orderId), { status });
 };
+/* ===================== */
+/* ADMIN – CATEGORIES */
+/* ===================== */
+
+import { addDoc, setDoc, deleteDoc } from "firebase/firestore";
+import { uploadBytes, getDownloadURL } from "firebase/storage";
+
+/* CATEGORY CRUD */
+
+export const addCategory = async (data: Omit<Category, "id">) => {
+  await addDoc(categoriesCollectionRef, data);
+};
+
+export const updateCategory = async (id: string, data: Partial<Category>) => {
+  await updateDoc(doc(categoriesCollectionRef, id), data);
+};
+
+export const deleteCategory = async (id: string) => {
+  await deleteDoc(doc(categoriesCollectionRef, id));
+};
+
+export const updateCategoryOrder = async (
+  id: string,
+  order: number
+) => {
+  await updateDoc(doc(categoriesCollectionRef, id), { order });
+};
+
+/* CATEGORY IMAGE */
+
+export const uploadCategoryImage = async (
+  file: File
+): Promise<string> => {
+  const storageRef = ref(
+    storage,
+    `categories/${Date.now()}_${file.name}`
+  );
+
+  await uploadBytes(storageRef, file);
+  return await getDownloadURL(storageRef);
+};
+
+/* ===================== */
+/* ADMIN – COURSES */
+/* ===================== */
+
+export const addCourse = async (data: Omit<Course, "id">) => {
+  await addDoc(coursesCollectionRef, data);
+};
+
+export const updateCourse = async (
+  id: string,
+  data: Partial<Course>
+) => {
+  await updateDoc(doc(coursesCollectionRef, id), data);
+};
+
+export const deleteCourse = async (id: string) => {
+  await deleteDoc(doc(coursesCollectionRef, id));
+};
+
+export const uploadCourseImage = async (
+  file: File
+): Promise<string> => {
+  const storageRef = ref(
+    storage,
+    `courses/${Date.now()}_${file.name}`
+  );
+
+  await uploadBytes(storageRef, file);
+  return await getDownloadURL(storageRef);
+};
+
+/* ===================== */
+/* ADMIN – GALLERY */
+/* ===================== */
+
+export const addGalleryImage = async (
+  data: Omit<GalleryImage, "id">
+) => {
+  await addDoc(galleryCollectionRef, data);
+};
+
+export const updateGalleryImage = async (
+  id: string,
+  data: Partial<GalleryImage>
+) => {
+  await updateDoc(doc(galleryCollectionRef, id), data);
+};
+
+export const deleteGalleryImage = async (id: string) => {
+  await deleteDoc(doc(galleryCollectionRef, id));
+};
+
+export const uploadGalleryImage = async (
+  file: File
+): Promise<string> => {
+  const storageRef = ref(
+    storage,
+    `gallery/${Date.now()}_${file.name}`
+  );
+
+  await uploadBytes(storageRef, file);
+  return await getDownloadURL(storageRef);
+};
+
+/* ===================== */
+/* ADMIN – PAGE CONTENT */
+/* ===================== */
+
+export const updateWeddingPageContent = async (
+  data: WeddingPageContent
+) => {
+  await setDoc(doc(contentCollectionRef, "weddings"), data);
+};
+
+export const updateCorporatePageContent = async (
+  data: CorporatePageContent
+) => {
+  await setDoc(doc(contentCollectionRef, "corporate"), data);
+};
+
+/* ===================== */
+/* ADMIN – BANNERS */
+/* ===================== */
+
+export const updateBannerSettings = async (
+  data: BannerSettings
+) => {
+  await setDoc(doc(settingsCollectionRef, "banners"), data);
+};
