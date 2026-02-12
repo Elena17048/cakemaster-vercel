@@ -10,7 +10,6 @@ import { PaymentSection } from "./components/PaymentSection";
 
 import { getWeddingPageContent } from "@/lib/api";
 
-
 export const revalidate = 3600; // 1 hodina
 
 export default async function WeddingsPage() {
@@ -26,7 +25,7 @@ export default async function WeddingsPage() {
     <main className="flex flex-col">
 
       {/* 1. Svatební dort a sweet bar – BÍLÁ */}
-      <section className="bg-white py-6 md:py-8">
+      <section className="bg-white">
         <HeroSection />
       </section>
 
@@ -66,7 +65,7 @@ export default async function WeddingsPage() {
       </section>
 
       {/* 9. Platby – BÍLÁ */}
-      <section className="bg-white py-6 md:py-8">
+      <section className="bg-white">
         <PaymentSection />
       </section>
 
