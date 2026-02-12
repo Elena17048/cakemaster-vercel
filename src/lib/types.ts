@@ -97,9 +97,12 @@ export type BannerSettings = {
 export type Review = {
   id?: string;
   name?: string;
-  text?: string;
-  rating?: number;
+  text?: {
+    cs?: string;
+    en?: string;
+  };
 };
+
 
 /* ===================== */
 /* WEDDINGS PAGE */
@@ -118,3 +121,4 @@ export type CorporatePageContent = {
   reviews: Review[];
   galleryImages: GalleryImage[];
 };
+
