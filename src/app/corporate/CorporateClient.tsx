@@ -53,7 +53,7 @@ export default function CorporateClient({ content }: Props) {
             </ul>
 
             <Button size="lg" className="mt-6" asChild>
-              <Link href="/kontakt">
+              <Link href="/contact">
                 <Mail className="mr-2 h-5 w-5" />
                 Kontaktujte mě
               </Link>
