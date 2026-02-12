@@ -22,7 +22,7 @@ export function ReviewsSection({ reviews }: Props) {
   if (!reviews || reviews.length === 0) return null;
 
   return (
-    <section className="bg-[#faf7f0] py-6 md:py-8">
+    <section className="pt-0">
       <div className="space-y-6">
 
         {/* 🔹 TITULEK + PODTITULEK */}
@@ -55,7 +55,8 @@ export function ReviewsSection({ reviews }: Props) {
 
                     {/* TEXT */}
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      „{review.text[currentLang] || review.text.en}“
+                    „{review.text?.[currentLang] ?? review.text?.en ?? ""}“
+
                     </p>
                   </CardContent>
                 </Card>
