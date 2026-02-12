@@ -2,7 +2,7 @@
 
 export function PaymentSection() {
   return (
-    <section className="py-12 md:py-16 bg-white">
+    <section className="pt-12 md:pt-16 bg-white">
       <div className="container mx-auto px-4 md:px-6 max-w-3xl text-center space-y-6">
         <h2 className="text-3xl md:text-4xl font-headline font-bold">
           Platby
