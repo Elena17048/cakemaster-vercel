@@ -1,16 +1,12 @@
 import "./globals.css";
 import Script from "next/script";
 import { LayoutClient } from "@/app/components/layout-client";
-import { getBannerSettings } from "@/lib/api";
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // 🔥 Server-side načtení banner nastavení
-  const bannerSettings = await getBannerSettings();
-
   return (
     <html lang="en" className="scroll-smooth">
       <body className="font-body antialiased">
@@ -19,7 +15,7 @@ export default async function RootLayout({
           strategy="lazyOnload"
         />
 
-        <LayoutClient bannerSettings={bannerSettings}>
+        <LayoutClient>
           {children}
         </LayoutClient>
       </body>

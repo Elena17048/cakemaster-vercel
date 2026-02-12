@@ -5,32 +5,16 @@ import { Toaster } from "@/components/ui/toaster";
 import Header from "@/app/components/header";
 import { Footer } from "@/app/components/footer";
 import { AppProviders } from "@/app/components/app-providers";
-import { DynamicBanners } from "@/app/components/dynamic-banners";
 import { TopBar } from "@/app/components/top-bar";
-import type { BannerSettings } from "@/lib/types";
 
-export function LayoutClient({
-  children,
-  bannerSettings,
-}: {
-  children: React.ReactNode;
-  bannerSettings: BannerSettings;
-}) {
+export function LayoutClient({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isHomePage = pathname === "/";
 
   return (
     <AppProviders>
       <div className="flex min-h-screen flex-col">
         {false && <TopBar />}
         <Header />
-
-        <DynamicBanners
-          pathname={pathname}
-          showHalloweenBanner={bannerSettings.showHalloweenBanner}
-          showChristmasBanner={bannerSettings.showChristmasBanner}
-        />
-
         <main className="flex-1">{children}</main>
         <Footer />
       </div>
