@@ -8,7 +8,7 @@ export function HeroSection() {
 
   return (
     <div className="container mx-auto px-4 md:px-6 py-16 md:py-20">
-      <section className="grid md:grid-cols-2 gap-10 items-center">
+      <div className="grid md:grid-cols-2 gap-10 items-center">
         {/* TEXT */}
         <div className="space-y-6">
           <h1 className="text-4xl md:text-5xl font-headline font-bold">
@@ -37,7 +37,7 @@ export function HeroSection() {
             priority
           />
         </div>
-      </section>
+      </div>
     </div>
   );
 }
