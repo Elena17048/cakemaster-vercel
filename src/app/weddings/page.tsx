@@ -1,5 +1,3 @@
-"use client";
-
 import { HeroSection } from "./components/HeroSection";
 import { ReviewsSection } from "./components/ReviewsSection";
 import { GallerySection } from "./components/GallerySection";
@@ -10,22 +8,15 @@ import { AllergensSection } from "./components/AllergensSection";
 import { DeliverySection } from "./components/DeliverySection";
 import { PaymentSection } from "./components/PaymentSection";
 
-import { useQuery } from "@tanstack/react-query";
 import { getWeddingPageContent } from "@/lib/api";
-import type { WeddingPageContent } from "@/lib/types";
-import { Skeleton } from "@/components/ui/skeleton";
 
-export default function WeddingsPage() {
-  const { data, isLoading, isError } = useQuery<WeddingPageContent>({
-    queryKey: ["weddingPageContent"],
-    queryFn: getWeddingPageContent,
-  });
 
-  if (isLoading) {
-    return <Skeleton className="h-[400px] w-full" />;
-  }
+export const revalidate = 3600; // 1 hodina
 
-  if (isError || !data) {
+export default async function WeddingsPage() {
+  const data = await getWeddingPageContent();
+
+  if (!data) {
     return null;
   }
 

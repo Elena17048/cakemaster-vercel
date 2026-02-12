@@ -18,7 +18,7 @@ export function LayoutClient({ children }: { children: React.ReactNode }) {
       <div className="flex min-h-screen flex-col">
       {false && <TopBar />}
         <Header />
-        <DynamicBanners />
+        <DynamicBanners pathname={pathname} />
         <main className="flex-1">{children}</main>
         <Footer />
       </div>

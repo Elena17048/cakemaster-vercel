@@ -11,8 +11,10 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
+import type { GalleryImage } from "@/lib/types";
+
 type Props = {
-  images: string[];
+  images: GalleryImage[];
 };
 
 export function GallerySection({ images }: Props) {
@@ -43,14 +45,14 @@ export function GallerySection({ images }: Props) {
         className="max-w-6xl mx-auto"
       >
         <CarouselContent>
-          {images.map((src, i) => (
+          {images.map((image, i) => (
             <CarouselItem
-              key={i}
+              key={image.id}
               className="basis-full sm:basis-1/2 lg:basis-1/3 px-2"
             >
               <div className="relative overflow-hidden rounded-xl bg-background">
                 <img
-                  src={src}
+                  src={image.imageUrl}
                   alt={`Svatební galerie ${i + 1}`}
                   className="w-full h-auto max-h-[420px] mx-auto object-contain"
                   loading={i === 0 ? "eager" : "lazy"}
