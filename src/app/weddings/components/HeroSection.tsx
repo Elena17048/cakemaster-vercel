@@ -8,7 +8,7 @@ export function HeroSection() {
 
   return (
     <div className="container mx-auto px-4 md:px-6 py-16 md:py-20">
-      <div className="grid md:grid-cols-2 gap-10 items-center">
+      <div className="grid md:grid-cols-2 gap-10 items-start">
         {/* TEXT */}
         <div className="space-y-6">
           <h1 className="text-4xl md:text-5xl font-headline font-bold">
@@ -28,12 +28,13 @@ export function HeroSection() {
         </div>
 
         {/* OBRÁZEK */}
-        <div className="relative w-full max-w-md mx-auto aspect-[3/4] rounded-xl overflow-hidden shadow-lg">
+        <div className="w-full max-w-md mx-auto">
           <Image
             src="https://firebasestorage.googleapis.com/v0/b/cake-canvas-hr6n0.firebasestorage.app/o/assets%2Fcakes%2Fwedding_main.jpg?alt=media"
             alt="Elegantní svatební dort"
-            fill
-            className="object-cover"
+            width={600}
+            height={800}
+            className="rounded-xl shadow-lg object-cover"
             priority
           />
         </div>
