@@ -1,21 +1,20 @@
 import { NextResponse } from "next/server";
-import { collection, doc, setDoc, serverTimestamp } from "firebase/firestore";
-import { dbServer } from "@/lib/firebase-server";
+import { adminDb } from "@/lib/firebase-admin";
+
+export const runtime = "nodejs";
 
 export async function POST(req: Request) {
   try {
     const order = await req.json();
 
-    const orderRef = doc(collection(dbServer, "orders"));
-
-    await setDoc(orderRef, {
+    const docRef = await adminDb.collection("orders").add({
       ...order,
       status: "new",
-      createdAt: serverTimestamp(),
+      createdAt: new Date(),
     });
 
     return NextResponse.json({
-      orderId: orderRef.id,
+      orderId: docRef.id,
     });
 
   } catch (error) {
