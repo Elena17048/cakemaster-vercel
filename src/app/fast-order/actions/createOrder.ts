@@ -1,7 +1,7 @@
 "use server";
 
-import { collection, doc, setDoc, serverTimestamp } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { adminDb } from "@/lib/firebase-admin";
+import { FieldValue } from "firebase-admin/firestore";
 
 export async function createOrder(order: {
   flavor: string;
@@ -13,20 +13,13 @@ export async function createOrder(order: {
   note?: string;
   amount: number;
 }) {
-  if (!db) {
-    throw new Error("Firestore not initialized");
-  }
+  const orderRef = adminDb.collection("orders").doc();
 
-  // 🔥 Firestore si vytvoří vlastní ID
-  const orderRef = doc(collection(db, "orders"));
-
-  const savedOrder = {
+  await orderRef.set({
     ...order,
     status: "new",
-    createdAt: serverTimestamp(),
-  };
-
-  await setDoc(orderRef, savedOrder);
+    createdAt: FieldValue.serverTimestamp(),
+  });
 
   return {
     orderId: orderRef.id,
