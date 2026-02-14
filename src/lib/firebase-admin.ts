@@ -14,4 +14,4 @@ const app =
       })
     : getApps()[0];
 
-    export const adminDb = getFirestore(app, "cakemaster");
+export const adminDb = getFirestore(app, "cakemaster");
