@@ -12,7 +12,7 @@ export function WeddingCakeSection() {
 
           {/* TEXT */}
           <div className="space-y-6">
-            <h2 className="text-3xl md:text-4xl font-headline font-bold">
+          <h2 className="text-3xl md:text-4xl font-headline font-bold mt-0">
               Svatební dorty
             </h2>
 
