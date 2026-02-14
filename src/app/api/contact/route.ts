@@ -1,11 +1,14 @@
 import { NextResponse } from "next/server";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { db } from "@/lib/firebase";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
   try {
+    // 🔥 Lazy import – až při requestu
+    const { db } = await import("@/lib/firebase");
+
     if (!db) {
       throw new Error("Firestore not initialized");
     }
