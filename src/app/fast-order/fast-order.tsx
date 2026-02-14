@@ -48,20 +48,27 @@ export default function FastOrder() {
 
   const handleSubmit = async () => {
     if (!pickupDate || isSubmitting) return;
-
-    setIsSubmitting(true);
-
-    const res = await createOrder({
-      flavor,
-      size,
-      shape,
-      pickupDate,
-      note: orderNote,
-      amount: totalPrice,
-    });
-
-    router.push(`/fast-order/payment/${res.orderId}`);
-  };
+  
+    try {
+      setIsSubmitting(true);
+  
+      const res = await createOrder({
+        flavor,
+        size,
+        shape,
+        pickupDate,
+        note: orderNote,
+        amount: totalPrice,
+      });
+  
+      router.push(`/fast-order/payment/${res.orderId}`);
+  
+    } catch (error) {
+      console.error("ORDER ERROR:", error);
+      alert("Objednávku se nepodařilo odeslat. Zkuste to prosím znovu.");
+      setIsSubmitting(false);
+    }
+  };  
 
   return (
     <div className="w-full px-6 py-12">
