@@ -52,14 +52,21 @@ export default function FastOrder() {
     try {
       setIsSubmitting(true);
   
-      const res = await createOrder({
-        flavor,
-        size,
-        shape,
-        pickupDate,
-        note: orderNote,
-        amount: totalPrice,
+      const response = await fetch("/api/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          flavor,
+          size,
+          shape,
+          pickupDate,
+          note: orderNote,
+          amount: totalPrice,
+        }),
       });
+      
+      const res = await response.json();
+      
   
       router.push(`/fast-order/payment/${res.orderId}`);
   

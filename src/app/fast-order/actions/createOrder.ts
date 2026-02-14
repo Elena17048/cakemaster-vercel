@@ -1,7 +1,7 @@
 "use server";
 
-import { adminDb } from "@/lib/firebase-admin";
-import { FieldValue } from "firebase-admin/firestore";
+import { collection, doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 export async function createOrder(order: {
   flavor: string;
@@ -13,15 +13,13 @@ export async function createOrder(order: {
   note?: string;
   amount: number;
 }) {
-  const orderRef = adminDb.collection("orders").doc();
+  const orderRef = doc(collection(db, "orders"));
 
-  await orderRef.set({
+  await setDoc(orderRef, {
     ...order,
     status: "new",
-    createdAt: FieldValue.serverTimestamp(),
+    createdAt: serverTimestamp(),
   });
 
-  return {
-    orderId: orderRef.id,
-  };
+  return { orderId: orderRef.id };
 }
