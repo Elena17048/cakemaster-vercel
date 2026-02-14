@@ -8,11 +8,11 @@ export function WeddingCakeSection() {
   return (
     <section className="py-16">
       <div className="container mx-auto px-4 md:px-6">
-      <div className="grid md:grid-cols-2 gap-12">
+        <div className="grid md:grid-cols-2 gap-12 items-center min-h-[60vh]">
 
           {/* TEXT */}
-          <div className="space-y-6">
-          <h2 className="text-3xl md:text-4xl font-headline font-bold mt-0">
+          <div className="space-y-6 flex flex-col justify-center">
+            <h2 className="text-3xl md:text-4xl font-headline font-bold">
               Svatební dorty
             </h2>
 
