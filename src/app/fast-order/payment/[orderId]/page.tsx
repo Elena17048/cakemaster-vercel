@@ -2,8 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase";
 import { QRCodeCanvas } from "qrcode.react";
 
 type Order = {
@@ -42,21 +40,29 @@ export default function PaymentPage() {
   useEffect(() => {
     const loadOrder = async () => {
       try {
-        const snap = await getDoc(doc(db, "orders", orderId));
-
-        if (!snap.exists()) {
+        const response = await fetch(
+          `https://firestore.googleapis.com/v1/projects/${process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID}/databases/(default)/documents/orders/${orderId}`
+        );
+  
+        if (!response.ok) {
           setError("Objednávka nebyla nalezena.");
           return;
         }
-
-        const data = snap.data() as Order;
-        setOrder(data);
-
-        if (data.customer) {
-          setName(data.customer.name);
-          setPhone(data.customer.phone);
-          setEmail(data.customer.email);
-        }
+  
+        const data = await response.json();
+  
+        const fields = data.fields;
+  
+        const parsedOrder: Order = {
+          flavor: fields.flavor.stringValue,
+          size: fields.size.stringValue,
+          shape: fields.shape?.stringValue,
+          pickupDate: fields.pickupDate.stringValue,
+          amount: Number(fields.amount.integerValue),
+          status: fields.status?.stringValue,
+        };
+  
+        setOrder(parsedOrder);
       } catch (err) {
         console.error(err);
         setError("Nepodařilo se načíst objednávku.");
@@ -64,10 +70,10 @@ export default function PaymentPage() {
         setLoading(false);
       }
     };
-
+  
     if (orderId) loadOrder();
   }, [orderId]);
-
+  
   /* ===== ULOŽENÍ KONTAKTU ===== */
   const saveContact = async () => {
     if (!name || !phone || !email) return;
@@ -75,15 +81,30 @@ export default function PaymentPage() {
     try {
       setSaving(true);
 
-      await updateDoc(doc(db, "orders", orderId), {
-        customer: {
-          name,
-          phone,
-          email,
-        },
-        status: "awaiting_payment",
-      });
-
+      await fetch(
+        `https://firestore.googleapis.com/v1/projects/${process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID}/databases/(default)/documents/orders/${orderId}?updateMask.fieldPaths=customer&updateMask.fieldPaths=status`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            fields: {
+              customer: {
+                mapValue: {
+                  fields: {
+                    name: { stringValue: name },
+                    phone: { stringValue: phone },
+                    email: { stringValue: email },
+                  },
+                },
+              },
+              status: { stringValue: "awaiting_payment" },
+            },
+          }),
+        }
+      );
+      
       setSaved(true);
     } catch (err) {
       console.error(err);
