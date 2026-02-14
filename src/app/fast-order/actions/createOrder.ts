@@ -1,7 +1,6 @@
 "use server";
 
-import { randomUUID } from "crypto";
-import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { collection, doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 
 export async function createOrder(order: {
@@ -14,7 +13,12 @@ export async function createOrder(order: {
   note?: string;
   amount: number;
 }) {
-  const orderId = randomUUID();
+  if (!db) {
+    throw new Error("Firestore not initialized");
+  }
+
+  // 🔥 Firestore si vytvoří vlastní ID
+  const orderRef = doc(collection(db, "orders"));
 
   const savedOrder = {
     ...order,
@@ -22,9 +26,9 @@ export async function createOrder(order: {
     createdAt: serverTimestamp(),
   };
 
-  await setDoc(doc(db, "orders", orderId), savedOrder);
+  await setDoc(orderRef, savedOrder);
 
   return {
-    orderId,
+    orderId: orderRef.id,
   };
 }
