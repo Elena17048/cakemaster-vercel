@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { adminDb } from "@/lib/firebase-admin";
+import { FieldValue } from "firebase-admin/firestore";
 
 export async function POST(req: Request) {
   try {
@@ -8,7 +9,7 @@ export async function POST(req: Request) {
     const docRef = await adminDb.collection("orders").add({
       ...order,
       status: "new",
-      createdAt: new Date(),
+      createdAt: FieldValue.serverTimestamp(),
     });
 
     return NextResponse.json({
