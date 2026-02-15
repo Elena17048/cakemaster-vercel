@@ -22,4 +22,8 @@ const app =
       })
     : getApps()[0];
 
-export const adminDb = getFirestore(app);
+// 🔥 TADY JE KLÍČ
+const db = getFirestore(app);
+db.settings({ databaseId: "cakemaster" });
+
+export const adminDb = db;
