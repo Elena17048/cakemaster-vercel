@@ -117,8 +117,13 @@ export default function PaymentPage() {
     );
   }
 
-  const qrValue = `SPD*1.0*ACC:CZ4003000000000348614361*AM:${order.amount}.00*CC:CZK*X-VS:${orderId}*MSG:Bento dort`;
+  /* ===== BEZPEČNÝ 10MÍSTNÝ VS ===== */
+  const variableSymbol = orderId
+    .replace(/\D/g, "")
+    .padEnd(10, "0")
+    .slice(0, 10);
 
+  const qrValue = `SPD*1.0*ACC:CZ4003000000000348614361*AM:${order.amount}.00*CC:CZK*X-VS:${variableSymbol}*MSG:Bento dort`;
 
   const downloadQR = () => {
     if (!qrRef.current) return;
@@ -205,7 +210,7 @@ export default function PaymentPage() {
 
         <div className="mt-4 text-sm text-center">
           <div><strong>Částka:</strong> {order.amount} Kč</div>
-          <div><strong>VS:</strong> {orderId}</div>
+          <div><strong>VS:</strong> {variableSymbol}</div>
         </div>
       </section>
 
