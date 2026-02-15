@@ -29,7 +29,6 @@ export default function PaymentPage() {
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
 
-  /* ===== KONTAKT ===== */
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -40,29 +39,22 @@ export default function PaymentPage() {
   useEffect(() => {
     const loadOrder = async () => {
       try {
-        const response = await fetch(
-          `https://firestore.googleapis.com/v1/projects/${process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID}/databases/(default)/documents/orders/${orderId}`
-        );
-  
+        const response = await fetch(`/api/get-order/${orderId}`);
+
         if (!response.ok) {
           setError("Objednávka nebyla nalezena.");
           return;
         }
-  
+
         const data = await response.json();
-  
-        const fields = data.fields;
-  
-        const parsedOrder: Order = {
-          flavor: fields.flavor.stringValue,
-          size: fields.size.stringValue,
-          shape: fields.shape?.stringValue,
-          pickupDate: fields.pickupDate.stringValue,
-          amount: Number(fields.amount.integerValue),
-          status: fields.status?.stringValue,
-        };
-  
-        setOrder(parsedOrder);
+        setOrder(data);
+
+        if (data.customer) {
+          setName(data.customer.name);
+          setPhone(data.customer.phone);
+          setEmail(data.customer.email);
+          setSaved(true);
+        }
       } catch (err) {
         console.error(err);
         setError("Nepodařilo se načíst objednávku.");
@@ -70,10 +62,10 @@ export default function PaymentPage() {
         setLoading(false);
       }
     };
-  
+
     if (orderId) loadOrder();
   }, [orderId]);
-  
+
   /* ===== ULOŽENÍ KONTAKTU ===== */
   const saveContact = async () => {
     if (!name || !phone || !email) return;
@@ -81,30 +73,25 @@ export default function PaymentPage() {
     try {
       setSaving(true);
 
-      await fetch(
-        `https://firestore.googleapis.com/v1/projects/${process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID}/databases/(default)/documents/orders/${orderId}?updateMask.fieldPaths=customer&updateMask.fieldPaths=status`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
+      const response = await fetch(`/api/update-order/${orderId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          customer: {
+            name,
+            phone,
+            email,
           },
-          body: JSON.stringify({
-            fields: {
-              customer: {
-                mapValue: {
-                  fields: {
-                    name: { stringValue: name },
-                    phone: { stringValue: phone },
-                    email: { stringValue: email },
-                  },
-                },
-              },
-              status: { stringValue: "awaiting_payment" },
-            },
-          }),
-        }
-      );
-      
+          status: "awaiting_payment",
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Update failed");
+      }
+
       setSaved(true);
     } catch (err) {
       console.error(err);
@@ -114,7 +101,6 @@ export default function PaymentPage() {
     }
   };
 
-  /* ===== STAVY ===== */
   if (loading) {
     return (
       <div className="max-w-md mx-auto px-4 py-12 text-center">
@@ -131,7 +117,6 @@ export default function PaymentPage() {
     );
   }
 
-  /* ===== QR ===== */
   const qrValue = `
 SPD*1.0
 *ACC:CZ123456789/0100
@@ -230,7 +215,6 @@ SPD*1.0
         </div>
       </section>
 
-      {/* ===== POTVRZENÍ ZAPLACENÍ ===== */}
       <button
         type="button"
         onClick={() => router.push("/thank-you")}
