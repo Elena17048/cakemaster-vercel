@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 
 import FlavorSelect from "./FlavorSelect";
 import SizeSelect from "./SizeSelect";
-import { createOrder } from "./actions/createOrder";
 
 import {
   BENTO_FLAVORS,
