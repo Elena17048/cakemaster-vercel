@@ -117,14 +117,8 @@ export default function PaymentPage() {
     );
   }
 
-  const qrValue = `
-SPD*1.0
-*ACC:CZ123456789/0100
-*AM:${order.amount}
-*CC:CZK
-*X-VS:${orderId}
-*MSG:Bento dort
-  `;
+  const qrValue = `SPD*1.0*ACC:CZ4003000000000348614361*AM:${order.amount}.00*CC:CZK*X-VS:${orderId}*MSG:Bento dort`;
+
 
   const downloadQR = () => {
     if (!qrRef.current) return;
