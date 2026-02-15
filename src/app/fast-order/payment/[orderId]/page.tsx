@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { QRCodeCanvas } from "qrcode.react";
+import { BENTO_FLAVORS, PLAQUE_PRICE } from "@/data/bento";
 
 type Order = {
   flavor: string;
@@ -10,6 +11,9 @@ type Order = {
   shape?: string;
   pickupDate: string;
   amount: number;
+  note?: string;
+  plaque?: boolean;
+  plaqueText?: string;
   status?: string;
   customer?: {
     name: string;
@@ -117,7 +121,21 @@ export default function PaymentPage() {
     );
   }
 
-  /* ===== BEZPEČNÝ 10MÍSTNÝ VS ===== */
+  /* ===== LIDSKÉ NÁZVY ===== */
+
+  const sizeLabel =
+    order.size === "two"
+      ? "pro 2 osoby"
+      : order.size === "three"
+      ? "pro 3 osoby"
+      : order.size;
+
+  const flavorLabel =
+    BENTO_FLAVORS.find((f) => f.id === order.flavor)?.name ||
+    order.flavor;
+
+  /* ===== VS ===== */
+
   const variableSymbol = orderId
     .replace(/\D/g, "")
     .padEnd(10, "0")
@@ -141,16 +159,34 @@ export default function PaymentPage() {
       </h1>
 
       {/* ===== SHRNUTÍ ===== */}
-      <section className="mb-8 text-sm">
+      <section className="mb-8 text-sm space-y-1">
         <div><strong>Objednávka:</strong> {orderId}</div>
-        <div><strong>Příchuť:</strong> {order.flavor}</div>
-        <div><strong>Velikost:</strong> {order.size}</div>
+        <div><strong>Příchuť:</strong> {flavorLabel}</div>
+        <div><strong>Velikost:</strong> {sizeLabel}</div>
+
         {order.shape && (
           <div><strong>Tvar:</strong> {order.shape}</div>
         )}
+
         <div>
           <strong>Datum vyzvednutí:</strong> {order.pickupDate}
         </div>
+
+        {order.note && (
+          <div>
+            <strong>Komentář:</strong> {order.note}
+          </div>
+        )}
+
+        {order.plaque && (
+          <div>
+            <strong>Cedulka:</strong>{" "}
+            {order.plaqueText
+              ? `"${order.plaqueText}" (+${PLAQUE_PRICE} Kč)`
+              : `Ano (+${PLAQUE_PRICE} Kč)`}
+          </div>
+        )}
+
         <div className="mt-2 text-lg font-bold">
           Celkem: {order.amount} Kč
         </div>
@@ -216,8 +252,14 @@ export default function PaymentPage() {
 
       <button
         type="button"
-        onClick={() => router.push("/thank-you")}
-        className="mt-8 w-full rounded-xl bg-[#BEB58A] py-4 text-sm font-semibold text-white hover:bg-[#A79E6F]"
+        disabled={!saved}
+        onClick={() => router.push("/fast-order/thank-you")}
+        className={`mt-8 w-full rounded-xl py-4 text-sm font-semibold text-white transition
+          ${
+            saved
+              ? "bg-[#BEB58A] hover:bg-[#A79E6F]"
+              : "bg-gray-300 cursor-not-allowed"
+          }`}
       >
         Zaplatil/a jsem
       </button>
