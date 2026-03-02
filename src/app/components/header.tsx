@@ -32,7 +32,7 @@ export default function Header() {
     { href: "/cakes", label: t('nav.gallery') },
     { href: "/weddings", label: t('nav.weddings') },
     { href: "/corporate", label: t('nav.corporate') },
-    { href: "/printing", label: t('nav.print') },
+    { href: "/courses", label: t('nav.courses') },
     { href: "/contact", label: t('nav.contact') },
   ];
 
