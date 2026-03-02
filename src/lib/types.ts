@@ -41,13 +41,20 @@ export type Order = {
 /* COURSES */
 /* ===================== */
 
+export type TranslatedText = {
+  en: string;
+  cs: string;
+};
+
 export type Course = {
   id: string;
-  title: string;
-  description?: string;
-  price?: number;
+  title: TranslatedText;
+  description: TranslatedText;
   imageUrl?: string;
-  createdAt?: Timestamp;
+  price: number;
+  duration: number;
+  capacity: number;
+  level: string;
 };
 
 /* ===================== */
