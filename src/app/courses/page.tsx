@@ -13,12 +13,17 @@ import Image from "next/image";
 import Link from "next/link";
 
 async function getCourses() {
-  const snapshot = await adminDb.collection("courses").limit(4).get();
+  const snapshot = await adminDb.collection("courses").get();
 
-  return snapshot.docs.map((doc: any) => ({
+  const courses = snapshot.docs.map((doc: any) => ({
     id: doc.id,
     ...doc.data(),
   }));
+
+  // zobraz jen aktivní kurzy
+  return courses
+    .filter((course: any) => course.active === true)
+    .slice(0, 4);
 }
 
 export default async function OurCourses() {
