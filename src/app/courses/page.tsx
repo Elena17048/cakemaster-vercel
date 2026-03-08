@@ -1,17 +1,24 @@
+import { adminDb } from "@/lib/firebase-admin";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Clock, Tag, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 async function getCourses() {
-  const res = await fetch("/api/courses", {
-    next: { revalidate: 60 },
-  });
+  const snapshot = await adminDb.collection("courses").limit(4).get();
 
-  if (!res.ok) return [];
-
-  return res.json();
+  return snapshot.docs.map((doc: any) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
 }
 
 export default async function OurCourses() {
@@ -20,9 +27,7 @@ export default async function OurCourses() {
   return (
     <div className="container mx-auto px-4 md:px-6 py-16 md:py-24">
       <div className="text-center">
-        <h1 className="text-4xl md:text-5xl font-bold">
-          Kurzy
-        </h1>
+        <h1 className="text-4xl md:text-5xl font-bold">Kurzy</h1>
       </div>
 
       <div className="mt-12 grid gap-8 md:grid-cols-2">
