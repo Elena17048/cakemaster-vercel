@@ -1,25 +1,40 @@
 import { NextResponse } from "next/server";
 import { adminDb } from "@/lib/firebase-admin";
 
-export const revalidate = 60; // cache 60 sekund
+export const revalidate = 60;
 
 export async function GET() {
   try {
-    // Načti kurzy
-    const coursesSnapshot = await adminDb.collection("courses").get();
+    // 1️⃣ načti max 4 kurzy
+    const coursesSnapshot = await adminDb
+      .collection("courses")
+      .limit(4)
+      .get();
+
     const courses = coursesSnapshot.docs.map((doc: any) => ({
       id: doc.id,
       ...doc.data(),
     }));
 
-    // Načti termíny
-    const datesSnapshot = await adminDb.collection("courseDates").get();
+    // pokud nejsou kurzy, vrať prázdné pole
+    if (courses.length === 0) {
+      return NextResponse.json([]);
+    }
+
+    const courseIds = courses.map((c: any) => c.id);
+
+    // 2️⃣ načti jen termíny těchto kurzů
+    const datesSnapshot = await adminDb
+      .collection("courseDates")
+      .where("courseId", "in", courseIds)
+      .get();
+
     const allDates = datesSnapshot.docs.map((doc: any) => ({
       id: doc.id,
       ...doc.data(),
     }));
 
-    // Spoj data
+    // 3️⃣ spoj data
     const result = courses.map((course: any) => {
       const dates = allDates
         .filter((date: any) => date.courseId === course.id)

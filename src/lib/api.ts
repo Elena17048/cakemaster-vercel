@@ -94,7 +94,9 @@ export const getBannerSettings = async (): Promise<BannerSettings> => {
 /* ===================== */
 
 export const getCourses = async (): Promise<Course[]> => {
-  const snapshot = await getDocs(coursesCollectionRef);
+  const q = query(coursesCollectionRef, limit(4));
+  const snapshot = await getDocs(q);
+
   return snapshot.docs.map(docSnap => ({
     id: docSnap.id,
     ...docSnap.data(),
@@ -240,6 +242,7 @@ export const updateOrderStatus = async ({
 }) => {
   await updateDoc(doc(ordersCollectionRef, orderId), { status });
 };
+
 /* ===================== */
 /* ADMIN – CATEGORIES */
 /* ===================== */
@@ -261,22 +264,14 @@ export const deleteCategory = async (id: string) => {
   await deleteDoc(doc(categoriesCollectionRef, id));
 };
 
-export const updateCategoryOrder = async (
-  id: string,
-  order: number
-) => {
+export const updateCategoryOrder = async (id: string, order: number) => {
   await updateDoc(doc(categoriesCollectionRef, id), { order });
 };
 
 /* CATEGORY IMAGE */
 
-export const uploadCategoryImage = async (
-  file: File
-): Promise<string> => {
-  const storageRef = ref(
-    storage,
-    `categories/${Date.now()}_${file.name}`
-  );
+export const uploadCategoryImage = async (file: File): Promise<string> => {
+  const storageRef = ref(storage, `categories/${Date.now()}_${file.name}`);
 
   await uploadBytes(storageRef, file);
   return await getDownloadURL(storageRef);
@@ -290,10 +285,7 @@ export const addCourse = async (data: Omit<Course, "id">) => {
   await addDoc(coursesCollectionRef, data);
 };
 
-export const updateCourse = async (
-  id: string,
-  data: Partial<Course>
-) => {
+export const updateCourse = async (id: string, data: Partial<Course>) => {
   await updateDoc(doc(coursesCollectionRef, id), data);
 };
 
@@ -301,13 +293,8 @@ export const deleteCourse = async (id: string) => {
   await deleteDoc(doc(coursesCollectionRef, id));
 };
 
-export const uploadCourseImage = async (
-  file: File
-): Promise<string> => {
-  const storageRef = ref(
-    storage,
-    `courses/${Date.now()}_${file.name}`
-  );
+export const uploadCourseImage = async (file: File): Promise<string> => {
+  const storageRef = ref(storage, `courses/${Date.now()}_${file.name}`);
 
   await uploadBytes(storageRef, file);
   return await getDownloadURL(storageRef);
@@ -317,9 +304,7 @@ export const uploadCourseImage = async (
 /* ADMIN – GALLERY */
 /* ===================== */
 
-export const addGalleryImage = async (
-  data: Omit<GalleryImage, "id">
-) => {
+export const addGalleryImage = async (data: Omit<GalleryImage, "id">) => {
   await addDoc(galleryCollectionRef, data);
 };
 
@@ -334,13 +319,8 @@ export const deleteGalleryImage = async (id: string) => {
   await deleteDoc(doc(galleryCollectionRef, id));
 };
 
-export const uploadGalleryImage = async (
-  file: File
-): Promise<string> => {
-  const storageRef = ref(
-    storage,
-    `gallery/${Date.now()}_${file.name}`
-  );
+export const uploadGalleryImage = async (file: File): Promise<string> => {
+  const storageRef = ref(storage, `gallery/${Date.now()}_${file.name}`);
 
   await uploadBytes(storageRef, file);
   return await getDownloadURL(storageRef);
@@ -350,9 +330,7 @@ export const uploadGalleryImage = async (
 /* ADMIN – PAGE CONTENT */
 /* ===================== */
 
-export const updateWeddingPageContent = async (
-  data: WeddingPageContent
-) => {
+export const updateWeddingPageContent = async (data: WeddingPageContent) => {
   await setDoc(doc(contentCollectionRef, "weddings"), data);
 };
 
@@ -366,30 +344,22 @@ export const updateCorporatePageContent = async (
 /* ADMIN – BANNERS */
 /* ===================== */
 
-export const updateBannerSettings = async (
-  data: BannerSettings
-) => {
+export const updateBannerSettings = async (data: BannerSettings) => {
   await setDoc(doc(settingsCollectionRef, "banners"), data);
 };
+
 /* ===================== */
 /* ADMIN – WEDDING IMAGES */
 /* ===================== */
 
-export const uploadWeddingImage = async (
-  file: File
-): Promise<string> => {
-  const storageRef = ref(
-    storage,
-    `weddings/${Date.now()}_${file.name}`
-  );
+export const uploadWeddingImage = async (file: File): Promise<string> => {
+  const storageRef = ref(storage, `weddings/${Date.now()}_${file.name}`);
 
   await uploadBytes(storageRef, file);
   return await getDownloadURL(storageRef);
 };
 
-export const deleteWeddingImage = async (
-  imageUrl: string
-) => {
+export const deleteWeddingImage = async (imageUrl: string) => {
   await deleteImageFromStorage(imageUrl);
 };
 
@@ -397,20 +367,13 @@ export const deleteWeddingImage = async (
 /* ADMIN – CORPORATE IMAGES */
 /* ===================== */
 
-export const uploadCorporateImage = async (
-  file: File
-): Promise<string> => {
-  const storageRef = ref(
-    storage,
-    `corporate/${Date.now()}_${file.name}`
-  );
+export const uploadCorporateImage = async (file: File): Promise<string> => {
+  const storageRef = ref(storage, `corporate/${Date.now()}_${file.name}`);
 
   await uploadBytes(storageRef, file);
   return await getDownloadURL(storageRef);
 };
 
-export const deleteCorporateImage = async (
-  imageUrl: string
-) => {
+export const deleteCorporateImage = async (imageUrl: string) => {
   await deleteImageFromStorage(imageUrl);
 };
