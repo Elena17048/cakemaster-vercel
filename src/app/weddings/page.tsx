@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { HeroSection } from "./components/HeroSection";
 import { ReviewsSection } from "./components/ReviewsSection";
 import { GallerySection } from "./components/GallerySection";
@@ -10,8 +12,6 @@ import { PaymentSection } from "./components/PaymentSection";
 
 import { getWeddingPageContent } from "@/lib/api";
 
-export const revalidate = 3600; // 1 hodina
-
 export default async function WeddingsPage() {
   const data = await getWeddingPageContent();
 
@@ -23,52 +23,52 @@ export default async function WeddingsPage() {
 
   return (
     <main className="flex flex-col">
-  
+
       {/* 1. Svatební dort a sweet bar – BÍLÁ */}
       <section className="bg-white pb-6 md:pb-8">
         <HeroSection />
       </section>
-  
+
       {/* 2. Co říkají zákazníci – BÉŽOVÁ */}
       <section className="bg-[#faf7f0] pb-6 md:pb-8">
         <ReviewsSection reviews={reviews} />
       </section>
-  
+
       {/* 3. Galerie – BÍLÁ */}
       <section className="bg-white pb-6 md:pb-8">
         <GallerySection images={galleryImages} />
       </section>
-  
+
       {/* 4. Svatební dorty – BÉŽOVÁ */}
       <section className="bg-[#faf7f0] pb-6 md:pb-8">
         <WeddingCakeSection />
       </section>
-  
+
       {/* 5. Sweet bar – BÍLÁ */}
       <section className="bg-white pb-6 md:pb-8">
         <SweetBarSection />
       </section>
-  
+
       {/* 6. Velikost dortu a sweet baru – BÉŽOVÁ */}
       <section className="bg-[#faf7f0] pb-6 md:pb-8">
         <SizeSection />
       </section>
-  
+
       {/* 7. Alergeny – BÍLÁ */}
       <section className="bg-white pb-6 md:pb-8">
         <AllergensSection />
       </section>
-  
+
       {/* 8. Doprava – BÉŽOVÁ */}
       <section className="bg-[#faf7f0] pb-6 md:pb-8">
         <DeliverySection />
       </section>
-  
+
       {/* 9. Platby – BÍLÁ */}
       <section className="bg-white">
         <PaymentSection />
       </section>
-  
+
     </main>
   );
 }
