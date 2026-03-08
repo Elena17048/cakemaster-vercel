@@ -5,9 +5,10 @@ export const revalidate = 60;
 
 export async function GET() {
   try {
-    // 1️⃣ načti max 4 kurzy
+    // 1️⃣ načti max 4 aktivní kurzy
     const coursesSnapshot = await adminDb
       .collection("courses")
+      .where("active", "==", true)
       .limit(4)
       .get();
 
