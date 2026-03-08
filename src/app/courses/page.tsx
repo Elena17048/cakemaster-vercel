@@ -5,12 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 async function getCourses() {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_SITE_URL}/api/courses`,
-    {
-      next: { revalidate: 60 },
-    }
-  );
+  const res = await fetch("/api/courses", {
+    next: { revalidate: 60 },
+  });
 
   if (!res.ok) return [];
 
