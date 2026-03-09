@@ -6,9 +6,12 @@ export const runtime = "nodejs";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST() {
+
   console.log("PAYMENT CONFIRM START");
+  console.log("RESEND KEY:", process.env.RESEND_API_KEY);
 
   try {
+
     const data = await resend.emails.send({
       from: "CakeMaster <onboarding@resend.dev>",
       to: ["info@cakemaster.cz"],
@@ -24,11 +27,13 @@ export async function POST() {
     });
 
   } catch (error) {
+
     console.error("RESEND ERROR:", error);
 
     return NextResponse.json({
       success: false,
       error,
     });
+
   }
 }
