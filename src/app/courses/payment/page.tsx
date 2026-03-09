@@ -4,13 +4,41 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
 export default function PaymentPage() {
+
   const router = useRouter();
 
-  const amount = 2700; // cena kurzu
-  const iban = "CZ6508000000192000145399"; // tvůj účet
-  const vs = Date.now(); // jednoduchý variabilní symbol
+  const amount = 2700;
+  const iban = "CZ6508000000192000145399";
 
-  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=SPD*1.0*ACC:${iban}*AM:${amount}*CC:CZK*X-VS:${vs}`;
+  const params =
+    typeof window !== "undefined"
+      ? new URLSearchParams(window.location.search)
+      : null;
+
+  const bookingId = params?.get("bookingId");
+
+  const vs = bookingId || Date.now();
+
+  const qrUrl =
+    `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=SPD*1.0*ACC:${iban}*AM:${amount}*CC:CZK*X-VS:${vs}`;
+
+  async function confirmPayment() {
+
+    if (!bookingId) {
+      router.push("/courses/thank-you");
+      return;
+    }
+
+    await fetch("/api/payment-confirm", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ bookingId }),
+    });
+
+    router.push("/courses/thank-you");
+  }
 
   return (
     <div className="container mx-auto px-4 py-16 max-w-xl text-center">
@@ -38,23 +66,11 @@ export default function PaymentPage() {
       </p>
 
       <Button
-  onClick={async () => {
-
-    const bookingId = new URLSearchParams(window.location.search).get("bookingId");
-
-    await fetch("/api/payment-confirm", {
-      method: "POST",
-      body: JSON.stringify({
-        bookingId
-      }),
-    });
-
-    router.push("/courses/thank-you");
-  }}
-  className="w-full"
->
-  Zaplatil jsem
-</Button>
+        onClick={confirmPayment}
+        className="w-full"
+      >
+        Zaplatil jsem
+      </Button>
 
       <p className="mt-10 text-sm text-gray-500">
         Storno: rezervaci lze zrušit nejpozději 48 hodin před kurzem.
