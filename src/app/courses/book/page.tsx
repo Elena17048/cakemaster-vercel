@@ -32,7 +32,8 @@ export default function BookCoursePage() {
     });
 
     if (res.ok) {
-      window.location.href = "/courses/payment";
+      const data = await res.json();
+      window.location.href = `/courses/payment?bookingId=${data.bookingId}`;
     }
   }
 

@@ -38,11 +38,23 @@ export default function PaymentPage() {
       </p>
 
       <Button
-        onClick={() => router.push("/courses/thank-you")}
-        className="w-full"
-      >
-        Zaplatil jsem
-      </Button>
+  onClick={async () => {
+
+    const bookingId = new URLSearchParams(window.location.search).get("bookingId");
+
+    await fetch("/api/payment-confirm", {
+      method: "POST",
+      body: JSON.stringify({
+        bookingId
+      }),
+    });
+
+    router.push("/courses/thank-you");
+  }}
+  className="w-full"
+>
+  Zaplatil jsem
+</Button>
 
       <p className="mt-10 text-sm text-gray-500">
         Storno: rezervaci lze zrušit nejpozději 48 hodin před kurzem.
