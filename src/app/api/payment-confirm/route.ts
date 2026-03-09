@@ -13,7 +13,7 @@ export async function POST() {
   try {
 
     const data = await resend.emails.send({
-      from: "CakeMaster <onboarding@resend.dev>",
+      from: "CakeMaster <info@cakemaster.cz>",
       to: ["info@cakemaster.cz"],
       subject: "TEST EMAIL",
       html: "<h1>Resend test funguje</h1>",
