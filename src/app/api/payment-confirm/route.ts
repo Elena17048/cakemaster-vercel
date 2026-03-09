@@ -1,6 +1,6 @@
-
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { adminDb } from "@/lib/firebase-admin";
 
 export const runtime = "nodejs";
 
@@ -8,32 +8,53 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
 
-  const body = await req.json();
-
-  const {
-    firstName,
-    lastName,
-    phone,
-    email,
-    courseName,
-    date,
-    dateId,
-    variableSymbol
-  } = body;
+  const { bookingId, variableSymbol } = await req.json();
 
   try {
-    
+
+    // NAČTENÍ REZERVACE
+    const bookingDoc = await adminDb
+      .collection("courseBookings")
+      .doc(bookingId)
+      .get();
+
+    if (!bookingDoc.exists) {
+      return NextResponse.json({
+        success: false,
+        error: "Booking not found"
+      });
+    }
+
+    const booking = bookingDoc.data();
+
+    const {
+      firstName,
+      lastName,
+      email,
+      phone,
+      courseId,
+      dateId
+    } = booking as any;
+
+    // NAČTENÍ TERMÍNU
+    const dateDoc = await adminDb
+      .collection("courseDates")
+      .doc(dateId)
+      .get();
+
+    const dateData = dateDoc.data();
+
+    const date = dateData?.date || "Neznámý termín";
 
     // EMAIL ADMINOVI
-   
-    const adminEmail = await resend.emails.send({
+    await resend.emails.send({
       from: "CakeMaster <info@cakemaster.cz>",
       to: ["info@cakemaster.cz"],
-      subject: `Nová rezervace kurzu – ${courseName}`,
+      subject: `Nová rezervace kurzu – ${courseId}`,
       html: `
         <h2>Nová rezervace kurzu</h2>
 
-        <p><b>Kurz:</b> ${courseName}</p>
+        <p><b>Kurz:</b> ${courseId}</p>
         <p><b>Termín:</b> ${date}</p>
 
         <hr/>
@@ -58,7 +79,7 @@ export async function POST(req: Request) {
 
         <p>Vaši rezervaci jsem přijala.</p>
 
-        <p><b>Kurz:</b> ${courseName}</p>
+        <p><b>Kurz:</b> ${courseId}</p>
         <p><b>Termín:</b> ${date}</p>
 
         <p>
@@ -75,10 +96,7 @@ export async function POST(req: Request) {
       `
     });
 
-    return NextResponse.json({
-      success: true,
-      adminEmail
-    });
+    return NextResponse.json({ success: true });
 
   } catch (error) {
 
@@ -92,4 +110,3 @@ export async function POST(req: Request) {
   }
 
 }
-

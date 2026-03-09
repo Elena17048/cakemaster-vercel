@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -34,7 +35,10 @@ export default function PaymentPage() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ bookingId }),
+      body: JSON.stringify({
+        bookingId,
+        variableSymbol: vs
+      }),
     });
 
     router.push("/courses/thank-you");
@@ -48,7 +52,7 @@ export default function PaymentPage() {
       </h1>
 
       <p className="mb-6">
-        Prosíme zaplaťte kurz pomocí QR kódu.
+        Prosím zaplaťte kurz pomocí QR kódu.
       </p>
 
       <img
