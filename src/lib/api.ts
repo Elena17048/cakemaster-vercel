@@ -145,8 +145,9 @@ export const getGalleryImages = async ({
   lastVisible?: QueryDocumentSnapshot<DocumentData>;
 }> => {
   const baseQuery = [
-    where("categories", "array-contains", categoryId),
-    orderBy("createdAt", "desc"),
+    categoryId
+  ? where("categories", "array-contains", categoryId)
+  : orderBy("createdAt", "desc")
   ];
 
   const q = lastVisible
