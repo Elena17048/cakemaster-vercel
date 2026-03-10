@@ -23,13 +23,12 @@ export default function Home() {
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="text-center md:text-left">
-              <Image
+              <img
                 src="https://firebasestorage.googleapis.com/v0/b/cake-canvas-hr6n0.appspot.com/o/assets%2Flogo_transparent.svg?alt=media"
                 alt="Cake Master Logo"
                 width={400}
                 height={400}
-                className="mb-4"
-                unoptimized
+                className="mb-4 mx-auto md:mx-0"
               />
 
               <h1 className="text-4xl md:text-6xl font-headline font-bold">
@@ -50,13 +49,10 @@ export default function Home() {
             </div>
 
             <div className="flex justify-center">
-              <Image
+              <img
                 src="https://firebasestorage.googleapis.com/v0/b/cake-canvas-hr6n0.appspot.com/o/assets%2Fmain_wedding.jpg?alt=media"
                 alt="Hero Cake"
-                width={800}
-                height={800}
-                unoptimized
-                className="rounded-full aspect-square object-cover shadow-2xl"
+                className="rounded-full aspect-square object-cover shadow-2xl w-[800px] max-w-full"
               />
             </div>
           </div>
@@ -120,39 +116,27 @@ export default function Home() {
           </div>
 
           <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {/* Image 1 */}
             <Link href="/gallery" className="block group">
-              <Image
+              <img
                 src="https://firebasestorage.googleapis.com/v0/b/cake-canvas-hr6n0.appspot.com/o/assets%2Fcakes%2Fhero1.jpg?alt=media"
                 alt="Bento cake"
-                width={600}
-                height={400}
                 className="w-full max-w-md mx-auto object-cover rounded-xl transition-transform duration-300 group-hover:scale-105"
-                unoptimized
               />
             </Link>
 
-            {/* Image 2 */}
             <Link href="/gallery" className="block group">
-              <Image
+              <img
                 src="https://firebasestorage.googleapis.com/v0/b/cake-canvas-hr6n0.appspot.com/o/assets%2Fcakes%2Fhero2.jpg?alt=media"
                 alt="Colorful birthday cake"
-                width={600}
-                height={400}
                 className="w-full max-w-md mx-auto object-cover rounded-xl transition-transform duration-300 group-hover:scale-105"
-                unoptimized
               />
             </Link>
 
-            {/* Image 3 */}
             <Link href="/gallery" className="block group">
-              <Image
+              <img
                 src="https://firebasestorage.googleapis.com/v0/b/cake-canvas-hr6n0.appspot.com/o/assets%2Fcakes%2Fhero3.jpg?alt=media"
                 alt="Chocolate cake"
-                width={600}
-                height={600}
                 className="w-full max-w-md mx-auto object-cover rounded-xl transition-transform duration-300 group-hover:scale-105"
-                unoptimized
               />
             </Link>
           </div>
