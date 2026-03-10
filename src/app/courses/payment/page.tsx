@@ -2,14 +2,15 @@
 
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import QRCode from "qrcode";
+import { useEffect, useState } from "react";
 
 export default function PaymentPage() {
 
   const router = useRouter();
+  const [qrUrl, setQrUrl] = useState("");
 
-  const amount = 2700;
-
-  // správný účet pro QR platby
+  const amount = "2700.00";
   const account = "6155124013/0800";
 
   const params =
@@ -19,16 +20,16 @@ export default function PaymentPage() {
 
   const bookingId = params?.get("bookingId");
 
-  // variabilní symbol max 10 číslic
   const vs = bookingId
     ? bookingId.replace(/\D/g, "").slice(0, 10)
     : Date.now().toString().slice(0, 10);
 
-  // QR data pro český standard
-  const qrData = `SPD*1.0*ACC:${account}*AM:${amount}*CC:CZK`;
+  const qrData = `SPD*1.0*ACC:${account}*AM:${amount}*CC:CZK*VS:${vs}`;
 
-  const qrUrl =
-    `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(qrData)}`;
+  useEffect(() => {
+    QRCode.toDataURL(qrData, { width: 300 })
+    .then((url: string) => setQrUrl(url));
+  }, [qrData]);
 
   async function confirmPayment() {
 
@@ -62,11 +63,13 @@ export default function PaymentPage() {
         Prosím zaplaťte kurz pomocí QR kódu.
       </p>
 
-      <img
-        src={qrUrl}
-        alt="QR platba"
-        className="mx-auto mb-6"
-      />
+      {qrUrl && (
+        <img
+          src={qrUrl}
+          alt="QR platba"
+          className="mx-auto mb-6"
+        />
+      )}
 
       <p className="mb-2 font-medium">
         Částka: {amount} CZK
