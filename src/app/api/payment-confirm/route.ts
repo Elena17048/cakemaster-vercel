@@ -44,17 +44,28 @@ export async function POST(req: Request) {
 
     const dateData = dateDoc.data();
 
-    const date = dateData?.date || "Neznámý termín";
+    const date = dateData?.date
+      ? dateData.date.toDate().toLocaleString("cs-CZ")
+      : "Neznámý termín";
+
+    // NAČTENÍ KURZU
+    const courseDoc = await adminDb
+      .collection("courses")
+      .doc(courseId)
+      .get();
+
+    const courseData = courseDoc.data();
+    const courseName = courseData?.name || courseId;
 
     // EMAIL ADMINOVI
     await resend.emails.send({
       from: "CakeMaster <info@cakemaster.cz>",
       to: ["info@cakemaster.cz"],
-      subject: `Nová rezervace kurzu – ${courseId}`,
+      subject: `Nová rezervace kurzu – ${courseName}`,
       html: `
         <h2>Nová rezervace kurzu</h2>
 
-        <p><b>Kurz:</b> ${courseId}</p>
+        <p><b>Kurz:</b> ${courseName}</p>
         <p><b>Termín:</b> ${date}</p>
 
         <hr/>
@@ -79,7 +90,7 @@ export async function POST(req: Request) {
 
         <p>Vaši rezervaci jsem přijala.</p>
 
-        <p><b>Kurz:</b> ${courseId}</p>
+        <p><b>Kurz:</b> ${courseName}</p>
         <p><b>Termín:</b> ${date}</p>
 
         <p>
@@ -104,9 +115,8 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       success: false,
-      error
+      error: "Email sending failed"
     });
 
   }
-
 }
