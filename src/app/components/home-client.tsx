@@ -128,7 +128,7 @@ export default function Home() {
 
           <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 
-            <Link href="/gallery">
+            <Link href="/cakes">
               <Image
                 src="/images/cakes/hero1.jpg"
                 alt="Bento cake"
@@ -138,7 +138,7 @@ export default function Home() {
               />
             </Link>
 
-            <Link href="/gallery">
+            <Link href="/cakes">
               <Image
                 src="/images/cakes/hero2.jpg"
                 alt="Birthday cake"
@@ -148,7 +148,7 @@ export default function Home() {
               />
             </Link>
 
-            <Link href="/gallery">
+            <Link href="/cakes">
               <Image
                 src="/images/cakes/hero3.jpg"
                 alt="Chocolate cake"
