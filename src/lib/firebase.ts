@@ -21,7 +21,7 @@ export const auth = getAuth(app);
 
 // ❗❗ DŮLEŽITÉ: BEZ druhého parametru
 // jinak Firestore v produkci nefunguje
-export const db = getFirestore(app);
+export const db = getFirestore(app, "cakemaster");
 
 export const storage = getStorage(app);
 
