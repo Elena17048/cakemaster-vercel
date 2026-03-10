@@ -24,8 +24,10 @@ export default function PaymentPage() {
     ? bookingId.replace(/\D/g, "").slice(0, 10)
     : Date.now().toString().slice(0, 10);
 
-  const qrUrl =
-    `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=SPD*1.0*ACC:${iban}*AM:${amount}*CC:CZK*X-VS:${vs}`;
+    const qrData = `SPD*1.0*ACC:${iban}*AM:${amount}*CC:CZK*X-VS:${vs}*MSG:Kurz`;
+
+    const qrUrl =
+      `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(qrData)}`;
 
   async function confirmPayment() {
 
