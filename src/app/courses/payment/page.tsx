@@ -25,7 +25,7 @@ export default function PaymentPage() {
     : Date.now().toString().slice(0, 10);
 
   // QR data pro český standard
-  const qrData = `SPD*1.0*ACC:${account}*AM:${amount}*CC:CZK*X-VS:${vs}*MSG:Kurz`;
+  const qrData = `SPD*1.0*ACC:${account}*AM:${amount}*CC:CZK*VS:${vs}*MSG:Kurz`;
 
   const qrUrl =
     `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(qrData)}`;
