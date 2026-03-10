@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -9,7 +8,9 @@ export default function PaymentPage() {
   const router = useRouter();
 
   const amount = 2700;
-  const iban = "CZ6508000000192000145399";
+
+  // správný účet pro platby kurzů
+  const iban = "CZ84080000006155124013";
 
   const params =
     typeof window !== "undefined"
@@ -18,7 +19,10 @@ export default function PaymentPage() {
 
   const bookingId = params?.get("bookingId");
 
-  const vs = bookingId || Date.now();
+  // variabilní symbol max 10 číslic
+  const vs = bookingId
+    ? bookingId.replace(/\D/g, "").slice(0, 10)
+    : Date.now().toString().slice(0, 10);
 
   const qrUrl =
     `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=SPD*1.0*ACC:${iban}*AM:${amount}*CC:CZK*X-VS:${vs}`;
