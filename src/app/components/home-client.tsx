@@ -18,13 +18,16 @@ export default function Home() {
 
   return (
     <div className="flex flex-col">
+
       {/* HERO */}
       <section className="w-full py-12 md:py-20 lg:py-24 bg-card overflow-hidden">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid md:grid-cols-2 gap-12 items-center">
+
             <div className="text-center md:text-left">
-              <img
-                src="https://firebasestorage.googleapis.com/v0/b/cake-canvas-hr6n0.appspot.com/o/assets%2Flogo_transparent.svg?alt=media"
+
+              <Image
+                src="/images/logo.svg"
                 alt="Cake Master Logo"
                 width={400}
                 height={400}
@@ -46,15 +49,19 @@ export default function Home() {
                   </Link>
                 </Button>
               </div>
+
             </div>
 
             <div className="flex justify-center">
-              <img
-                src="https://firebasestorage.googleapis.com/v0/b/cake-canvas-hr6n0.appspot.com/o/assets%2Fmain_wedding.jpg?alt=media"
+              <Image
+                src="/images/hero.jpg"
                 alt="Hero Cake"
-                className="rounded-full aspect-square object-cover shadow-2xl w-[800px] max-w-full"
+                width={800}
+                height={800}
+                className="rounded-full aspect-square object-cover shadow-2xl"
               />
             </div>
+
           </div>
         </div>
       </section>
@@ -63,6 +70,7 @@ export default function Home() {
       <section className="w-full py-16 md:py-24 bg-background">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid md:grid-cols-2 gap-12 items-center">
+
             <Image
               src="/images/o-mne.jpg"
               alt="Tvůrkyně značky Cake Master"
@@ -89,16 +97,18 @@ export default function Home() {
                 Každá zakázka je pro mě osobní. Budu se těšit na společné tvoření!
               </p>
             </div>
+
           </div>
         </div>
       </section>
 
-      {/* Gallery Section */}
+      {/* GALLERY */}
       <section
         ref={galleryRef}
         className="w-full py-16 md:py-24 bg-background"
       >
         <div className="container mx-auto px-4 md:px-6">
+
           <div
             className={cn(
               "text-center transition-all duration-1000",
@@ -110,51 +120,49 @@ export default function Home() {
             <h2 className="text-3xl md:text-4xl font-headline font-bold">
               {t("gallery.title", { ns: "home" })}
             </h2>
+
             <p className="mt-4 max-w-2xl mx-auto text-muted-foreground">
               {t("gallery.subtitle", { ns: "home" })}
             </p>
           </div>
 
           <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <Link href="/gallery" className="block group">
-              <img
-                src="https://firebasestorage.googleapis.com/v0/b/cake-canvas-hr6n0.appspot.com/o/assets%2Fcakes%2Fhero1.jpg?alt=media"
+
+            <Link href="/gallery">
+              <Image
+                src="/images/cakes/hero1.jpg"
                 alt="Bento cake"
-                className="w-full max-w-md mx-auto object-cover rounded-xl transition-transform duration-300 group-hover:scale-105"
+                width={600}
+                height={400}
+                className="rounded-xl object-cover"
               />
             </Link>
 
-            <Link href="/gallery" className="block group">
-              <img
-                src="https://firebasestorage.googleapis.com/v0/b/cake-canvas-hr6n0.appspot.com/o/assets%2Fcakes%2Fhero2.jpg?alt=media"
-                alt="Colorful birthday cake"
-                className="w-full max-w-md mx-auto object-cover rounded-xl transition-transform duration-300 group-hover:scale-105"
+            <Link href="/gallery">
+              <Image
+                src="/images/cakes/hero2.jpg"
+                alt="Birthday cake"
+                width={600}
+                height={400}
+                className="rounded-xl object-cover"
               />
             </Link>
 
-            <Link href="/gallery" className="block group">
-              <img
-                src="https://firebasestorage.googleapis.com/v0/b/cake-canvas-hr6n0.appspot.com/o/assets%2Fcakes%2Fhero3.jpg?alt=media"
+            <Link href="/gallery">
+              <Image
+                src="/images/cakes/hero3.jpg"
                 alt="Chocolate cake"
-                className="w-full max-w-md mx-auto object-cover rounded-xl transition-transform duration-300 group-hover:scale-105"
+                width={600}
+                height={600}
+                className="rounded-xl object-cover"
               />
             </Link>
+
           </div>
+
         </div>
       </section>
 
-      {/* GOOGLE REVIEWS */}
-      <section className="w-full py-16 md:py-24 bg-background">
-        <div className="container mx-auto px-4 md:px-6 text-center">
-          <h2 className="text-3xl md:text-4xl font-headline font-bold mb-8">
-            Co o mně říkají
-          </h2>
-          <div
-            className="elfsight-app-500e74a1-3523-414d-9d2d-aa0b33334f83"
-            data-elfsight-app-lazy
-          />
-        </div>
-      </section>
     </div>
   );
 }
