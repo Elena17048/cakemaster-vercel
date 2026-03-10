@@ -9,8 +9,8 @@ export default function PaymentPage() {
 
   const amount = 2700;
 
-  // správný účet pro platby kurzů
-  const iban = "CZ84080000006155124013";
+  // správný účet pro QR platby
+  const account = "6155124013/0800";
 
   const params =
     typeof window !== "undefined"
@@ -24,10 +24,11 @@ export default function PaymentPage() {
     ? bookingId.replace(/\D/g, "").slice(0, 10)
     : Date.now().toString().slice(0, 10);
 
-    const qrData = `SPD*1.0*ACC:${iban}*AM:${amount}*CC:CZK*X-VS:${vs}*MSG:Kurz`;
+  // QR data pro český standard
+  const qrData = `SPD*1.0*ACC:${account}*AM:${amount}*CC:CZK*X-VS:${vs}*MSG:Kurz`;
 
-    const qrUrl =
-      `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(qrData)}`;
+  const qrUrl =
+    `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(qrData)}`;
 
   async function confirmPayment() {
 
