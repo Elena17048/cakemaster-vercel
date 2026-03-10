@@ -11,7 +11,9 @@ export default function PaymentPage() {
   const [qrUrl, setQrUrl] = useState("");
 
   const amount = "2700.00";
-  const account = "6155124013/0800";
+
+  // IBAN bez mezer (stejný formát jako fungující QR)
+  const account = "CZ8408000000006155124013";
 
   const params =
     typeof window !== "undefined"
@@ -24,11 +26,12 @@ export default function PaymentPage() {
     ? bookingId.replace(/\D/g, "").slice(0, 10)
     : Date.now().toString().slice(0, 10);
 
-  const qrData = `SPD*1.0*ACC:${account}*AM:${amount}*CC:CZK*VS:${vs}`;
+  // SPD formát stejný jako na funkční stránce
+  const qrData = `SPD*1.0*ACC:${account}*AM:${amount}*CC:CZK*X-VS:${vs}*MSG:Kurz`;
 
   useEffect(() => {
     QRCode.toDataURL(qrData, { width: 300 })
-    .then((url: string) => setQrUrl(url));
+      .then((url: string) => setQrUrl(url));
   }, [qrData]);
 
   async function confirmPayment() {
