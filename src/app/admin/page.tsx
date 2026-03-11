@@ -10,6 +10,7 @@ import { AdminSiteSettings } from './admin-site-settings';
 import { AdminWeddings } from './admin-weddings';
 import { AdminCorporate } from './admin-corporate';
 import { AdminOrders } from './admin-orders';
+import { AdminCourseBookings } from "./admin-course-bookings";
 
 export default function AdminPage() {
 
@@ -31,7 +32,7 @@ export default function AdminPage() {
 
       <Tabs defaultValue="orders">
 
-        <TabsList className="grid w-full grid-cols-7">
+      <TabsList className="grid w-full grid-cols-8">
           <TabsTrigger value="orders">Manage Orders</TabsTrigger>
           <TabsTrigger value="courses">Manage Courses</TabsTrigger>
           <TabsTrigger value="gallery">Manage Gallery</TabsTrigger>
@@ -39,6 +40,9 @@ export default function AdminPage() {
           <TabsTrigger value="weddings">Manage Weddings</TabsTrigger>
           <TabsTrigger value="corporate">Manage Corporate</TabsTrigger>
           <TabsTrigger value="settings">Site Settings</TabsTrigger>
+          <TabsTrigger value="courseBookings">
+  Course Bookings
+</TabsTrigger>
         </TabsList>
 
         <TabsContent value="orders" className="mt-6">
@@ -68,6 +72,10 @@ export default function AdminPage() {
         <TabsContent value="settings" className="mt-6">
           <AdminSiteSettings />
         </TabsContent>
+        
+        <TabsContent value="courseBookings" className="mt-6">
+  <AdminCourseBookings />
+</TabsContent>
 
       </Tabs>
 
