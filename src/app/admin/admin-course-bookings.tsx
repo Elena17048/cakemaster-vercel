@@ -51,7 +51,18 @@ export function AdminCourseBookings() {
 
     loadBookings()
   }
+  async function rejectBooking(id: string) {
 
+    await fetch("/api/reject-booking", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ bookingId: id })
+    });
+  
+    loadBookings();
+  }
   if (loading) {
     return <p>Loading bookings...</p>
   }
@@ -97,13 +108,24 @@ export function AdminCourseBookings() {
 
             </div>
 
-            {booking.status !== "confirmed" && (
+            {booking.status !== "confirmed" && booking.status !== "rejected" && (
 
-              <Button
-                onClick={() => confirmBooking(booking.id)}
-              >
-                Confirm Payment
-              </Button>
+<div className="flex gap-2">
+
+  <Button
+    onClick={() => confirmBooking(booking.id)}
+  >
+    Confirm Payment
+  </Button>
+
+  <Button
+    variant="destructive"
+    onClick={() => rejectBooking(booking.id)}
+  >
+    Reject
+  </Button>
+
+</div>
 
             )}
 
