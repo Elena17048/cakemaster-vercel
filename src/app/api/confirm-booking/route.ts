@@ -56,7 +56,46 @@ export async function POST(req: Request) {
   await dateRef.update({
     bookedSeats: bookedSeats + 1
   });
+// pokud se kurz právě vyprodal, pošli email adminovi
+if (bookedSeats + 1 === capacity) {
 
+  const courseName = courseData?.title?.cs || courseData?.name || booking.courseId;
+
+  const jsDate = dateData?.date?.toDate
+    ? dateData.date.toDate()
+    : null;
+
+  const dateOnly = jsDate
+    ? jsDate.toLocaleDateString("cs-CZ")
+    : "";
+
+  await resend.emails.send({
+    from: "CakeMaster <info@cakemaster.cz>",
+    to: ["info@cakemaster.cz"],
+    subject: "Kurz je vyprodaný",
+    html: `
+      <p>
+        Ahoj, královno!
+      </p>
+
+      <p>
+        Nevím, jak jsi to zase dokázala,
+        ale znovu jsi kompletně vyprodala kurz
+        <strong>${courseName}</strong>
+        (${dateOnly})!
+      </p>
+
+      <p>
+        Šikula! Jen tak dál!
+      </p>
+
+      <p>
+        Jsi nejlepší.
+      </p>
+    `
+  });
+
+}
   const jsDate = dateData?.date?.toDate
     ? dateData.date.toDate()
     : null;
