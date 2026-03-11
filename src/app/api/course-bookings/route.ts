@@ -1,60 +1,85 @@
 import { NextResponse } from "next/server";
 import { adminDb } from "@/lib/firebase-admin";
-import { Resend } from "resend";
-
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
+  try {
+    const body = await req.json();
 
-  const { bookingId } = await req.json();
+    const {
+      courseId,
+      dateId,
+      firstName,
+      lastName,
+      email,
+      phone,
+    } = body;
 
-  const bookingDoc = await adminDb
-    .collection("courseBookings")
-    .doc(bookingId)
-    .get();
+    if (!courseId || !dateId || !firstName || !lastName || !email || !phone) {
+      return NextResponse.json(
+        { error: "Missing fields" },
+        { status: 400 }
+      );
+    }
 
-  if (!bookingDoc.exists) {
+    // reference na termín kurzu
+    const dateRef = adminDb.collection("courseDates").doc(dateId);
+    const dateDoc = await dateRef.get();
+
+    if (!dateDoc.exists) {
+      return NextResponse.json(
+        { error: "Course date not found" },
+        { status: 404 }
+      );
+    }
+
+    const dateData: any = dateDoc.data();
+
+    // reference na kurz
+    const courseRef = adminDb.collection("courses").doc(courseId);
+    const courseDoc = await courseRef.get();
+
+    if (!courseDoc.exists) {
+      return NextResponse.json(
+        { error: "Course not found" },
+        { status: 404 }
+      );
+    }
+
+    const courseData: any = courseDoc.data();
+
+    const capacity = courseData.capacity || 0;
+    const bookedSeats = dateData.bookedSeats || 0;
+
+    if (bookedSeats >= capacity) {
+      return NextResponse.json(
+        { error: "Course is full" },
+        { status: 400 }
+      );
+    }
+
+    // vytvoření rezervace (BEZ snížení kapacity)
+    const bookingRef = await adminDb.collection("courseBookings").add({
+      courseId,
+      dateId,
+      firstName,
+      lastName,
+      email,
+      phone,
+      status: "pending",
+      createdAt: new Date(),
+    });
+
     return NextResponse.json({
-      error: "Booking not found"
+      success: true,
+      bookingId: bookingRef.id,
     });
+
+  } catch (error) {
+    console.error("Booking error:", error);
+
+    return NextResponse.json(
+      { error: "Booking failed" },
+      { status: 500 }
+    );
   }
-
-  const booking = bookingDoc.data() as any;
-
-  await adminDb
-    .collection("courseBookings")
-    .doc(bookingId)
-    .update({
-      status: "confirmed"
-    });
-
-  await resend.emails.send({
-    from: "CakeMaster <info@cakemaster.cz>",
-    to: [booking.email],
-    subject: "Potvrzení rezervace kurzu",
-    html: `
-      <h2>Rezervace potvrzena</h2>
-
-      <p>Dobrý den ${booking.firstName},</p>
-
-      <p>
-      Vaše rezervace kurzu byla potvrzena po přijetí platby.
-      </p>
-
-      <p>
-      Těším se na vás na kurzu.
-      </p>
-
-      <br/>
-
-      <p>
-      Elena<br/>
-      Cake Master
-      </p>
-    `
-  });
-
-  return NextResponse.json({
-    success: true
-  });
 }

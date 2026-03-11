@@ -12,11 +12,11 @@ export async function POST(req: Request) {
 
   try {
 
-    // NAČTENÍ REZERVACE
-    const bookingDoc = await adminDb
+    const bookingRef = adminDb
       .collection("courseBookings")
-      .doc(bookingId)
-      .get();
+      .doc(bookingId);
+
+    const bookingDoc = await bookingRef.get();
 
     if (!bookingDoc.exists) {
       return NextResponse.json({
@@ -25,16 +25,47 @@ export async function POST(req: Request) {
       });
     }
 
-    const booking = bookingDoc.data();
+    const booking = bookingDoc.data() as any;
 
-    const {
-      firstName,
-      lastName,
-      email,
-      phone,
-      courseId,
-      dateId
-    } = booking as any;
+    // pokud už je zaplaceno, nedělej nic
+    if (booking.status !== "pending") {
+      return NextResponse.json({ success: true });
+    }
+
+    const { firstName, lastName, email, phone, courseId, dateId } = booking;
+
+    // TRANSAKCE - kontrola kapacity
+    await adminDb.runTransaction(async (transaction) => {
+
+      const dateRef = adminDb.collection("courseDates").doc(dateId);
+      const dateDoc = await transaction.get(dateRef);
+
+      if (!dateDoc.exists) {
+        throw new Error("Course date not found");
+      }
+
+      const dateData = dateDoc.data() as any;
+      const bookedSeats = dateData.bookedSeats || 0;
+
+      const courseRef = adminDb.collection("courses").doc(courseId);
+      const courseDoc = await transaction.get(courseRef);
+
+      const courseData = courseDoc.data() as any;
+      const capacity = courseData.capacity || 0;
+
+      if (bookedSeats >= capacity) {
+        throw new Error("Course is full");
+      }
+
+      transaction.update(dateRef, {
+        bookedSeats: bookedSeats + 1
+      });
+
+      transaction.update(bookingRef, {
+        status: "paid"
+      });
+
+    });
 
     // NAČTENÍ TERMÍNU
     const dateDoc = await adminDb
@@ -111,11 +142,11 @@ export async function POST(req: Request) {
 
   } catch (error) {
 
-    console.error("EMAIL ERROR:", error);
+    console.error("PAYMENT CONFIRM ERROR:", error);
 
     return NextResponse.json({
       success: false,
-      error: "Email sending failed"
+      error: "Payment confirmation failed"
     });
 
   }

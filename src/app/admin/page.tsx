@@ -44,7 +44,7 @@ export default function AdminPage() {
     router.push('/');
   };
 
-  if (authLoading || !user) {
+  if (authLoading) {
     return (
       <div className="container mx-auto flex h-screen items-center justify-center">
         <Loader2 className="h-12 w-12 animate-spin" />
@@ -59,7 +59,7 @@ export default function AdminPage() {
         <Button onClick={handleLogout} variant="outline">Log Out</Button>
       </div>
       
-      <p className="mb-8">Welcome, {user.email}!</p>
+      <p className="mb-8">Welcome, {user?.email}!</p>
 
       <Tabs defaultValue="orders">
         <TabsList className="grid w-full grid-cols-7">
