@@ -15,12 +15,15 @@ export async function POST(req: Request) {
   const bookingDoc = await bookingRef.get();
 
   if (!bookingDoc.exists) {
-    return NextResponse.json({
-      error: "Booking not found"
-    });
+    return NextResponse.json({ error: "Booking not found" });
   }
 
   const booking = bookingDoc.data() as any;
+
+  // 🔴 důležitá kontrola
+  if (booking.status === "confirmed") {
+    return NextResponse.json({ success: true });
+  }
 
   const dateRef = adminDb
     .collection("courseDates")
@@ -30,48 +33,29 @@ export async function POST(req: Request) {
     .collection("courses")
     .doc(booking.courseId);
 
-  try {
+  const dateDoc = await dateRef.get();
+  const courseDoc = await courseRef.get();
 
-    await adminDb.runTransaction(async (transaction) => {
+  const dateData = dateDoc.data() as any;
+  const courseData = courseDoc.data() as any;
 
-      const dateDoc = await transaction.get(dateRef);
-      const courseDoc = await transaction.get(courseRef);
+  const capacity = Number(courseData.capacity || 0);
+  const bookedSeats = Number(dateData.bookedSeats || 0);
 
-      if (!dateDoc.exists) {
-        throw new Error("Course date not found");
-      }
-
-      if (!courseDoc.exists) {
-        throw new Error("Course not found");
-      }
-
-      const dateData = dateDoc.data() as any;
-      const courseData = courseDoc.data() as any;
-
-      const capacity = Number(courseData.capacity || 0);
-      const bookedSeats = Number(dateData.bookedSeats || 0);
-
-      if (bookedSeats >= capacity) {
-        throw new Error("Course is full");
-      }
-
-      transaction.update(bookingRef, {
-        status: "confirmed"
-      });
-
-      transaction.update(dateRef, {
-        bookedSeats: bookedSeats + 1
-      });
-
-    });
-
-  } catch (error) {
-
-    return NextResponse.json({
-      error: "Course capacity reached"
-    }, { status: 400 });
-
+  if (bookedSeats >= capacity) {
+    return NextResponse.json(
+      { error: "Course is full" },
+      { status: 400 }
+    );
   }
+
+  await bookingRef.update({
+    status: "confirmed"
+  });
+
+  await dateRef.update({
+    bookedSeats: bookedSeats + 1
+  });
 
   await resend.emails.send({
     from: "CakeMaster <info@cakemaster.cz>",
@@ -82,13 +66,9 @@ export async function POST(req: Request) {
 
       <p>Dobrý den ${booking.firstName},</p>
 
-      <p>
-      Vaše rezervace kurzu byla potvrzena po přijetí platby.
-      </p>
+      <p>Vaše rezervace kurzu byla potvrzena po přijetí platby.</p>
 
-      <p>
-      Těším se na vás na kurzu.
-      </p>
+      <p>Těším se na vás na kurzu.</p>
 
       <br/>
 
@@ -99,8 +79,6 @@ export async function POST(req: Request) {
     `
   });
 
-  return NextResponse.json({
-    success: true
-  });
+  return NextResponse.json({ success: true });
 
 }
