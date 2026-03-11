@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { db } from "@/lib/firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc } from "firebase/firestore";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -15,6 +15,8 @@ type Booking = {
   courseId: string
   dateId: string
   status: string
+  date?: string
+  freeSeats?: number
 }
 
 export function AdminCourseBookings() {
@@ -26,12 +28,58 @@ export function AdminCourseBookings() {
 
     const snapshot = await getDocs(collection(db, "courseBookings"))
 
-    const data: Booking[] = snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...(doc.data() as any)
-    }))
+    const data = await Promise.all(
 
-    setBookings(data)
+      snapshot.docs.map(async (docSnap) => {
+
+        const booking = docSnap.data() as any
+
+        let date = ""
+        let freeSeats = 0
+
+        try {
+
+          const dateRef = doc(db, "courseDates", booking.dateId)
+          const dateDoc = await getDoc(dateRef)
+
+          if (dateDoc.exists()) {
+
+            const dateData = dateDoc.data() as any
+
+            if (dateData.date) {
+              date = dateData.date.toDate().toLocaleDateString("cs-CZ")
+            }
+
+            const courseRef = doc(db, "courses", booking.courseId)
+            const courseDoc = await getDoc(courseRef)
+
+            if (courseDoc.exists()) {
+
+              const courseData = courseDoc.data() as any
+
+              const capacity = courseData.capacity || 0
+              const bookedSeats = dateData.bookedSeats || 0
+
+              freeSeats = capacity - bookedSeats
+            }
+          }
+
+        } catch (error) {
+          console.error("Error loading course data", error)
+        }
+
+        return {
+          id: docSnap.id,
+          ...booking,
+          date,
+          freeSeats
+        }
+
+      })
+
+    )
+
+    setBookings(data as Booking[])
     setLoading(false)
   }
 
@@ -51,6 +99,7 @@ export function AdminCourseBookings() {
 
     loadBookings()
   }
+
   async function rejectBooking(id: string) {
 
     await fetch("/api/reject-booking", {
@@ -59,10 +108,11 @@ export function AdminCourseBookings() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({ bookingId: id })
-    });
-  
-    loadBookings();
+    })
+
+    loadBookings()
   }
+
   if (loading) {
     return <p>Loading bookings...</p>
   }
@@ -103,6 +153,14 @@ export function AdminCourseBookings() {
               </p>
 
               <p className="text-sm">
+                Date: {booking.date || "Unknown"}
+              </p>
+
+              <p className="text-sm">
+                Free seats: {booking.freeSeats}
+              </p>
+
+              <p className="text-sm">
                 Status: {booking.status}
               </p>
 
@@ -110,22 +168,22 @@ export function AdminCourseBookings() {
 
             {booking.status !== "confirmed" && booking.status !== "rejected" && (
 
-<div className="flex gap-2">
+              <div className="flex gap-2">
 
-  <Button
-    onClick={() => confirmBooking(booking.id)}
-  >
-    Confirm Payment
-  </Button>
+                <Button
+                  onClick={() => confirmBooking(booking.id)}
+                >
+                  Confirm Payment
+                </Button>
 
-  <Button
-    variant="destructive"
-    onClick={() => rejectBooking(booking.id)}
-  >
-    Reject
-  </Button>
+                <Button
+                  variant="destructive"
+                  onClick={() => rejectBooking(booking.id)}
+                >
+                  Reject
+                </Button>
 
-</div>
+              </div>
 
             )}
 
