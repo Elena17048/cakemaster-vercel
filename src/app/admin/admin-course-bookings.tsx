@@ -13,6 +13,7 @@ type Booking = {
   dateId: string
   status: string
   date?: string
+  paidAt?: any
 }
 
 export function AdminCourseBookings() {
@@ -98,9 +99,25 @@ export function AdminCourseBookings() {
 
   }
 
-  async function rejectBooking(id: string) {
+  async function rejectPayment(id: string) {
 
-    await fetch("/api/reject-booking", {
+    await fetch("/api/reject-payment", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        bookingId: id
+      })
+    })
+
+    loadBookings()
+
+  }
+
+  async function rejectOverbooking(id: string) {
+
+    await fetch("/api/reject-overbooking", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -159,11 +176,13 @@ export function AdminCourseBookings() {
                   <td>
                     {booking.status}
                   </td>
+
                   <td>
-  {booking.paidAt
-    ? new Date(booking.paidAt.seconds * 1000).toLocaleString("cs-CZ")
-    : "-"}
-</td>
+                    {booking.paidAt
+                      ? new Date(booking.paidAt.seconds * 1000).toLocaleString("cs-CZ")
+                      : "-"}
+                  </td>
+
                   <td className="flex gap-2 py-2">
 
                     {booking.status !== "confirmed" && booking.status !== "rejected" && (
@@ -178,9 +197,16 @@ export function AdminCourseBookings() {
 
                         <button
                           className="bg-red-500 text-white px-3 py-1 rounded text-sm"
-                          onClick={() => rejectBooking(booking.id)}
+                          onClick={() => rejectPayment(booking.id)}
                         >
-                          Reject
+                          Reject / Payment
+                        </button>
+
+                        <button
+                          className="border border-orange-400 text-orange-600 px-3 py-1 rounded text-sm"
+                          onClick={() => rejectOverbooking(booking.id)}
+                        >
+                          Reject / Overbooking
                         </button>
                       </>
 
