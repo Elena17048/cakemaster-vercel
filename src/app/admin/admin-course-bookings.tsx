@@ -39,7 +39,10 @@ export function AdminCourseBookings() {
 
         try {
 
-          const dateRef = doc(db, "courseDates", booking.dateId)
+          // 🔹 FIX 1 – odstranění mezer z dateId
+          const cleanDateId = booking.dateId?.trim()
+
+          const dateRef = doc(db, "courseDates", cleanDateId)
           const dateDoc = await getDoc(dateRef)
 
           if (dateDoc.exists()) {
@@ -57,10 +60,11 @@ export function AdminCourseBookings() {
 
               const courseData = courseDoc.data() as any
 
-              const capacity = courseData.capacity || 0
-              const bookedSeats = dateData.bookedSeats || 0
+              const capacity = Number(courseData.capacity || 0)
+              const bookedSeats = Number(dateData.bookedSeats || 0)
 
-              freeSeats = capacity - bookedSeats
+              // 🔹 FIX 2 – správný výpočet volných míst
+              freeSeats = Math.max(0, capacity - bookedSeats)
             }
           }
 
@@ -157,7 +161,7 @@ export function AdminCourseBookings() {
               </p>
 
               <p className="text-sm">
-                Free seats: {booking.freeSeats}
+                Free seats: {booking.freeSeats ?? 0}
               </p>
 
               <p className="text-sm">
