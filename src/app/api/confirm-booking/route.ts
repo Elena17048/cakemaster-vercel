@@ -8,10 +8,11 @@ export async function POST(req: Request) {
 
   const { bookingId } = await req.json();
 
-  const bookingDoc = await adminDb
+  const bookingRef = adminDb
     .collection("courseBookings")
-    .doc(bookingId)
-    .get();
+    .doc(bookingId);
+
+  const bookingDoc = await bookingRef.get();
 
   if (!bookingDoc.exists) {
     return NextResponse.json({
@@ -21,12 +22,56 @@ export async function POST(req: Request) {
 
   const booking = bookingDoc.data() as any;
 
-  await adminDb
-    .collection("courseBookings")
-    .doc(bookingId)
-    .update({
-      status: "confirmed"
+  const dateRef = adminDb
+    .collection("courseDates")
+    .doc(booking.dateId);
+
+  const courseRef = adminDb
+    .collection("courses")
+    .doc(booking.courseId);
+
+  try {
+
+    await adminDb.runTransaction(async (transaction) => {
+
+      const dateDoc = await transaction.get(dateRef);
+      const courseDoc = await transaction.get(courseRef);
+
+      if (!dateDoc.exists) {
+        throw new Error("Course date not found");
+      }
+
+      if (!courseDoc.exists) {
+        throw new Error("Course not found");
+      }
+
+      const dateData = dateDoc.data() as any;
+      const courseData = courseDoc.data() as any;
+
+      const capacity = Number(courseData.capacity || 0);
+      const bookedSeats = Number(dateData.bookedSeats || 0);
+
+      if (bookedSeats >= capacity) {
+        throw new Error("Course is full");
+      }
+
+      transaction.update(bookingRef, {
+        status: "confirmed"
+      });
+
+      transaction.update(dateRef, {
+        bookedSeats: bookedSeats + 1
+      });
+
     });
+
+  } catch (error) {
+
+    return NextResponse.json({
+      error: "Course capacity reached"
+    }, { status: 400 });
+
+  }
 
   await resend.emails.send({
     from: "CakeMaster <info@cakemaster.cz>",
@@ -57,4 +102,5 @@ export async function POST(req: Request) {
   return NextResponse.json({
     success: true
   });
+
 }
