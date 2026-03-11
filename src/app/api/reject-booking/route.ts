@@ -8,65 +8,75 @@ export async function POST(req: Request) {
 
   const { bookingId } = await req.json();
 
-  try {
+  const bookingRef = adminDb
+    .collection("courseBookings")
+    .doc(bookingId);
 
-    const bookingRef = adminDb.collection("courseBookings").doc(bookingId);
-    const bookingDoc = await bookingRef.get();
+  const bookingDoc = await bookingRef.get();
 
-    if (!bookingDoc.exists) {
-      return NextResponse.json({ success: false });
-    }
-
-    const booking = bookingDoc.data() as any;
-
-    await bookingRef.update({
-      status: "rejected"
-    });
-
-    await resend.emails.send({
-      from: "CakeMaster <info@cakemaster.cz>",
-      to: [booking.email],
-      subject: "Rezervace kurzu zrušena",
-      html: `
-        <h2>Rezervace kurzu byla zrušena</h2>
-
-        <p>Dobrý den ${booking.firstName},</p>
-
-        <p>
-        Bohužel jsme neobdrželi platbu za rezervaci kurzu
-        do 12 hodin od vytvoření rezervace.
-        </p>
-
-        <p>
-        Vaše rezervace byla proto automaticky zrušena.
-        </p>
-
-        <p>
-        Pokud máte o kurz stále zájem,
-        můžete vytvořit novou rezervaci na webu.
-        </p>
-
-        <br/>
-
-        <p>
-        Elena<br/>
-        Cake Master
-        </p>
-      `
-    });
-
-    return NextResponse.json({
-      success: true
-    });
-
-  } catch (error) {
-
-    console.error("REJECT BOOKING ERROR:", error);
-
-    return NextResponse.json({
-      success: false
-    });
-
+  if (!bookingDoc.exists) {
+    return NextResponse.json({ error: "Booking not found" });
   }
+
+  const booking = bookingDoc.data() as any;
+
+  const dateDoc = await adminDb
+    .collection("courseDates")
+    .doc(booking.dateId)
+    .get();
+
+  const courseDoc = await adminDb
+    .collection("courses")
+    .doc(booking.courseId)
+    .get();
+
+  const dateData = dateDoc.data() as any;
+  const courseData = courseDoc.data() as any;
+
+  const jsDate = dateData?.date?.toDate
+    ? dateData.date.toDate()
+    : null;
+
+  const dateOnly = jsDate
+    ? jsDate.toLocaleDateString("cs-CZ")
+    : "";
+
+  const courseName = courseData?.title?.cs || courseData?.name || booking.courseId;
+
+  await bookingRef.update({
+    status: "rejected"
+  });
+
+  await resend.emails.send({
+    from: "CakeMaster <info@cakemaster.cz>",
+    to: [booking.email],
+    subject: "Kurz je již obsazen",
+    html: `
+      <p>Dobrý den ${booking.firstName},</p>
+
+      <p>
+      omlouvám se, ale poslední místo na kurzu 
+      <strong>${courseName} (${dateOnly})</strong>
+      bylo mezitím rezervováno a kurz je již plně obsazen.
+      </p>
+
+      <p>
+      Prosím dejte mi vědět, zda byste měla zájem o jiný termín,
+      případně zda preferujete vrácení platby.
+      </p>
+
+      <p>Děkuji za pochopení.</p>
+
+      <br/>
+
+      <p>
+      S pozdravem,<br/>
+      Elena<br/>
+      Cake Master
+      </p>
+    `
+  });
+
+  return NextResponse.json({ success: true });
 
 }
