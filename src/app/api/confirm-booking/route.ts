@@ -20,7 +20,7 @@ export async function POST(req: Request) {
 
   const booking = bookingDoc.data() as any;
 
-  // 🔴 důležitá kontrola
+  // zabrání dvojímu potvrzení
   if (booking.status === "confirmed") {
     return NextResponse.json({ success: true });
   }
@@ -57,24 +57,80 @@ export async function POST(req: Request) {
     bookedSeats: bookedSeats + 1
   });
 
+  const jsDate = dateData?.date?.toDate
+    ? dateData.date.toDate()
+    : null;
+
+  const dateOnly = jsDate
+    ? jsDate.toLocaleDateString("cs-CZ")
+    : "Neznámý termín";
+
+  const timeOnly = jsDate
+    ? jsDate.toLocaleTimeString("cs-CZ", { hour: "2-digit", minute: "2-digit" })
+    : "";
+
   await resend.emails.send({
     from: "CakeMaster <info@cakemaster.cz>",
     to: [booking.email],
-    subject: "Potvrzení rezervace kurzu",
+    subject: "Rezervace potvrzena",
     html: `
-      <h2>Rezervace potvrzena</h2>
+      <h2 style="font-size:22px;font-weight:bold;">
+        Rezervace potvrzena
+      </h2>
 
-      <p>Dobrý den ${booking.firstName},</p>
+      <p>
+        Dobrý den ${booking.firstName},
+      </p>
 
-      <p>Vaše rezervace kurzu byla potvrzena po přijetí platby.</p>
+      <p>
+        platba dorazila a místo na kurzu máte potvrzené.
+      </p>
 
-      <p>Těším se na vás na kurzu.</p>
+      <p>
+        <strong>📅 Termín:</strong> ${dateOnly}<br/>
+        <strong>⏰ Čas:</strong> ${timeOnly}<br/>
+        <strong>📍 Místo:</strong> Na hutích 7, Praha 6
+      </p>
+
+      <p>
+        🔔 Po příchodu prosím zazvoňte na zvonek „Cake Master“
+      </p>
+
+      <div style="margin:20px 0;">
+        <a 
+          href="https://maps.google.com/?q=Na+hutích+7,+Praha+6"
+          style="
+            background:#b8ab8c;
+            color:white;
+            padding:12px 20px;
+            text-decoration:none;
+            border-radius:6px;
+            display:inline-block;
+            font-weight:bold;
+          "
+        >
+          Otevřít navigaci
+        </a>
+      </div>
+
+      <p>
+        <strong>Prosím, vezměte si s sebou:</strong>
+      </p>
+
+      <p>
+        – oblečení, které nebude škoda ušpinit (budeme pracovat s barvami)<br/>
+        – obuv na přezutí
+      </p>
 
       <br/>
 
       <p>
-      Elena<br/>
-      Cake Master
+        Těším se na vás na kurzu.
+      </p>
+
+      <p>
+        Elena<br/>
+        Cake Master
       </p>
     `
   });

@@ -57,8 +57,6 @@ export async function POST(req: Request) {
         throw new Error("Course is full");
       }
 
-    
-
       transaction.update(bookingRef, {
         status: "paid"
       });
@@ -110,31 +108,42 @@ export async function POST(req: Request) {
     });
 
     // EMAIL ZÁKAZNÍKOVI
-    await resend.emails.send({
-      from: "CakeMaster <info@cakemaster.cz>",
-      to: [email],
-      subject: "Potvrzení rezervace kurzu",
-      html: `
-        <h2>Děkuji za rezervaci kurzu</h2>
+  // EMAIL ZÁKAZNÍKOVI
+await resend.emails.send({
+  from: "CakeMaster <info@cakemaster.cz>",
+  to: [email],
+  subject: "Děkuji za rezervaci kurzu",
+  html: `
+    <h2 style="font-size:22px;font-weight:bold;">
+      Děkuji za rezervaci kurzu
+    </h2>
 
-        <p>Vaši rezervaci jsem přijala.</p>
+    <p>
+      Dobrý den, ${firstName}.
+    </p>
 
-        <p><b>Kurz:</b> ${courseName}</p>
-        <p><b>Termín:</b> ${date}</p>
+    <p>
+      Přijala jsem vaši rezervaci na kurz:
+      <strong>${courseName}</strong>
+    </p>
 
-        <p>
-        Rezervace bude potvrzena po přijetí platby.
-        Prosím vyčkejte na potvrzovací email.
-        </p>
+    <p>
+      <strong>Termín:</strong> ${date}
+    </p>
 
-        <br/>
+    <p>
+      Rezervaci potvrdím v průběhu následujících 24 hodin.
+      Prosím, vyčkejte na potvrzovací email.
+    </p>
 
-        <p>
-        Elena<br/>
-        Cake Master
-        </p>
-      `
-    });
+    <br/>
+
+    <p>
+      Elena<br/>
+      Cake Master
+    </p>
+  `
+});
 
     return NextResponse.json({ success: true });
 
@@ -148,4 +157,5 @@ export async function POST(req: Request) {
     });
 
   }
+
 }
