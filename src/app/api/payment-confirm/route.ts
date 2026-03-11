@@ -57,9 +57,7 @@ export async function POST(req: Request) {
         throw new Error("Course is full");
       }
 
-      transaction.update(dateRef, {
-        bookedSeats: bookedSeats + 1
-      });
+    
 
       transaction.update(bookingRef, {
         status: "paid"
