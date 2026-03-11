@@ -75,12 +75,6 @@ export default async function CoursePage({ params }: any) {
   Volná místa: {availableSeats}
 </div>
 
-{availableSeats === 1 && (
-  <div className="text-orange-600 text-sm font-semibold">
-    ❗ Poslední místo
-  </div>
-)}
-
                 {availableSeats === 1 && (
                   <div className="text-orange-600 text-sm font-semibold">
                     ⚠ Poslední místo
