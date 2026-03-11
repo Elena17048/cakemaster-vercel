@@ -41,7 +41,7 @@ export async function POST(req: Request) {
     ? jsDate.toLocaleDateString("cs-CZ")
     : "";
 
-  const courseName = courseData?.title?.cs || booking.courseId;
+  const courseName = courseData?.title?.cs || courseData?.name || booking.courseId;
 
   await bookingRef.update({
     status: "rejected"
@@ -50,19 +50,23 @@ export async function POST(req: Request) {
   await resend.emails.send({
     from: "CakeMaster <info@cakemaster.cz>",
     to: [booking.email],
-    subject: "Kurz je obsazen",
+    subject: "Kurz je již obsazen",
     html: `
       <p>Dobrý den ${booking.firstName},</p>
 
       <p>
-      Omlouvám se, ale někdo stihnul zarezervovat poslední místo dřív
-      a kurz <strong>${courseName} (${dateOnly})</strong>
-      je momentálně kompletně obsazen.
+      omlouvám se, ale poslední místo na kurzu 
+      <strong>${courseName} (${dateOnly})</strong>
+      bylo mezitím rezervováno a kurz je již plně obsazen.
       </p>
 
       <p>
-      Prosím, dejte vědět, zda byste měla zájem o jiný termín
-      nebo o vrácení peněz.
+      Prosím, dejte mi vědět, zda byste měla zájem o jiný termín,
+      případně zda preferujete vrácení platby.
+      </p>
+
+      <p>
+      Děkuji za pochopení.
       </p>
 
       <br/>
