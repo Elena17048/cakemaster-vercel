@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
 export default function BookCoursePage() {
@@ -16,8 +16,32 @@ export default function BookCoursePage() {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
 
+  const [freeSeats, setFreeSeats] = useState<number | null>(null);
+
+  useEffect(() => {
+
+    async function loadSeats() {
+
+      const res = await fetch(`/api/course-date?dateId=${dateId}`);
+      const data = await res.json();
+
+      setFreeSeats(data.freeSeats);
+
+    }
+
+    if (dateId) {
+      loadSeats();
+    }
+
+  }, [dateId]);
+
   async function handleSubmit(e: any) {
     e.preventDefault();
+
+    if (freeSeats !== null && freeSeats <= 0) {
+      alert("Tento termín je již plně obsazen.");
+      return;
+    }
 
     const res = await fetch("/api/course-bookings", {
       method: "POST",
@@ -43,6 +67,12 @@ export default function BookCoursePage() {
       <h1 className="text-3xl font-bold mb-8">
         Rezervace kurzu
       </h1>
+
+      {freeSeats === 0 && (
+        <div className="mb-6 p-4 border rounded bg-red-50 text-red-600">
+          Tento termín je již plně obsazen.
+        </div>
+      )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
 
@@ -79,7 +109,11 @@ export default function BookCoursePage() {
           required
         />
 
-        <Button type="submit" className="w-full">
+        <Button
+          type="submit"
+          className="w-full"
+          disabled={freeSeats === 0}
+        >
           Rezervovat místo
         </Button>
 
