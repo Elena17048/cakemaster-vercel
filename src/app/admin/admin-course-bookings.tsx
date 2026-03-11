@@ -137,6 +137,7 @@ export function AdminCourseBookings() {
                 <th className="py-2">Jméno</th>
                 <th>Email</th>
                 <th>Status</th>
+                <th>Zaplaceno</th>
                 <th>Akce</th>
               </tr>
             </thead>
@@ -158,7 +159,11 @@ export function AdminCourseBookings() {
                   <td>
                     {booking.status}
                   </td>
-
+                  <td>
+  {booking.paidAt
+    ? new Date(booking.paidAt.seconds * 1000).toLocaleString("cs-CZ")
+    : "-"}
+</td>
                   <td className="flex gap-2 py-2">
 
                     {booking.status !== "confirmed" && booking.status !== "rejected" && (

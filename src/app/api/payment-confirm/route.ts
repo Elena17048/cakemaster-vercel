@@ -58,7 +58,8 @@ export async function POST(req: Request) {
       }
 
       transaction.update(bookingRef, {
-        status: "paid"
+        status: "paid",
+        paidAt: new Date()
       });
 
     });
