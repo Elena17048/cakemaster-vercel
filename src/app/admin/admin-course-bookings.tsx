@@ -40,7 +40,7 @@ export function AdminCourseBookings() {
         try {
 
           // 🔹 FIX 1 – odstranění mezer z dateId
-          const cleanDateId = booking.dateId?.trim()
+          const cleanDateId = String(booking.dateId)
 
           const dateRef = doc(db, "courseDates", cleanDateId)
           const dateDoc = await getDoc(dateRef)
