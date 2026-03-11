@@ -285,7 +285,13 @@ export const addCourse = async (data: Omit<Course, "id">) => {
   await addDoc(coursesCollectionRef, data);
 };
 
-export const updateCourse = async (id: string, data: Partial<Course>) => {
+export const updateCourse = async ({
+  id,
+  data,
+}: {
+  id: string;
+  data: Partial<Course>;
+}) => {
   await updateDoc(doc(coursesCollectionRef, id), data);
 };
 
