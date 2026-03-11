@@ -75,19 +75,32 @@ export default async function CoursePage({ params }: any) {
                   Volná místa: {availableSeats}
                 </div>
 
+                {availableSeats === 1 && (
+                  <div className="text-orange-600 text-sm font-semibold">
+                    ⚠ Poslední místo
+                  </div>
+                )}
+
               </div>
 
-              <Link
-                href={`/courses/book?courseId=${course.id}&dateId=${date.id}`}
-              >
-                <Button>Vybrat termín</Button>
-              </Link>
+              {availableSeats === 0 ? (
+                <span className="text-red-600 font-semibold">
+                  Kurz je plně obsazen
+                </span>
+              ) : (
+                <Link
+                  href={`/courses/book?courseId=${course.id}&dateId=${date.id}`}
+                >
+                  <Button>Vybrat termín</Button>
+                </Link>
+              )}
 
             </div>
           );
         })}
 
       </div>
+
     </div>
   );
 }
