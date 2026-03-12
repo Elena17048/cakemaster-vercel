@@ -44,7 +44,7 @@ export default function PaymentPage() {
       if (numericPrice && vs) {
 
         const qrString =
-          `SPD*1.0*ACC:CZ84080000006155124013*AM:${numericPrice}*CC:CZK*X-VS:${vs}*RN:Elena Alexeeva`;
+          `SPD*1.0*ACC:CZ84080000006155124013*AM:${numericPrice}*CC:CZK*X-VS:${vs}`;
 
         const url =
           "https://api.qrserver.com/v1/create-qr-code/?size=320x320&data=" +
