@@ -12,6 +12,13 @@ export async function POST(req: Request) {
 
   try {
 
+    if (!bookingId) {
+      return NextResponse.json({
+        success: false,
+        error: "Missing bookingId"
+      });
+    }
+
     const bookingRef = adminDb
       .collection("courseBookings")
       .doc(bookingId);
@@ -32,9 +39,16 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: true });
     }
 
-    const { firstName, lastName, email, phone, courseId, dateId } = booking;
+    const {
+      firstName,
+      lastName,
+      email,
+      phone,
+      courseId,
+      dateId
+    } = booking;
 
-    // TRANSAKCE - kontrola kapacity
+    // TRANSAKCE – kontrola kapacity
     await adminDb.runTransaction(async (transaction) => {
 
       const dateRef = adminDb.collection("courseDates").doc(dateId);
@@ -49,6 +63,10 @@ export async function POST(req: Request) {
 
       const courseRef = adminDb.collection("courses").doc(courseId);
       const courseDoc = await transaction.get(courseRef);
+
+      if (!courseDoc.exists) {
+        throw new Error("Course not found");
+      }
 
       const courseData = courseDoc.data() as any;
       const capacity = courseData.capacity || 0;
@@ -70,7 +88,7 @@ export async function POST(req: Request) {
       .doc(dateId)
       .get();
 
-    const dateData = dateDoc.data();
+    const dateData = dateDoc.data() as any;
 
     const date = dateData?.date
       ? dateData.date.toDate().toLocaleString("cs-CZ")
@@ -82,7 +100,7 @@ export async function POST(req: Request) {
       .doc(courseId)
       .get();
 
-    const courseData = courseDoc.data();
+    const courseData = courseDoc.data() as any;
     const courseName = courseData?.name || courseId;
 
     // EMAIL ADMINOVI
@@ -104,47 +122,46 @@ export async function POST(req: Request) {
 
         <hr/>
 
-        <p><b>Variabilní symbol:</b> ${variableSymbol}</p>
+        <p><b>Variabilní symbol:</b> ${variableSymbol ?? "neznámý"}</p>
       `
     });
 
     // EMAIL ZÁKAZNÍKOVI
-  // EMAIL ZÁKAZNÍKOVI
-await resend.emails.send({
-  from: "CakeMaster <info@cakemaster.cz>",
-  to: [email],
-  subject: "Děkuji za rezervaci kurzu",
-  html: `
-    <h2 style="font-size:22px;font-weight:bold;">
-      Děkuji za rezervaci kurzu
-    </h2>
+    await resend.emails.send({
+      from: "CakeMaster <info@cakemaster.cz>",
+      to: [email],
+      subject: "Děkuji za rezervaci kurzu",
+      html: `
+        <h2 style="font-size:22px;font-weight:bold;">
+          Děkuji za rezervaci kurzu
+        </h2>
 
-    <p>
-      Dobrý den, ${firstName}.
-    </p>
+        <p>
+          Dobrý den, ${firstName}.
+        </p>
 
-    <p>
-      Přijala jsem vaši rezervaci na kurz:
-      <strong>${courseName}</strong>
-    </p>
+        <p>
+          Přijala jsem vaši rezervaci na kurz:
+          <strong>${courseName}</strong>
+        </p>
 
-    <p>
-      <strong>Termín:</strong> ${date}
-    </p>
+        <p>
+          <strong>Termín:</strong> ${date}
+        </p>
 
-    <p>
-      Rezervaci potvrdím v průběhu následujících 24 hodin.
-      Prosím, vyčkejte na potvrzovací email.
-    </p>
+        <p>
+          Rezervaci potvrdím v průběhu následujících 24 hodin.
+          Prosím, vyčkejte na potvrzovací email.
+        </p>
 
-    <br/>
+        <br/>
 
-    <p>
-      Elena<br/>
-      Cake Master
-    </p>
-  `
-});
+        <p>
+          Elena<br/>
+          Cake Master
+        </p>
+      `
+    });
 
     return NextResponse.json({ success: true });
 
