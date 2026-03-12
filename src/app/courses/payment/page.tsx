@@ -19,7 +19,7 @@ export default function PaymentPage() {
 
     async function loadBooking() {
 
-      const res = await fetch(`/api/course-booking?bookingId=${bookingId}`);
+      const res = await fetch(`/api/course-bookings?bookingId=${bookingId}`);
       const data = await res.json();
 
       setCourseTitle(data.courseTitle);
