@@ -167,16 +167,18 @@ if (bookedSeats + 1 === capacity) {
         Těším se na vás na kurzu.
       </p>
 
-      <div style="margin-top:24px;padding-top:16px;border-top:1px solid #eee;font-size:13px;color:#666;line-height:1.5;">
+    
+      <p>
+        Elena<br/>
+        Cake Master
+      </p>
+
+       <div style="margin-top:24px;padding-top:16px;border-top:1px solid #eee;font-size:13px;color:#666;line-height:1.5;">
   <strong>ℹ️ Storno podmínky</strong><br><br>
   V případě zrušení účasti je platbu možné vrátit při odhlášení nejpozději
   <strong>5 dní před kurzem</strong>.<br><br>
   Při pozdějším zrušení je možné za sebe najít náhradníka.
 </div>
-      <p>
-        Elena<br/>
-        Cake Master
-      </p>
     `
   });
 
