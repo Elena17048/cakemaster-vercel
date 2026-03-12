@@ -2,7 +2,6 @@ import { adminDb } from "@/lib/firebase-admin";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import Autoplay from "embla-carousel-autoplay";
 
 import {
   Carousel,
@@ -108,15 +107,10 @@ export default async function CoursePage({ params }: any) {
         {/* CAROUSEL FOTEK */}
         <div className="relative max-w-md">
 
-          <Carousel
-            opts={{ loop: true }}
-            plugins={[
-              Autoplay({
-                delay: 4000,
-              }),
-            ]}
-            className="w-full"
-          >
+        <Carousel
+  opts={{ loop: true }}
+  className="w-full"
+>
 
             <CarouselContent>
 
