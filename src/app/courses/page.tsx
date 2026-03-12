@@ -59,15 +59,20 @@ export default async function OurCourses() {
             </div>
 
             <div className="md:w-2/3 flex flex-col">
-              <CardHeader>
-                <CardTitle className="text-2xl">
-                  {course.title?.cs}
-                </CardTitle>
+            <CardHeader>
+  <CardTitle className="text-2xl">
+    {course.title?.cs}
+  </CardTitle>
 
-                <CardDescription>
-                  {course.description?.cs}
-                </CardDescription>
-              </CardHeader>
+  <p className="font-semibold text-sm mt-2">
+    {course.description?.cs}
+  </p>
+
+  <p className="flex items-center gap-2 text-sm text-green-600 mt-2">
+    <span className="w-2.5 h-2.5 bg-green-500 rounded-full"></span>
+    Vhodné i pro začátečníky
+  </p>
+</CardHeader>
 
               <CardContent className="flex-grow">
                 <div className="flex gap-4 text-sm">
@@ -90,7 +95,7 @@ export default async function OurCourses() {
 
               <CardFooter>
                 <Link href={`/courses/${course.id}`}>
-                <Button>Zjistit více</Button>
+                <Button>Zjistit více →</Button>
                 </Link>
               </CardFooter>
             </div>
