@@ -2,8 +2,8 @@
 
 import { useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
 import { QRCodeCanvas } from "qrcode.react";
+import { Button } from "@/components/ui/button";
 
 export default function PaymentPage() {
 
@@ -12,20 +12,18 @@ export default function PaymentPage() {
 
   const [courseTitle, setCourseTitle] = useState<string | null>(null);
   const [courseDate, setCourseDate] = useState<string | null>(null);
+  const [courseTime, setCourseTime] = useState<string | null>(null);
   const [price, setPrice] = useState<number | null>(null);
-  const [variableSymbol, setVariableSymbol] = useState<string | null>(null);
 
   useEffect(() => {
 
     async function loadBooking() {
 
-      const res = await fetch(`/api/course-bookings?bookingId=${bookingId}`);
+      const res = await fetch(`/api/course-booking?bookingId=${bookingId}`);
       const data = await res.json();
 
       setCourseTitle(data.courseTitle);
-
-      const numericPrice = Number(data.price);
-      setPrice(numericPrice);
+      setPrice(Number(data.price));
 
       if (data.date) {
         const jsDate = data.date._seconds
@@ -35,54 +33,30 @@ export default function PaymentPage() {
         setCourseDate(jsDate.toLocaleDateString("cs-CZ"));
       }
 
-      if (bookingId) {
-        const vs = bookingId
-          .replace(/\D/g, "")
-          .padEnd(10, "0")
-          .slice(0, 10);
-
-        setVariableSymbol(vs);
+      if (data.time) {
+        setCourseTime(data.time);
       }
 
     }
 
-    if (bookingId) loadBooking();
+    if (bookingId) {
+      loadBooking();
+    }
 
   }, [bookingId]);
 
-  if (!price || !variableSymbol) {
-    return (
-      <div className="container mx-auto px-4 py-16 text-center">
-        Načítám platební údaje…
-      </div>
-    );
-  }
+  /* VARIABILNÍ SYMBOL */
+
+  const variableSymbol = bookingId
+    ? bookingId.replace(/\D/g, "").padEnd(10, "0").slice(0, 10)
+    : "";
+
+  /* QR STRING */
 
   const qrValue =
-    `SPD*1.0*ACC:CZ84080000006155124013*AM:${price}*CC:CZK*X-VS:${variableSymbol}*MSG:Cukrarske kurzy`;
-
-  async function confirmPayment() {
-
-    const res = await fetch("/api/payment-confirm", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        bookingId,
-        variableSymbol
-      })
-    });
-
-    const data = await res.json();
-
-    if (data.success) {
-      window.location.href = "/courses/success";
-    } else {
-      alert("Nepodařilo se potvrdit platbu.");
-    }
-
-  }
+    price && variableSymbol
+      ? `SPD*1.0*ACC:CZ84080000006155124013*AM:${price}.00*CC:CZK*X-VS:${variableSymbol}*MSG:Cukrarske kurzy`
+      : "";
 
   return (
     <div className="container mx-auto px-4 py-16 max-w-xl text-center">
@@ -103,12 +77,15 @@ export default function PaymentPage() {
           {courseDate && (
             <div>
               <span className="font-medium">Termín:</span> {courseDate}
+              {courseTime && ` • ${courseTime}`}
             </div>
           )}
 
-          <div>
-            <span className="font-medium">Cena:</span> {price} Kč
-          </div>
+          {price && (
+            <div>
+              <span className="font-medium">Cena:</span> {price} CZK
+            </div>
+          )}
 
         </div>
       )}
@@ -118,23 +95,45 @@ export default function PaymentPage() {
       </p>
 
       <div className="flex justify-center mb-6">
-        <QRCodeCanvas value={qrValue} size={260} includeMargin />
+
+        {qrValue && (
+          <QRCodeCanvas
+            value={qrValue}
+            size={260}
+            includeMargin
+          />
+        )}
+
       </div>
 
-      <div className="text-lg font-medium mt-4">
-        Částka: {price} Kč
-      </div>
+      {price && (
+        <div className="mb-4 text-lg">
+          Částka: {price}.00 CZK
+        </div>
+      )}
 
-      <div className="text-sm text-gray-600 mb-6">
-        Variabilní symbol: <strong>{variableSymbol}</strong>
-      </div>
+      {variableSymbol && (
+        <div className="mb-6 text-sm text-gray-600">
+          Variabilní symbol: <strong>{variableSymbol}</strong>
+        </div>
+      )}
 
-      <Button
-        className="w-full mb-10"
-        onClick={confirmPayment}
-      >
-        Zaplatil/a jsem
+      <Button className="w-full mb-10">
+        Zaplatil jsem
       </Button>
+
+      <div className="text-sm text-gray-600 space-y-3">
+
+        <p>
+          V případě zrušení účasti je platbu možné vrátit při odhlášení
+          nejpozději <strong>5 dní před kurzem</strong>.
+        </p>
+
+        <p>
+          Při pozdějším zrušení je možné za sebe najít náhradníka.
+        </p>
+
+      </div>
 
     </div>
   );
