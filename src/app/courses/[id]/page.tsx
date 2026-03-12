@@ -1,7 +1,11 @@
+"use client";
+
+import { useRef } from "react";
 import { adminDb } from "@/lib/firebase-admin";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import Autoplay from "embla-carousel-autoplay";
 
 import {
   Carousel,
@@ -44,11 +48,19 @@ export default async function CoursePage({ params }: any) {
 
   const images = course.images || [course.imageUrl];
 
+  const autoplay = useRef(
+    Autoplay({
+      delay: 4000,
+      stopOnInteraction: true,
+      stopOnMouseEnter: true,
+    })
+  );
+
   return (
     <div className="container mx-auto px-4 py-16">
 
       {/* HERO SEKCE */}
-      <div className="grid md:grid-cols-2 gap-12 mb-20 items-start">
+      <div className="grid md:grid-cols-2 gap-16 mb-20 items-start">
 
         {/* TEXT */}
         <div>
@@ -104,24 +116,28 @@ export default async function CoursePage({ params }: any) {
 
         </div>
 
-        {/* CAROUSEL FOTEK */}
-        <div className="relative max-w-md">
+        {/* CAROUSEL */}
+        <div className="relative">
 
-          <Carousel opts={{ loop: true }} className="w-full">
+          <Carousel
+            opts={{ loop: true }}
+            plugins={[autoplay.current]}
+            className="w-full"
+          >
 
             <CarouselContent>
 
               {images.map((img: string, index: number) => (
                 <CarouselItem key={index}>
 
-                  <div className="rounded-xl overflow-hidden shadow-lg h-[320px] bg-gray-100 flex items-center justify-center">
+                  <div className="overflow-hidden rounded-xl">
 
                     <Image
                       src={img}
                       alt={`${course.title?.cs} ${index + 1}`}
-                      width={800}
-                      height={600}
-                      className="max-h-full w-auto object-contain"
+                      width={1200}
+                      height={900}
+                      className="w-full h-[640px] object-contain"
                     />
 
                   </div>
@@ -140,8 +156,12 @@ export default async function CoursePage({ params }: any) {
 
       </div>
 
-      {/* INFO BLOK */}
-      <div className="flex flex-wrap gap-6 mb-10 text-sm">
+      {/* TERMÍNY */}
+      <h2 className="text-2xl font-semibold mb-4">
+        Dostupné termíny
+      </h2>
+
+      <div className="flex flex-wrap gap-8 mb-8 text-base">
 
         <div className="flex items-center gap-2">
           <span>⏱</span>
@@ -160,12 +180,7 @@ export default async function CoursePage({ params }: any) {
 
       </div>
 
-      {/* TERMÍNY */}
-      <h2 className="text-2xl font-semibold mb-6">
-        Dostupné termíny
-      </h2>
-
-      <div className="space-y-4">
+      <div className="space-y-4 max-w-2xl">
 
         {dates.map((date: any) => {
 
