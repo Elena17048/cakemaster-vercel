@@ -54,7 +54,28 @@ export default function PaymentPage() {
     }
 
   }, [bookingId]);
+  async function confirmPayment() {
 
+    const res = await fetch("/api/payment-confirm", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        bookingId,
+        variableSymbol
+      })
+    });
+  
+    const data = await res.json();
+  
+    if (data.success) {
+      window.location.href = "/courses/success";
+    } else {
+      alert("Nepodařilo se potvrdit platbu.");
+    }
+  
+  }
   return (
     <div className="container mx-auto px-4 py-16 max-w-xl text-center">
 
