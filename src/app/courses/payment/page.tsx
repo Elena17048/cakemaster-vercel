@@ -14,6 +14,7 @@ export default function PaymentPage() {
   const [courseDate, setCourseDate] = useState<string | null>(null);
   const [price, setPrice] = useState<number | null>(null);
   const [variableSymbol, setVariableSymbol] = useState<string | null>(null);
+  const [qrValue, setQrValue] = useState<string | null>(null);
 
   useEffect(() => {
 
@@ -32,6 +33,14 @@ export default function PaymentPage() {
           : new Date(data.date);
 
         setCourseDate(jsDate.toLocaleDateString("cs-CZ"));
+      }
+
+      if (data.price && data.variableSymbol) {
+
+        const qrString =
+          `SPD*1.0*ACC:CZ84080000006155124013*AM:${data.price}.00*CC:CZK*X-VS:${data.variableSymbol}*MSG:Cukrarske kurzy`;
+
+        setQrValue(qrString);
       }
     }
 
@@ -63,13 +72,6 @@ export default function PaymentPage() {
     }
 
   }
-
-  /* ===== QR STRING ===== */
-
-  const qrValue =
-    price && variableSymbol
-      ? `SPD*1.0*ACC:CZ84080000006155124013*AM:${price}.00*CC:CZK*X-VS:${variableSymbol}*MSG:Cukrarske kurzy`
-      : "";
 
   return (
     <div className="container mx-auto px-4 py-16 max-w-xl text-center">
