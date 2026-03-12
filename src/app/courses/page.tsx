@@ -32,15 +32,22 @@ export default async function OurCourses() {
   return (
     <div className="container mx-auto px-4 md:px-6 py-16 md:py-24">
       <div className="text-center">
-        <h1 className="text-4xl md:text-5xl font-bold">Kurzy</h1>
-      </div>
+  <h1 className="text-4xl md:text-5xl font-bold">
+    Cukrářské kurzy
+  </h1>
 
-      <div className="mt-12 grid gap-8 md:grid-cols-2">
+  <p className="mt-4 text-lg text-muted-foreground">
+    Myslíš, že to nezvládneš?<br />
+    Ukážu ti, že ano. Krok za krokem.
+  </p>
+</div>
+
+<div className="mt-16 grid gap-8 md:grid-cols-2">
         {courses.map((course: any) => (
           <Card
-            key={course.id}
-            className="flex flex-col md:flex-row overflow-hidden"
-          >
+          key={course.id}
+          className="flex flex-col md:flex-row overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+        >
             <div className="md:w-1/3">
               <Image
                 src={course.imageUrl}
@@ -83,7 +90,7 @@ export default async function OurCourses() {
 
               <CardFooter>
                 <Link href={`/courses/${course.id}`}>
-                  <Button>Rezervovat kurz</Button>
+                <Button>Zjistit více</Button>
                 </Link>
               </CardFooter>
             </div>
