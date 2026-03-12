@@ -46,6 +46,7 @@ export default function PaymentPage() {
 
         const qrString =
           `SPD*1.0*ACC:CZ84080000006155124013*AM:${numericPrice.toFixed(2)}*CC:CZK*X-VS:${vs}`;
+          console.log("QR STRING:", qrString);
 
         const qrDataUrl = await QRCode.toDataURL(qrString, {
           errorCorrectionLevel: "M",
