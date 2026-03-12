@@ -13,40 +13,55 @@ export async function GET(req: Request) {
     );
   }
 
-  const bookingDoc = await adminDb
-    .collection("courseBookings")
-    .doc(bookingId)
-    .get();
+  try {
 
-  if (!bookingDoc.exists) {
+    // hledání rezervace podle variabilního symbolu
+    const snapshot = await adminDb
+      .collection("courseBookings")
+      .where("variableSymbol", "==", bookingId)
+      .limit(1)
+      .get();
+
+    if (snapshot.empty) {
+      return NextResponse.json(
+        { error: "Booking not found" },
+        { status: 404 }
+      );
+    }
+
+    const booking = snapshot.docs[0].data() as any;
+
+    const courseDoc = await adminDb
+      .collection("courses")
+      .doc(booking.courseId)
+      .get();
+
+    const course = courseDoc.data() as any;
+
+    const dateDoc = await adminDb
+      .collection("courseDates")
+      .doc(booking.dateId)
+      .get();
+
+    const date = dateDoc.data() as any;
+
+    return NextResponse.json({
+      courseTitle: course?.title?.cs || "Kurz",
+      price: course?.price || 0,
+      variableSymbol: booking.variableSymbol,
+      date: date?.date || null
+    });
+
+  } catch (error) {
+
+    console.error("GET booking error:", error);
+
     return NextResponse.json(
-      { error: "Booking not found" },
-      { status: 404 }
+      { error: "Server error" },
+      { status: 500 }
     );
+
   }
-
-  const booking = bookingDoc.data() as any;
-
-  const courseDoc = await adminDb
-    .collection("courses")
-    .doc(booking.courseId)
-    .get();
-
-  const course = courseDoc.data() as any;
-
-  const dateDoc = await adminDb
-    .collection("courseDates")
-    .doc(booking.dateId)
-    .get();
-
-  const date = dateDoc.data() as any;
-
-  return NextResponse.json({
-    courseTitle: course?.title?.cs || "Kurz",
-    price: course?.price || 0,
-    variableSymbol: booking.variableSymbol,
-    date: date?.date || null
-  });
 
 }
 
