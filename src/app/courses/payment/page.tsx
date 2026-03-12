@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { QRCodeCanvas } from "qrcode.react";
 
@@ -13,11 +13,6 @@ export default function PaymentPage() {
   const [courseTitle, setCourseTitle] = useState<string | null>(null);
   const [courseDate, setCourseDate] = useState<string | null>(null);
   const [price, setPrice] = useState<number | null>(null);
-  const [variableSymbol, setVariableSymbol] = useState<string | null>(null);
-
-  const qrRef = useRef<HTMLCanvasElement | null>(null);
-
-  /* ===== NAČTENÍ REZERVACE ===== */
 
   useEffect(() => {
 
@@ -37,22 +32,17 @@ export default function PaymentPage() {
         setCourseDate(jsDate.toLocaleDateString("cs-CZ"));
       }
 
-      /* ===== VARIABILNÍ SYMBOL (stejně jako ve funkční stránce) ===== */
-
-      if (bookingId) {
-        const vs = bookingId
-          .replace(/\D/g, "")
-          .padEnd(10, "0")
-          .slice(0, 10);
-
-        setVariableSymbol(vs);
-      }
-
     }
 
     if (bookingId) loadBooking();
 
   }, [bookingId]);
+
+  /* ===== VARIABILNÍ SYMBOL (STEJNĚ JAKO FUNKČNÍ STRÁNKA) ===== */
+
+  const variableSymbol = bookingId
+    ? bookingId.replace(/\D/g, "").padEnd(10, "0").slice(0, 10)
+    : "";
 
   /* ===== QR STRING ===== */
 
@@ -60,8 +50,6 @@ export default function PaymentPage() {
     price && variableSymbol
       ? `SPD*1.0*ACC:CZ84080000006155124013*AM:${price}.00*CC:CZK*X-VS:${variableSymbol}*MSG:Cukrarske kurzy`
       : "";
-
-  /* ===== POTVRZENÍ PLATBY ===== */
 
   async function confirmPayment() {
 
@@ -128,7 +116,6 @@ export default function PaymentPage() {
             value={qrValue}
             size={260}
             includeMargin
-            ref={qrRef}
           />
         )}
 
@@ -152,18 +139,6 @@ export default function PaymentPage() {
       >
         Zaplatil/a jsem
       </Button>
-
-      <div className="text-sm text-gray-600 space-y-3">
-
-        <p>
-          V případě zrušení účasti je platbu možné vrátit při odhlášení nejpozději <strong>5 dní před kurzem</strong>.
-        </p>
-
-        <p>
-          Při pozdějším zrušení je možné za sebe najít náhradníka.
-        </p>
-
-      </div>
 
     </div>
   );
