@@ -43,7 +43,7 @@ export async function GET() {
 
         // ✅ seřazení termínů od nejbližšího
         .sort((a: any, b: any) => {
-          return new Date(a.date).getTime() - new Date(b.date).getTime();
+          return a.date._seconds - b.date._seconds;
         })
 
         .map((date: any) => ({
