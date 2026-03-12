@@ -2,7 +2,6 @@
 
 import { useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
-import { QRCodeCanvas } from "qrcode.react";
 import { Button } from "@/components/ui/button";
 
 export default function PaymentPage() {
@@ -12,22 +11,27 @@ export default function PaymentPage() {
 
   const [courseTitle, setCourseTitle] = useState<string | null>(null);
   const [courseDate, setCourseDate] = useState<string | null>(null);
-  const [courseTime, setCourseTime] = useState<string | null>(null);
   const [price, setPrice] = useState<number | null>(null);
+  const [variableSymbol, setVariableSymbol] = useState<string | null>(null);
+  const [qrCode, setQrCode] = useState<string | null>(null);
 
   useEffect(() => {
 
     async function loadBooking() {
 
-      const res = await fetch(`/api/course-booking?bookingId=${bookingId}`);
+      const res = await fetch(`/api/course-bookings?bookingId=${bookingId}`);
       const data = await res.json();
 
       setCourseTitle(data.courseTitle);
 
       const numericPrice = Number(data.price);
-      if (!isNaN(numericPrice)) {
-        setPrice(numericPrice);
-      }
+      setPrice(numericPrice);
+
+      const vs = String(data.variableSymbol || "")
+        .replace(/\D/g, "")
+        .slice(0, 10);
+
+      setVariableSymbol(vs);
 
       if (data.date) {
         const jsDate = data.date._seconds
@@ -37,28 +41,48 @@ export default function PaymentPage() {
         setCourseDate(jsDate.toLocaleDateString("cs-CZ"));
       }
 
-      if (data.time) {
-        setCourseTime(data.time);
+      if (numericPrice && vs) {
+
+        const qrString =
+          `SPD*1.0*ACC:CZ84080000006155124013*AM:${numericPrice}*CC:CZK*X-VS:${vs}*RN:Elena Alexeeva`;
+
+        const url =
+          "https://api.qrserver.com/v1/create-qr-code/?size=320x320&data=" +
+          encodeURIComponent(qrString);
+
+        setQrCode(url);
       }
 
     }
 
-    if (bookingId) loadBooking();
+    if (bookingId) {
+      loadBooking();
+    }
 
   }, [bookingId]);
 
-  /* VARIABILNÍ SYMBOL */
+  async function confirmPayment() {
 
-  const variableSymbol = bookingId
-    ? bookingId.replace(/\D/g, "").slice(0, 10)
-    : "";
+    const res = await fetch("/api/payment-confirm", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        bookingId,
+        variableSymbol
+      })
+    });
 
-  /* QR STRING */
+    const data = await res.json();
 
-  const qrValue =
-    price && variableSymbol
-      ? `SPD*1.0*ACC:CZ84080000006155124013*AM:${price}*CC:CZK*X-VS:${variableSymbol}*RN:Elena Alexeeva`
-      : null;
+    if (data.success) {
+      window.location.href = "/courses/success";
+    } else {
+      alert("Nepodařilo se potvrdit platbu.");
+    }
+
+  }
 
   return (
     <div className="container mx-auto px-4 py-16 max-w-xl text-center">
@@ -79,7 +103,6 @@ export default function PaymentPage() {
           {courseDate && (
             <div>
               <span className="font-medium">Termín:</span> {courseDate}
-              {courseTime && ` • ${courseTime}`}
             </div>
           )}
 
@@ -98,31 +121,51 @@ export default function PaymentPage() {
 
       <div className="flex justify-center mb-6">
 
-        {qrValue && (
-          <QRCodeCanvas
-            value={qrValue}
-            size={260}
-            includeMargin
+        {qrCode && (
+          <img
+            src={qrCode}
+            alt="QR platba"
+            width={260}
+            height={260}
           />
         )}
 
       </div>
 
       {price && (
-        <div className="mb-4 text-lg">
+        <div className="text-lg font-medium mt-4">
           Částka: {price} Kč
         </div>
       )}
 
       {variableSymbol && (
-        <div className="mb-6 text-sm text-gray-600">
+        <div className="text-sm text-gray-600 mb-6">
           Variabilní symbol: <strong>{variableSymbol}</strong>
         </div>
       )}
 
-      <Button className="w-full mb-10">
-        Zaplatil jsem
+      <p className="mb-8 text-sm text-gray-600">
+        Po zaplacení klikněte na tlačítko níže.
+      </p>
+
+      <Button
+        className="w-full mb-10"
+        onClick={confirmPayment}
+      >
+        Zaplatil/a jsem
       </Button>
+
+      <div className="text-sm text-gray-600 space-y-3">
+
+        <p>
+          V případě zrušení účasti je platbu možné vrátit při odhlášení nejpozději <strong>5 dní před kurzem</strong>.
+        </p>
+
+        <p>
+          Při pozdějším zrušení je možné za sebe najít náhradníka.
+        </p>
+
+      </div>
 
     </div>
   );
