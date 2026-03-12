@@ -35,11 +35,12 @@ export default function PaymentPage() {
         setCourseDate(jsDate.toLocaleDateString("cs-CZ"));
       }
 
-      // generování QR kódu
       if (data.price && data.variableSymbol) {
 
+        const amount = Number(data.price).toFixed(2);
+
         const qrString =
-          `SPD*1.0*ACC:CZ84080000006155124013*AM:${data.price}*CC:CZK*X-VS:${data.variableSymbol}*MSG:Cukrarske kurzy`;
+          `SPD*1.0*ACC:CZ84080000006155124013*AM:${amount}*CC:CZK*X-VS:${data.variableSymbol}*MSG:Cukrarske kurzy`;
 
         const qrUrl = await QRCode.toDataURL(qrString);
 
@@ -54,6 +55,7 @@ export default function PaymentPage() {
     }
 
   }, [bookingId]);
+
   async function confirmPayment() {
 
     const res = await fetch("/api/payment-confirm", {
@@ -66,24 +68,23 @@ export default function PaymentPage() {
         variableSymbol
       })
     });
-  
+
     const data = await res.json();
-  
+
     if (data.success) {
       window.location.href = "/courses/success";
     } else {
       alert("Nepodařilo se potvrdit platbu.");
     }
-  
+
   }
+
   return (
     <div className="container mx-auto px-4 py-16 max-w-xl text-center">
 
       <h1 className="text-3xl font-bold mb-6">
         Platba za rezervaci
       </h1>
-
-      {/* SHRUTÍ OBJEDNÁVKY */}
 
       {(courseTitle || courseDate) && (
         <div className="mb-10 text-left border rounded-lg p-6 bg-gray-50 space-y-2">
@@ -113,10 +114,7 @@ export default function PaymentPage() {
         Prosím zaplaťte kurz pomocí QR kódu.
       </p>
 
-      {/* QR */}
-
       <div className="flex justify-center mb-6">
-
         {qrCode && (
           <img
             src={qrCode}
@@ -125,10 +123,7 @@ export default function PaymentPage() {
             height={260}
           />
         )}
-
       </div>
-
-      {/* ČÁSTKA + VARIABILNÍ SYMBOL */}
 
       {price && (
         <div className="text-lg font-medium mt-4">
@@ -146,23 +141,21 @@ export default function PaymentPage() {
         Po zaplacení klikněte na tlačítko níže.
       </p>
 
-      <Button className="w-full mb-10">
-        Zaplatil jsem
+      <Button
+        className="w-full mb-10"
+        onClick={confirmPayment}
+      >
+        Zaplatil/a jsem
       </Button>
 
-      {/* STORNO */}
-
       <div className="text-sm text-gray-600 space-y-3">
-
         <p>
-          V případě zrušení účasti je platbu možné vrátit při odhlášení
-          nejpozději <strong>5 dní před kurzem</strong>.
+          V případě zrušení účasti je platbu možné vrátit při odhlášení nejpozději <strong>5 dní před kurzem</strong>.
         </p>
 
         <p>
           Při pozdějším zrušení je možné za sebe najít náhradníka.
         </p>
-
       </div>
 
     </div>
