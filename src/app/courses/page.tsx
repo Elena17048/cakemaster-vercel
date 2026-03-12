@@ -74,8 +74,8 @@ export default async function OurCourses() {
   </p>
 </CardHeader>
 
-              <CardContent className="flex-grow">
-                <div className="flex gap-4 text-sm">
+<CardContent className="flex-grow mt-6">
+<div className="flex gap-4 text-sm">
                   <div className="flex items-center gap-1">
                     <Tag className="h-4 w-4" />
                     {course.price} CZK
