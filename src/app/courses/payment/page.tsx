@@ -39,13 +39,23 @@ export default function PaymentPage() {
 
         const amount = Number(data.price).toFixed(2);
 
-        const qrString =
-          `SPD*1.0*ACC:CZ84080000006155124013*AM:${amount}*CC:CZK*X-VS:${data.variableSymbol}*MSG:Cukrarske kurzy`;
+        const qrString = [
+          "SPD*1.0",
+          "ACC:CZ84080000006155124013",
+          `AM:${amount}`,
+          "CC:CZK",
+          `X-VS:${data.variableSymbol}`,
+          "MSG:Cukrarske kurzy",
+          "RN:Elena Alexeeva"
+        ].join("*");
 
-        const qrUrl = await QRCode.toDataURL(qrString);
+        const qrUrl = await QRCode.toDataURL(qrString, {
+          errorCorrectionLevel: "M",
+          margin: 2,
+          width: 320
+        });
 
         setQrCode(qrUrl);
-
       }
 
     }
@@ -115,6 +125,7 @@ export default function PaymentPage() {
       </p>
 
       <div className="flex justify-center mb-6">
+
         {qrCode && (
           <img
             src={qrCode}
@@ -123,6 +134,7 @@ export default function PaymentPage() {
             height={260}
           />
         )}
+
       </div>
 
       {price && (
@@ -149,6 +161,7 @@ export default function PaymentPage() {
       </Button>
 
       <div className="text-sm text-gray-600 space-y-3">
+
         <p>
           V případě zrušení účasti je platbu možné vrátit při odhlášení nejpozději <strong>5 dní před kurzem</strong>.
         </p>
@@ -156,6 +169,7 @@ export default function PaymentPage() {
         <p>
           Při pozdějším zrušení je možné za sebe najít náhradníka.
         </p>
+
       </div>
 
     </div>
