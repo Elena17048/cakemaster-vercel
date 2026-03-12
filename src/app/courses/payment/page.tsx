@@ -45,7 +45,7 @@ export default function PaymentPage() {
       if (numericPrice && vs) {
 
         const qrString =
-        `SPD*1.0*ACC:CZ4003000000000348614361*AM:${numericPrice.toFixed(2)}*CC:CZK*X-VS:${vs}*MSG:Cukrarske kurzy`;
+  `SPD*1.0*ACC:CZ4003000000000348614361*AM:${numericPrice.toFixed(2)}*CC:CZK*X-VS:${vs}`;
 
         console.log("QR STRING:", qrString);
 
