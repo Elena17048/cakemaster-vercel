@@ -39,7 +39,8 @@ export async function GET(req: Request) {
   const freeSeats = capacity - bookedSeats;
 
   return NextResponse.json({
-    freeSeats
+    freeSeats,
+    date: dateData.date
   });
 
 }
