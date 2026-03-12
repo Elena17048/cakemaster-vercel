@@ -37,8 +37,15 @@ export async function GET() {
 
     // 3️⃣ spoj data
     const result = courses.map((course: any) => {
+
       const dates = allDates
         .filter((date: any) => date.courseId === course.id)
+
+        // ✅ seřazení termínů od nejbližšího
+        .sort((a: any, b: any) => {
+          return new Date(a.date).getTime() - new Date(b.date).getTime();
+        })
+
         .map((date: any) => ({
           id: date.id,
           date: date.date,
@@ -59,6 +66,7 @@ export async function GET() {
         "Cache-Control": "s-maxage=60, stale-while-revalidate",
       },
     });
+
   } catch (error) {
     console.error("Error fetching courses:", error);
     return NextResponse.json(
