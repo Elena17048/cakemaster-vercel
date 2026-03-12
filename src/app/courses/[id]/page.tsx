@@ -1,19 +1,7 @@
-
-
-import { useRef } from "react";
+import CourseCarousel from "@/components/course-carousel";
 import { adminDb } from "@/lib/firebase-admin";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import Link from "next/link";
-import Autoplay from "embla-carousel-autoplay";
-
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
 
 async function getCourse(id: string): Promise<any> {
   const doc = await adminDb.collection("courses").doc(id).get();
@@ -47,14 +35,6 @@ export default async function CoursePage({ params }: any) {
   }
 
   const images = course.images || [course.imageUrl];
-
-  const autoplay = useRef(
-    Autoplay({
-      delay: 4000,
-      stopOnInteraction: true,
-      stopOnMouseEnter: true,
-    })
-  );
 
   return (
     <div className="container mx-auto px-4 py-16">
@@ -117,42 +97,7 @@ export default async function CoursePage({ params }: any) {
         </div>
 
         {/* CAROUSEL */}
-        <div className="relative">
-
-          <Carousel
-            opts={{ loop: true }}
-            plugins={[autoplay.current]}
-            className="w-full"
-          >
-
-            <CarouselContent>
-
-              {images.map((img: string, index: number) => (
-                <CarouselItem key={index}>
-
-                  <div className="overflow-hidden rounded-xl">
-
-                    <Image
-                      src={img}
-                      alt={`${course.title?.cs} ${index + 1}`}
-                      width={1200}
-                      height={900}
-                      className="w-full h-[640px] object-contain"
-                    />
-
-                  </div>
-
-                </CarouselItem>
-              ))}
-
-            </CarouselContent>
-
-            <CarouselPrevious />
-            <CarouselNext />
-
-          </Carousel>
-
-        </div>
+        <CourseCarousel images={images} title={course.title?.cs} />
 
       </div>
 
