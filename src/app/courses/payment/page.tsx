@@ -41,9 +41,9 @@ export default function PaymentPage() {
 
         const qrString = [
           "SPD*1.0",
-          "ACC:CZ84080000006155124013",
-          `AM:${amount}`,
+          "IBAN:CZ84080000006155124013",
           "CC:CZK",
+          `AM:${amount}`,
           `X-VS:${data.variableSymbol}`,
           "MSG:Cukrarske kurzy",
           "RN:Elena Alexeeva"
