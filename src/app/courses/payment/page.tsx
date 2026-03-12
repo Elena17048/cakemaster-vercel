@@ -23,7 +23,11 @@ export default function PaymentPage() {
       const data = await res.json();
 
       setCourseTitle(data.courseTitle);
-      setPrice(Number(data.price));
+
+      const numericPrice = Number(data.price);
+      if (!isNaN(numericPrice)) {
+        setPrice(numericPrice);
+      }
 
       if (data.date) {
         const jsDate = data.date._seconds
@@ -39,24 +43,22 @@ export default function PaymentPage() {
 
     }
 
-    if (bookingId) {
-      loadBooking();
-    }
+    if (bookingId) loadBooking();
 
   }, [bookingId]);
 
   /* VARIABILNÍ SYMBOL */
 
   const variableSymbol = bookingId
-    ? bookingId.replace(/\D/g, "").padEnd(10, "0").slice(0, 10)
+    ? bookingId.replace(/\D/g, "").slice(0, 10)
     : "";
 
   /* QR STRING */
 
   const qrValue =
     price && variableSymbol
-      ? `SPD*1.0*ACC:CZ84080000006155124013*AM:${price}.00*CC:CZK*X-VS:${variableSymbol}*MSG:Cukrarske kurzy`
-      : "";
+      ? `SPD*1.0*ACC:CZ84080000006155124013*AM:${price}*CC:CZK*X-VS:${variableSymbol}*RN:Elena Alexeeva`
+      : null;
 
   return (
     <div className="container mx-auto px-4 py-16 max-w-xl text-center">
@@ -83,7 +85,7 @@ export default function PaymentPage() {
 
           {price && (
             <div>
-              <span className="font-medium">Cena:</span> {price} CZK
+              <span className="font-medium">Cena:</span> {price} Kč
             </div>
           )}
 
@@ -108,7 +110,7 @@ export default function PaymentPage() {
 
       {price && (
         <div className="mb-4 text-lg">
-          Částka: {price}.00 CZK
+          Částka: {price} Kč
         </div>
       )}
 
@@ -121,19 +123,6 @@ export default function PaymentPage() {
       <Button className="w-full mb-10">
         Zaplatil jsem
       </Button>
-
-      <div className="text-sm text-gray-600 space-y-3">
-
-        <p>
-          V případě zrušení účasti je platbu možné vrátit při odhlášení
-          nejpozději <strong>5 dní před kurzem</strong>.
-        </p>
-
-        <p>
-          Při pozdějším zrušení je možné za sebe najít náhradníka.
-        </p>
-
-      </div>
 
     </div>
   );
