@@ -127,54 +127,56 @@ export default async function CoursePage({ params }: any) {
 
       <div className="space-y-4 max-w-2xl">
 
-        {dates.map((date: any) => {
+        {dates
+          .sort((a: any, b: any) => a.date._seconds - b.date._seconds)
+          .map((date: any) => {
 
-          const availableSeats =
-            (course.capacity || 0) - (date.bookedSeats || 0);
+            const availableSeats =
+              (course.capacity || 0) - (date.bookedSeats || 0);
 
-          const jsDate = date.date?.toDate
-            ? date.date.toDate()
-            : new Date(date.date._seconds * 1000);
+            const jsDate = date.date?.toDate
+              ? date.date.toDate()
+              : new Date(date.date._seconds * 1000);
 
-          return (
-            <div
-              key={date.id}
-              className="flex justify-between items-center border p-4 rounded-lg"
-            >
+            return (
+              <div
+                key={date.id}
+                className="flex justify-between items-center border p-4 rounded-lg"
+              >
 
-              <div>
+                <div>
 
-                <div className="font-medium">
-                  {jsDate.toLocaleDateString("cs-CZ")}
-                </div>
-
-                <div className="text-sm text-gray-600">
-                  Volná místa: {availableSeats}
-                </div>
-
-                {availableSeats === 1 && (
-                  <div className="text-orange-600 text-sm font-semibold">
-                    ⚠ Poslední místo
+                  <div className="font-medium">
+                    {jsDate.toLocaleDateString("cs-CZ")}
                   </div>
+
+                  <div className="text-sm text-gray-600">
+                    Volná místa: {availableSeats}
+                  </div>
+
+                  {availableSeats === 1 && (
+                    <div className="text-orange-600 text-sm font-semibold">
+                      ⚠ Poslední místo
+                    </div>
+                  )}
+
+                </div>
+
+                {availableSeats === 0 ? (
+                  <span className="text-red-600 font-semibold">
+                    Kurz je plně obsazen
+                  </span>
+                ) : (
+                  <Link
+                    href={`/courses/book?courseId=${course.id}&dateId=${date.id}`}
+                  >
+                    <Button>Vybrat termín</Button>
+                  </Link>
                 )}
 
               </div>
-
-              {availableSeats === 0 ? (
-                <span className="text-red-600 font-semibold">
-                  Kurz je plně obsazen
-                </span>
-              ) : (
-                <Link
-                  href={`/courses/book?courseId=${course.id}&dateId=${date.id}`}
-                >
-                  <Button>Vybrat termín</Button>
-                </Link>
-              )}
-
-            </div>
-          );
-        })}
+            );
+          })}
 
       </div>
 
