@@ -82,7 +82,7 @@ export default function PaymentPage() {
     const data = await res.json();
 
     if (data.success) {
-      window.location.href = "/courses/success";
+      window.location.href = "/thank-you";
     } else {
       alert("Nepodařilo se potvrdit platbu.");
     }
