@@ -3,6 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import QRCode from "qrcode";
 
 export default function PaymentPage() {
 
@@ -44,13 +45,15 @@ export default function PaymentPage() {
       if (numericPrice && vs) {
 
         const qrString =
-          `SPD*1.0*ACC:CZ84080000006155124013*AM:${numericPrice}*CC:CZK*X-VS:${vs}`;
+          `SPD*1.0*ACC:CZ84080000006155124013*AM:${numericPrice.toFixed(2)}*CC:CZK*X-VS:${vs}`;
 
-        const url =
-          "https://api.qrserver.com/v1/create-qr-code/?size=320x320&data=" +
-          encodeURIComponent(qrString);
+        const qrDataUrl = await QRCode.toDataURL(qrString, {
+          errorCorrectionLevel: "M",
+          margin: 2,
+          width: 320
+        });
 
-        setQrCode(url);
+        setQrCode(qrDataUrl);
       }
 
     }
