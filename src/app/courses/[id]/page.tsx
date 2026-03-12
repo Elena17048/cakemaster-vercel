@@ -107,24 +107,21 @@ export default async function CoursePage({ params }: any) {
         {/* CAROUSEL FOTEK */}
         <div className="relative max-w-md">
 
-        <Carousel
-  opts={{ loop: true }}
-  className="w-full"
->
+          <Carousel opts={{ loop: true }} className="w-full">
 
             <CarouselContent>
 
               {images.map((img: string, index: number) => (
                 <CarouselItem key={index}>
 
-                  <div className="rounded-xl overflow-hidden shadow-lg h-[320px]">
+                  <div className="rounded-xl overflow-hidden shadow-lg h-[320px] bg-gray-100 flex items-center justify-center">
 
                     <Image
                       src={img}
                       alt={`${course.title?.cs} ${index + 1}`}
                       width={800}
                       height={600}
-                      className="w-full h-full object-cover"
+                      className="max-h-full w-auto object-contain"
                     />
 
                   </div>
