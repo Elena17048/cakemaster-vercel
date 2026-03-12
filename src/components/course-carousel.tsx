@@ -13,10 +13,11 @@ import {
 } from "@/components/ui/carousel";
 
 export default function CourseCarousel({ images, title }: any) {
-  const autoplay = useRef(
+
+  const plugin = useRef(
     Autoplay({
       delay: 4000,
-      stopOnInteraction: true,
+      stopOnInteraction: false,
       stopOnMouseEnter: true,
     })
   );
@@ -25,8 +26,8 @@ export default function CourseCarousel({ images, title }: any) {
     <div className="relative">
 
       <Carousel
+        plugins={[plugin.current]}
         opts={{ loop: true }}
-        plugins={[autoplay.current]}
         className="w-full"
       >
 
