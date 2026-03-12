@@ -13,6 +13,7 @@ export default function PaymentPage() {
   const [courseTitle, setCourseTitle] = useState<string | null>(null);
   const [courseDate, setCourseDate] = useState<string | null>(null);
   const [price, setPrice] = useState<number | null>(null);
+  const [variableSymbol, setVariableSymbol] = useState<string | null>(null);
 
   useEffect(() => {
 
@@ -22,7 +23,9 @@ export default function PaymentPage() {
       const data = await res.json();
 
       setCourseTitle(data.courseTitle);
-      setPrice(data.price);
+
+      const numericPrice = Number(data.price);
+      setPrice(numericPrice);
 
       if (data.date) {
         const jsDate = data.date._seconds
@@ -32,24 +35,31 @@ export default function PaymentPage() {
         setCourseDate(jsDate.toLocaleDateString("cs-CZ"));
       }
 
+      if (bookingId) {
+        const vs = bookingId
+          .replace(/\D/g, "")
+          .padEnd(10, "0")
+          .slice(0, 10);
+
+        setVariableSymbol(vs);
+      }
+
     }
 
     if (bookingId) loadBooking();
 
   }, [bookingId]);
 
-  /* ===== VARIABILNÍ SYMBOL (STEJNĚ JAKO FUNKČNÍ STRÁNKA) ===== */
-
-  const variableSymbol = bookingId
-    ? bookingId.replace(/\D/g, "").padEnd(10, "0").slice(0, 10)
-    : "";
-
-  /* ===== QR STRING ===== */
+  if (!price || !variableSymbol) {
+    return (
+      <div className="container mx-auto px-4 py-16 text-center">
+        Načítám platební údaje…
+      </div>
+    );
+  }
 
   const qrValue =
-    price && variableSymbol
-      ? `SPD*1.0*ACC:CZ84080000006155124013*AM:${price}.00*CC:CZK*X-VS:${variableSymbol}*MSG:Cukrarske kurzy`
-      : "";
+    `SPD*1.0*ACC:CZ84080000006155124013*AM:${price}*CC:CZK*X-VS:${variableSymbol}*MSG:Cukrarske kurzy`;
 
   async function confirmPayment() {
 
@@ -96,11 +106,9 @@ export default function PaymentPage() {
             </div>
           )}
 
-          {price && (
-            <div>
-              <span className="font-medium">Cena:</span> {price} Kč
-            </div>
-          )}
+          <div>
+            <span className="font-medium">Cena:</span> {price} Kč
+          </div>
 
         </div>
       )}
@@ -110,28 +118,16 @@ export default function PaymentPage() {
       </p>
 
       <div className="flex justify-center mb-6">
-
-        {qrValue && (
-          <QRCodeCanvas
-            value={qrValue}
-            size={260}
-            includeMargin
-          />
-        )}
-
+        <QRCodeCanvas value={qrValue} size={260} includeMargin />
       </div>
 
-      {price && (
-        <div className="text-lg font-medium mt-4">
-          Částka: {price} Kč
-        </div>
-      )}
+      <div className="text-lg font-medium mt-4">
+        Částka: {price} Kč
+      </div>
 
-      {variableSymbol && (
-        <div className="text-sm text-gray-600 mb-6">
-          Variabilní symbol: <strong>{variableSymbol}</strong>
-        </div>
-      )}
+      <div className="text-sm text-gray-600 mb-6">
+        Variabilní symbol: <strong>{variableSymbol}</strong>
+      </div>
 
       <Button
         className="w-full mb-10"
