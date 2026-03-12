@@ -41,12 +41,11 @@ export default function PaymentPage() {
 
         const qrString = [
           "SPD*1.0",
-          "IBAN:CZ84080000006155124013",
-          "CC:CZK",
+          "ACC:CZ84080000006155124013",
           `AM:${amount}`,
+          "CC:CZK",
           `X-VS:${data.variableSymbol}`,
-          "MSG:Cukrarske kurzy",
-          "RN:Elena Alexeeva"
+          "MSG:Cukrarske kurzy"
         ].join("*");
 
         const qrUrl = await QRCode.toDataURL(qrString, {
