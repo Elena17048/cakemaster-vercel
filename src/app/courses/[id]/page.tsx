@@ -138,6 +138,17 @@ export default async function CoursePage({ params }: any) {
               ? date.date.toDate()
               : new Date(date.date._seconds * 1000);
 
+            const formattedDate = jsDate.toLocaleDateString("cs-CZ", {
+              day: "numeric",
+              month: "numeric",
+              year: "numeric",
+            });
+
+            const formattedTime = jsDate.toLocaleTimeString("cs-CZ", {
+              hour: "2-digit",
+              minute: "2-digit",
+            });
+
             return (
               <div
                 key={date.id}
@@ -147,7 +158,7 @@ export default async function CoursePage({ params }: any) {
                 <div>
 
                   <div className="font-medium">
-                    {jsDate.toLocaleDateString("cs-CZ")}
+                    {formattedDate} | {formattedTime}
                   </div>
 
                   <div className="text-sm text-gray-600">
