@@ -138,16 +138,18 @@ export default async function CoursePage({ params }: any) {
               ? date.date.toDate()
               : new Date(date.date._seconds * 1000);
 
-            const formattedDate = jsDate.toLocaleDateString("cs-CZ", {
-              day: "numeric",
-              month: "numeric",
-              year: "numeric",
-            });
-
-            const formattedTime = jsDate.toLocaleTimeString("cs-CZ", {
-              hour: "2-digit",
-              minute: "2-digit",
-            });
+              const formattedDate = jsDate.toLocaleDateString("cs-CZ", {
+                day: "numeric",
+                month: "numeric",
+                year: "numeric",
+                timeZone: "Europe/Prague",
+              });
+              
+              const formattedTime = jsDate.toLocaleTimeString("cs-CZ", {
+                hour: "2-digit",
+                minute: "2-digit",
+                timeZone: "Europe/Prague",
+              });
 
             return (
               <div
