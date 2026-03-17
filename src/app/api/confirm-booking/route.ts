@@ -5,7 +5,6 @@ import { Resend } from "resend";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
-
   const { bookingId } = await req.json();
 
   const bookingRef = adminDb
@@ -56,56 +55,60 @@ export async function POST(req: Request) {
   await dateRef.update({
     bookedSeats: bookedSeats + 1
   });
-// pokud se kurz právě vyprodal, pošli email adminovi
-if (bookedSeats + 1 === capacity) {
 
-  const courseName = courseData?.title?.cs || courseData?.name || booking.courseId;
+  // pokud se kurz právě vyprodal, pošli email adminovi
+  if (bookedSeats + 1 === capacity) {
+    const courseName =
+      courseData?.title?.cs ||
+      courseData?.name ||
+      booking.courseId;
+
+    const jsDate = dateData?.date?.toDate
+      ? dateData.date.toDate()
+      : null;
+
+    const dateOnly = jsDate
+      ? jsDate.toLocaleDateString("cs-CZ", {
+          timeZone: "Europe/Prague",
+        })
+      : "";
+
+    await resend.emails.send({
+      from: "CakeMaster <info@cakemaster.cz>",
+      to: ["info@cakemaster.cz"],
+      subject: "Kurz je vyprodaný",
+      html: `
+        <p>Ahoj, královno!</p>
+
+        <p>
+          Nevím, jak jsi to zase dokázala,
+          ale znovu jsi kompletně vyprodala kurz
+          <strong>${courseName}</strong>
+          (${dateOnly})!
+        </p>
+
+        <p>Šikula! Jen tak dál!</p>
+        <p>Jsi nejlepší.</p>
+      `
+    });
+  }
 
   const jsDate = dateData?.date?.toDate
     ? dateData.date.toDate()
     : null;
 
   const dateOnly = jsDate
-    ? jsDate.toLocaleDateString("cs-CZ")
-    : "";
-
-  await resend.emails.send({
-    from: "CakeMaster <info@cakemaster.cz>",
-    to: ["info@cakemaster.cz"],
-    subject: "Kurz je vyprodaný",
-    html: `
-      <p>
-        Ahoj, královno!
-      </p>
-
-      <p>
-        Nevím, jak jsi to zase dokázala,
-        ale znovu jsi kompletně vyprodala kurz
-        <strong>${courseName}</strong>
-        (${dateOnly})!
-      </p>
-
-      <p>
-        Šikula! Jen tak dál!
-      </p>
-
-      <p>
-        Jsi nejlepší.
-      </p>
-    `
-  });
-
-}
-  const jsDate = dateData?.date?.toDate
-    ? dateData.date.toDate()
-    : null;
-
-  const dateOnly = jsDate
-    ? jsDate.toLocaleDateString("cs-CZ")
+    ? jsDate.toLocaleDateString("cs-CZ", {
+        timeZone: "Europe/Prague",
+      })
     : "Neznámý termín";
 
   const timeOnly = jsDate
-    ? jsDate.toLocaleTimeString("cs-CZ", { hour: "2-digit", minute: "2-digit" })
+    ? jsDate.toLocaleTimeString("cs-CZ", {
+        hour: "2-digit",
+        minute: "2-digit",
+        timeZone: "Europe/Prague",
+      })
     : "";
 
   await resend.emails.send({
@@ -117,9 +120,7 @@ if (bookedSeats + 1 === capacity) {
         Rezervace potvrzena
       </h2>
 
-      <p>
-        Dobrý den ${booking.firstName},
-      </p>
+      <p>Dobrý den ${booking.firstName},</p>
 
       <p>
         platba dorazila a místo na kurzu máte potvrzené.
@@ -152,9 +153,7 @@ if (bookedSeats + 1 === capacity) {
         </a>
       </div>
 
-      <p>
-        <strong>Prosím, vezměte si s sebou:</strong>
-      </p>
+      <p><strong>Prosím, vezměte si s sebou:</strong></p>
 
       <p>
         – oblečení, které nebude škoda ušpinit (budeme pracovat s barvami)<br/>
@@ -163,25 +162,21 @@ if (bookedSeats + 1 === capacity) {
 
       <br/>
 
-      <p>
-        Těším se na vás na kurzu.
-      </p>
+      <p>Těším se na vás na kurzu.</p>
 
-    
       <p>
         Elena<br/>
         Cake Master
       </p>
 
-       <div style="margin-top:24px;padding-top:16px;border-top:1px solid #eee;font-size:13px;color:#666;line-height:1.5;">
-  <strong>ℹ️ Storno podmínky</strong><br><br>
-  V případě zrušení účasti je platbu možné vrátit při odhlášení nejpozději
-  <strong>5 dní před kurzem</strong>.<br><br>
-  Při pozdějším zrušení je možné za sebe najít náhradníka.
-</div>
+      <div style="margin-top:24px;padding-top:16px;border-top:1px solid #eee;font-size:13px;color:#666;line-height:1.5;">
+        <strong>ℹ️ Storno podmínky</strong><br><br>
+        V případě zrušení účasti je platbu možné vrátit při odhlášení nejpozději
+        <strong>5 dní před kurzem</strong>.<br><br>
+        Při pozdějším zrušení je možné za sebe najít náhradníka.
+      </div>
     `
   });
 
   return NextResponse.json({ success: true });
-
 }
