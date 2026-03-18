@@ -16,10 +16,14 @@ export default async function WeddingsPage() {
   const data = await getWeddingPageContent();
 
   if (!data) {
-    return null;
+    return (
+      <main className="flex justify-center items-center py-20">
+        <p>Obsah se nepodařilo načíst.</p>
+      </main>
+    );
   }
 
-  const { reviews, galleryImages } = data;
+  const { reviews = [], galleryImages = [] } = data;
 
   return (
     <main className="flex flex-col">
@@ -29,7 +33,7 @@ export default async function WeddingsPage() {
         <HeroSection />
       </section>
 
-      {/* 2. Co říkají zákazníci – BÉŽOVÁ */}
+      {/* 2. Recenze – BÉŽOVÁ */}
       <section className="bg-[#faf7f0] pb-6 md:pb-8">
         <ReviewsSection reviews={reviews} />
       </section>
@@ -49,7 +53,7 @@ export default async function WeddingsPage() {
         <SweetBarSection />
       </section>
 
-      {/* 6. Velikost dortu a sweet baru – BÉŽOVÁ */}
+      {/* 6. Velikosti – BÉŽOVÁ */}
       <section className="bg-[#faf7f0] pb-6 md:pb-8">
         <SizeSection />
       </section>
