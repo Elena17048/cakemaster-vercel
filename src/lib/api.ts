@@ -3,6 +3,7 @@ import {
   getDocs,
   updateDoc,
   doc,
+  getDoc,
   DocumentData,
   QueryDocumentSnapshot,
   query,
@@ -10,10 +11,20 @@ import {
   orderBy,
   limit,
   startAfter,
-  getDoc,
+  addDoc,
+  setDoc,
+  deleteDoc,
 } from "firebase/firestore";
-import { ref, deleteObject } from "firebase/storage";
+
+import {
+  ref,
+  deleteObject,
+  uploadBytes,
+  getDownloadURL,
+} from "firebase/storage";
+
 import { db, storage } from "@/lib/firebase";
+
 import type {
   Course,
   SizeOption,
@@ -29,7 +40,6 @@ import type {
 /* ===================== */
 /* 🔑 FIRESTORE ROOT */
 /* ===================== */
-
 
 const categoriesCollectionRef = collection(db, "categories");
 const galleryCollectionRef = collection(db, "gallery");
@@ -63,7 +73,7 @@ const deleteImageFromStorage = async (imageUrl: string) => {
 };
 
 /* ===================== */
-/* SETTINGS / BANNERS */
+/* SETTINGS */
 /* ===================== */
 
 export const getBannerSettings = async (): Promise<BannerSettings> => {
@@ -96,7 +106,7 @@ export const getCourses = async (): Promise<Course[]> => {
   const q = query(coursesCollectionRef, limit(4));
   const snapshot = await getDocs(q);
 
-  return snapshot.docs.map(docSnap => ({
+  return snapshot.docs.map((docSnap) => ({
     id: docSnap.id,
     ...docSnap.data(),
   })) as Course[];
@@ -108,7 +118,7 @@ export const getCourses = async (): Promise<Course[]> => {
 
 export const getSizes = async (): Promise<SizeOption[]> => {
   const snapshot = await getDocs(sizesCollectionRef);
-  return snapshot.docs.map(docSnap => ({
+  return snapshot.docs.map((docSnap) => ({
     id: docSnap.id,
     label: docSnap.data().label,
     price: docSnap.data().price,
@@ -122,14 +132,14 @@ export const getSizes = async (): Promise<SizeOption[]> => {
 export const getCategories = async (): Promise<Category[]> => {
   const snapshot = await getDocs(categoriesCollectionRef);
 
-  return snapshot.docs.map(docSnap => ({
+  return snapshot.docs.map((docSnap) => ({
     id: docSnap.id,
     ...docSnap.data(),
   })) as Category[];
 };
 
 /* ===================== */
-/* 🖼️ GALLERY IMAGES */
+/* GALLERY */
 /* ===================== */
 
 export const getGalleryImages = async ({
@@ -140,14 +150,11 @@ export const getGalleryImages = async ({
   categoryId: string;
   pageSize?: number;
   lastVisible?: QueryDocumentSnapshot<DocumentData>;
-}): Promise<{
-  images: GalleryImage[];
-  lastVisible?: QueryDocumentSnapshot<DocumentData>;
-}> => {
+}) => {
   const baseQuery = [
     categoryId
-  ? where("categories", "array-contains", categoryId)
-  : orderBy("createdAt", "desc")
+      ? where("categories", "array-contains", categoryId)
+      : orderBy("createdAt", "desc"),
   ];
 
   const q = lastVisible
@@ -161,7 +168,7 @@ export const getGalleryImages = async ({
 
   const snapshot = await getDocs(q);
 
-  const images = snapshot.docs.map(docSnap => ({
+  const images = snapshot.docs.map((docSnap) => ({
     id: docSnap.id,
     ...docSnap.data(),
   })) as GalleryImage[];
@@ -173,21 +180,53 @@ export const getGalleryImages = async ({
 };
 
 /* ===================== */
-/* WEDDINGS */
+/* WEDDINGS (🔥 FIXED) */
 /* ===================== */
-
 export const getWeddingPageContent = async (): Promise<WeddingPageContent> => {
   try {
     const docRef = doc(contentCollectionRef, "weddings");
     const docSnap = await getDoc(docRef);
 
-    if (docSnap.exists()) {
-      return docSnap.data() as WeddingPageContent;
+    if (!docSnap.exists()) {
+      return {
+        reviews: [],
+        galleryImages: [],
+      };
     }
 
+    const data = docSnap.data();
+
+    const galleryImages = (data?.galleryImages || []).map(
+      (img: string, index: number) => {
+        let url = img;
+
+        if (!img.startsWith("http")) {
+          if (img.startsWith("gs://")) {
+            const path = img.replace(
+              "gs://cake-canvas-hr6n0.firebasestorage.app/",
+              ""
+            );
+
+            url = `https://firebasestorage.googleapis.com/v0/b/cake-canvas-hr6n0.appspot.com/o/${encodeURIComponent(
+              path
+            )}?alt=media`;
+          } else {
+            url = `https://firebasestorage.googleapis.com/v0/b/cake-canvas-hr6n0.appspot.com/o/${encodeURIComponent(
+              img
+            )}?alt=media`;
+          }
+        }
+
+        return {
+          id: `${index}`,
+          imageUrl: url,
+        };
+      }
+    );
+
     return {
-      reviews: [],
-      galleryImages: [],
+      reviews: data?.reviews || [],
+      galleryImages,
     };
   } catch (error) {
     console.error("Failed to load wedding page content:", error);
@@ -227,7 +266,7 @@ export const getOrders = async (): Promise<Order[]> => {
   const q = query(ordersCollectionRef, orderBy("createdAt", "desc"));
   const snapshot = await getDocs(q);
 
-  return snapshot.docs.map(docSnap => ({
+  return snapshot.docs.map((docSnap) => ({
     id: docSnap.id,
     ...docSnap.data(),
   })) as Order[];
@@ -244,13 +283,8 @@ export const updateOrderStatus = async ({
 };
 
 /* ===================== */
-/* ADMIN – CATEGORIES */
+/* ADMIN */
 /* ===================== */
-
-import { addDoc, setDoc, deleteDoc } from "firebase/firestore";
-import { uploadBytes, getDownloadURL } from "firebase/storage";
-
-/* CATEGORY CRUD */
 
 export const addCategory = async (data: Omit<Category, "id">) => {
   await addDoc(categoriesCollectionRef, data);
@@ -264,122 +298,18 @@ export const deleteCategory = async (id: string) => {
   await deleteDoc(doc(categoriesCollectionRef, id));
 };
 
-export const updateCategoryOrder = async (id: string, order: number) => {
-  await updateDoc(doc(categoriesCollectionRef, id), { order });
-};
-
-/* CATEGORY IMAGE */
-
 export const uploadCategoryImage = async (file: File): Promise<string> => {
   const storageRef = ref(storage, `categories/${Date.now()}_${file.name}`);
-
   await uploadBytes(storageRef, file);
   return await getDownloadURL(storageRef);
-};
-
-/* ===================== */
-/* ADMIN – COURSES */
-/* ===================== */
-
-export const addCourse = async (data: Omit<Course, "id">) => {
-  await addDoc(coursesCollectionRef, data);
-};
-
-export const updateCourse = async ({
-  id,
-  data,
-}: {
-  id: string;
-  data: Partial<Course>;
-}) => {
-  await updateDoc(doc(coursesCollectionRef, id), data);
-};
-
-export const deleteCourse = async (id: string) => {
-  await deleteDoc(doc(coursesCollectionRef, id));
-};
-
-export const uploadCourseImage = async (file: File): Promise<string> => {
-  const storageRef = ref(storage, `courses/${Date.now()}_${file.name}`);
-
-  await uploadBytes(storageRef, file);
-  return await getDownloadURL(storageRef);
-};
-
-/* ===================== */
-/* ADMIN – GALLERY */
-/* ===================== */
-
-export const addGalleryImage = async (data: Omit<GalleryImage, "id">) => {
-  await addDoc(galleryCollectionRef, data);
-};
-
-export const updateGalleryImage = async (
-  id: string,
-  data: Partial<GalleryImage>
-) => {
-  await updateDoc(doc(galleryCollectionRef, id), data);
-};
-
-export const deleteGalleryImage = async (id: string) => {
-  await deleteDoc(doc(galleryCollectionRef, id));
 };
 
 export const uploadGalleryImage = async (file: File): Promise<string> => {
   const storageRef = ref(storage, `gallery/${Date.now()}_${file.name}`);
-
   await uploadBytes(storageRef, file);
   return await getDownloadURL(storageRef);
 };
-
-/* ===================== */
-/* ADMIN – PAGE CONTENT */
-/* ===================== */
 
 export const updateWeddingPageContent = async (data: WeddingPageContent) => {
   await setDoc(doc(contentCollectionRef, "weddings"), data);
-};
-
-export const updateCorporatePageContent = async (
-  data: CorporatePageContent
-) => {
-  await setDoc(doc(contentCollectionRef, "corporate"), data);
-};
-
-/* ===================== */
-/* ADMIN – BANNERS */
-/* ===================== */
-
-export const updateBannerSettings = async (data: BannerSettings) => {
-  await setDoc(doc(settingsCollectionRef, "banners"), data);
-};
-
-/* ===================== */
-/* ADMIN – WEDDING IMAGES */
-/* ===================== */
-
-export const uploadWeddingImage = async (file: File): Promise<string> => {
-  const storageRef = ref(storage, `weddings/${Date.now()}_${file.name}`);
-
-  await uploadBytes(storageRef, file);
-  return await getDownloadURL(storageRef);
-};
-
-export const deleteWeddingImage = async (imageUrl: string) => {
-  await deleteImageFromStorage(imageUrl);
-};
-
-/* ===================== */
-/* ADMIN – CORPORATE IMAGES */
-/* ===================== */
-
-export const uploadCorporateImage = async (file: File): Promise<string> => {
-  const storageRef = ref(storage, `corporate/${Date.now()}_${file.name}`);
-
-  await uploadBytes(storageRef, file);
-  return await getDownloadURL(storageRef);
-};
-
-export const deleteCorporateImage = async (imageUrl: string) => {
-  await deleteImageFromStorage(imageUrl);
 };
