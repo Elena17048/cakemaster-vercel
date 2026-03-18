@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { adminDb } from "@/lib/firebase-admin";
 import { Button } from "@/components/ui/button";
 import {
