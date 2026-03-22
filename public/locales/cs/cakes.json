@@ -1,0 +1,14 @@
+{
+    "title": "Portfolio",
+    "subtitle": "Tady najdete nedávné dorty a zákusky - možná mezi nimi objevíte inspiraci pro ten svůj.",
+    "backToCategories": "Zpět na kategorie",
+    "error": "Při načítání obrázků došlo k chybě. Zkuste to prosím později.",
+    "noImages": {
+        "title": "Zatím žádné dorty...",
+        "subtitle": "Tato kategorie čeká na své první mistrovské dílo. Buďte první, kdo přidá dort!"
+    },
+    "noCategories": "Nebyly nalezeny žádné kategorie. Zkuste to znovu brzy!",
+    "showMoreButton": "Zobrazit více",
+    "loadingButton": "Načítání...",
+    "viewAll": "Zobrazit galerii"
+}

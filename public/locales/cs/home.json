@@ -1,0 +1,88 @@
+{
+  "hero": {
+    "title": "Dorty a zákusky jako umění",
+    "subtitle": "Cake Master je cukrářská laboratoř, kde se setkává jedinečnost s kvalitou. Vytvářím designové sladkosti přesně podle vašich představ – vždy z prvotřídních surovin a s důrazem na detail. Každý kousek je originál, připravený stát se sladkým středem vaší oslavy.",
+    "cta": "Objednat dort"
+  },
+  "gallery": {
+    "title": "Moje portfolio",
+    "subtitle": "Tady najdete nedávné dorty a zákusky – možná mezi nimi objevíte inspiraci pro ten svůj."
+  },
+  "services": {
+    "title": "Co nabízíme",
+    "customDesigns": {
+      "title": "Zakázkové návrhy",
+      "description": "Máte konkrétní vizi? Společně s vámi vytvoříme jedinečný dort pro jakoukoliv příležitost.",
+      "cta": "Navrhnout dort"
+    },
+    "bakingCourses": {
+      "title": "Kurzy pečení",
+      "description": "Připojte se k našim workshopům a naučte se tajemství profesionálního zdobení dortů od našich mistrů pekařů.",
+      "cta": "Prozkoumat kurzy"
+    },
+    "ediblePrinting": {
+      "title": "Jedlý tisk",
+      "description": "Personalizujte své dorty jedlými fotografiemi a designy. Ideální pro firemní akce a speciální milníky.",
+      "cta": "Zjistit více"
+    }
+  },
+  "questionnaire": {
+    "title": "Pojďme najít váš dokonalý dort!",
+    "q1": {
+      "title": "Je dort určen pro velkou oslavu (více než 15 hostů)?",
+      "yes": "Ano, je to velká párty",
+      "no": "Ne, je menší",
+      "imageAlt": "Velký slavnostní dort na večírku"
+    },
+    "q2": {
+      "title": "Dáváte přednost jednomu z našich osvědčených klasických designů, nebo máte na mysli konkrétní, jedinečný nápad?",
+      "classic": "Ukázat klasiku",
+      "specific": "Mám specifickou představu",
+      "imageAlt": "Klasický, elegantní design dortu"
+    }
+  },
+  "customCakeModal": {
+    "title": "Popište svůj vysněný dort",
+    "subtitle": "Povězte nám všechno! O jakou příležitost se jedná? Jaké příchutě, barvy a styly si představujete? Čím více detailů, tím lépe dokážeme vaši vizi zhmotnit.",
+    "contactNote": {
+      "text": "Pro složité objednávky nebo pokud byste si raději promluvili, nás neváhejte kontaktovat přímo na",
+      "or": "nebo e-mailem na"
+    },
+    "form": {
+      "description": {
+        "label": "Vaše představa dortu",
+        "placeholder": "Např. 'Dort pro 5. narozeniny. Téma jsou zvířátka z džungle. Chtěla bych čokoládovou příchuť s vanilkovým krémem a možná pár malých fondánových opiček a lístků.'"
+      },
+      "upload": {
+        "label": "Referenční obrázek (volitelné)",
+        "button": "Nahrát soubor",
+        "drag": "nebo přetáhněte",
+        "hint": "PNG, JPG do 10 MB. Sdílejte fotku, která vás inspiruje."
+      },
+      "email": {
+        "label": "Váš e-mail",
+        "placeholder": "vas@email.cz"
+      },
+      "phone": {
+        "label": "Telefonní číslo (volitelné)",
+        "placeholder": "+420 123 456 789"
+      },
+      "cancelButton": "Zrušit",
+      "submitButton": "Odeslat poptávku"
+    },
+    "toast": {
+      "title": "Poptávka odeslána!",
+      "description": "Děkujeme! Přijali jsme vaši poptávku na dort na míru a brzy vás budeme kontaktovat pro potvrzení detailů."
+    }
+  },
+  "location": {
+    "title": "Kde nás najdete"
+  },
+  "halloween": {
+    "title": "Strašidelné halloweenské cupcaky!",
+    "subtitle": "Pořiďte si naši limitovanou edici strašidelných cupcaků, které se skvěle hodí na vaši halloweenskou párty.",
+    "orderButton": {
+      "available": "Objednat cupcaky"
+    }
+  }
+}

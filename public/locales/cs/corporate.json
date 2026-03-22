@@ -1,0 +1,23 @@
+{
+    "title": "Firemní akce",
+    "hero": {
+        "title": "Pozvedněte své firemní akce",
+        "description": {
+            "p1": "Kromě soukromých zakázek se věnuji také sladkým realizacím pro firemní akce, konference, večírky a networkingová setkání. Mám zkušenosti s přípravou dezertů pro různé typy událostí a ráda spolupracuji se značkami, které chtějí své hosty nebo klienty potěšit kvalitním a reprezentativním sladkým pohoštěním.",
+            "p2": "Ke každé firemní zakázce přistupuji individuálně – s důrazem na chuť, vzhled a sladění s vizuální identitou společnosti. Nabízím řešení, která jsou elegantní, profesionální a přizpůsobená charakteru konkrétní akce, ať už se jedná o menší setkání nebo větší firemní událost.",
+            "p3": "Ráda pro Vás a Vaše hosty připravím:",
+            "list": [
+                "Dorty a cupcaky s vlastním logem",
+                "Značkové dezertní bary",
+                "Personalizované pochoutky jako dárky pro klienty",
+                "Catering pro velké firemní akce",
+                "A cokoliv dalšího dle Vaších přání"
+            ]
+        }
+    },
+    "reviews": {
+        "title": "Reference",
+        "subtitle": "Podívejte se, co o mých službách řikají firemní zákazníci."
+    },
+    "error": "Nepodařilo se načíst firemní obsah. Zkuste to prosím znovu později."
+}

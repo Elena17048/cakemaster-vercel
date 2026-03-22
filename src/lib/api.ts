@@ -1,0 +1,315 @@
+import {
+  collection,
+  getDocs,
+  updateDoc,
+  doc,
+  getDoc,
+  DocumentData,
+  QueryDocumentSnapshot,
+  query,
+  where,
+  orderBy,
+  limit,
+  startAfter,
+  addDoc,
+  setDoc,
+  deleteDoc,
+} from "firebase/firestore";
+
+import {
+  ref,
+  deleteObject,
+  uploadBytes,
+  getDownloadURL,
+} from "firebase/storage";
+
+import { db, storage } from "@/lib/firebase";
+
+import type {
+  Course,
+  SizeOption,
+  GalleryImage,
+  Category,
+  BannerSettings,
+  WeddingPageContent,
+  CorporatePageContent,
+  Order,
+  OrderStatus,
+} from "@/lib/types";
+
+/* ===================== */
+/* 🔑 FIRESTORE ROOT */
+/* ===================== */
+
+const categoriesCollectionRef = collection(db, "categories");
+const galleryCollectionRef = collection(db, "gallery");
+const settingsCollectionRef = collection(db, "site_settings");
+const contentCollectionRef = collection(db, "site_content");
+const ordersCollectionRef = collection(db, "orders");
+const coursesCollectionRef = collection(db, "courses");
+const sizesCollectionRef = collection(db, "sizes");
+
+/* ===================== */
+/* HELPERS */
+/* ===================== */
+
+const deleteImageFromStorage = async (imageUrl: string) => {
+  if (
+    !imageUrl ||
+    (!imageUrl.startsWith("gs://") &&
+      !imageUrl.startsWith("https://firebasestorage.googleapis.com"))
+  ) {
+    return;
+  }
+
+  try {
+    const imageRef = ref(storage, imageUrl);
+    await deleteObject(imageRef);
+  } catch (error: any) {
+    if (error.code !== "storage/object-not-found") {
+      console.error("Error deleting image from storage", error);
+    }
+  }
+};
+
+/* ===================== */
+/* SETTINGS */
+/* ===================== */
+
+export const getBannerSettings = async (): Promise<BannerSettings> => {
+  try {
+    const docRef = doc(settingsCollectionRef, "banners");
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return docSnap.data() as BannerSettings;
+    }
+
+    return {
+      showHalloweenBanner: false,
+      showChristmasBanner: false,
+    };
+  } catch (error) {
+    console.error("Failed to load banner settings:", error);
+    return {
+      showHalloweenBanner: false,
+      showChristmasBanner: false,
+    };
+  }
+};
+
+/* ===================== */
+/* COURSES */
+/* ===================== */
+
+export const getCourses = async (): Promise<Course[]> => {
+  const q = query(coursesCollectionRef, limit(4));
+  const snapshot = await getDocs(q);
+
+  return snapshot.docs.map((docSnap) => ({
+    id: docSnap.id,
+    ...docSnap.data(),
+  })) as Course[];
+};
+
+/* ===================== */
+/* SIZES */
+/* ===================== */
+
+export const getSizes = async (): Promise<SizeOption[]> => {
+  const snapshot = await getDocs(sizesCollectionRef);
+  return snapshot.docs.map((docSnap) => ({
+    id: docSnap.id,
+    label: docSnap.data().label,
+    price: docSnap.data().price,
+  })) as SizeOption[];
+};
+
+/* ===================== */
+/* CATEGORIES */
+/* ===================== */
+
+export const getCategories = async (): Promise<Category[]> => {
+  const snapshot = await getDocs(categoriesCollectionRef);
+
+  return snapshot.docs.map((docSnap) => ({
+    id: docSnap.id,
+    ...docSnap.data(),
+  })) as Category[];
+};
+
+/* ===================== */
+/* GALLERY */
+/* ===================== */
+
+export const getGalleryImages = async ({
+  categoryId,
+  pageSize = 9,
+  lastVisible,
+}: {
+  categoryId: string;
+  pageSize?: number;
+  lastVisible?: QueryDocumentSnapshot<DocumentData>;
+}) => {
+  const baseQuery = [
+    categoryId
+      ? where("categories", "array-contains", categoryId)
+      : orderBy("createdAt", "desc"),
+  ];
+
+  const q = lastVisible
+    ? query(
+        galleryCollectionRef,
+        ...baseQuery,
+        startAfter(lastVisible),
+        limit(pageSize)
+      )
+    : query(galleryCollectionRef, ...baseQuery, limit(pageSize));
+
+  const snapshot = await getDocs(q);
+
+  const images = snapshot.docs.map((docSnap) => ({
+    id: docSnap.id,
+    ...docSnap.data(),
+  })) as GalleryImage[];
+
+  return {
+    images,
+    lastVisible: snapshot.docs[snapshot.docs.length - 1],
+  };
+};
+
+/* ===================== */
+/* WEDDINGS (🔥 FIXED) */
+/* ===================== */
+export const getWeddingPageContent = async (): Promise<WeddingPageContent> => {
+  try {
+    const docRef = doc(contentCollectionRef, "weddings");
+    const docSnap = await getDoc(docRef);
+
+    if (!docSnap.exists()) {
+      return {
+        reviews: [],
+        galleryImages: [],
+      };
+    }
+
+    const data = docSnap.data();
+
+    const galleryImages = (data?.galleryImages || []).map(
+      (img: string, index: number) => {
+        let url = img;
+
+        if (!img.startsWith("http")) {
+          if (img.startsWith("gs://")) {
+            const path = img.replace(
+              "gs://cake-canvas-hr6n0.firebasestorage.app/",
+              ""
+            );
+
+            url = `https://firebasestorage.googleapis.com/v0/b/cake-canvas-hr6n0.appspot.com/o/${encodeURIComponent(
+              path
+            )}?alt=media`;
+          } else {
+            url = `https://firebasestorage.googleapis.com/v0/b/cake-canvas-hr6n0.appspot.com/o/${encodeURIComponent(
+              img
+            )}?alt=media`;
+          }
+        }
+
+        return {
+          id: `${index}`,
+          imageUrl: url,
+        };
+      }
+    );
+
+    return {
+      reviews: data?.reviews || [],
+      galleryImages,
+    };
+  } catch (error) {
+    console.error("Failed to load wedding page content:", error);
+    return {
+      reviews: [],
+      galleryImages: [],
+    };
+  }
+};
+
+/* ===================== */
+/* CORPORATE */
+/* ===================== */
+
+export const getCorporatePageContent =
+  async (): Promise<CorporatePageContent> => {
+    try {
+      const docRef = doc(contentCollectionRef, "corporate");
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        return docSnap.data() as CorporatePageContent;
+      }
+
+      return { reviews: [], galleryImages: [] };
+    } catch (error) {
+      console.error("Failed to load corporate page content:", error);
+      return { reviews: [], galleryImages: [] };
+    }
+  };
+
+/* ===================== */
+/* ORDERS */
+/* ===================== */
+
+export const getOrders = async (): Promise<Order[]> => {
+  const q = query(ordersCollectionRef, orderBy("createdAt", "desc"));
+  const snapshot = await getDocs(q);
+
+  return snapshot.docs.map((docSnap) => ({
+    id: docSnap.id,
+    ...docSnap.data(),
+  })) as Order[];
+};
+
+export const updateOrderStatus = async ({
+  orderId,
+  status,
+}: {
+  orderId: string;
+  status: OrderStatus;
+}) => {
+  await updateDoc(doc(ordersCollectionRef, orderId), { status });
+};
+
+/* ===================== */
+/* ADMIN */
+/* ===================== */
+
+export const addCategory = async (data: Omit<Category, "id">) => {
+  await addDoc(categoriesCollectionRef, data);
+};
+
+export const updateCategory = async (id: string, data: Partial<Category>) => {
+  await updateDoc(doc(categoriesCollectionRef, id), data);
+};
+
+export const deleteCategory = async (id: string) => {
+  await deleteDoc(doc(categoriesCollectionRef, id));
+};
+
+export const uploadCategoryImage = async (file: File): Promise<string> => {
+  const storageRef = ref(storage, `categories/${Date.now()}_${file.name}`);
+  await uploadBytes(storageRef, file);
+  return await getDownloadURL(storageRef);
+};
+
+export const uploadGalleryImage = async (file: File): Promise<string> => {
+  const storageRef = ref(storage, `gallery/${Date.now()}_${file.name}`);
+  await uploadBytes(storageRef, file);
+  return await getDownloadURL(storageRef);
+};
+
+export const updateWeddingPageContent = async (data: WeddingPageContent) => {
+  await setDoc(doc(contentCollectionRef, "weddings"), data);
+};

@@ -1,0 +1,95 @@
+{
+  "hero": {
+    "title": "Cakes for every occasion",
+    "subtitle": "From birthdays to weddings, we craft custom cakes that make every moment special.",
+    "cta": "Order a cake"
+  },
+  "gallery": {
+    "title": "Our Latest Creations",
+    "subtitle": "Get inspired by some of our recent custom cakes. Each one is a unique work of art."
+  },
+  "services": {
+    "title": "What We Offer",
+    "customDesigns": {
+      "title": "Custom Designs",
+      "description": "Have a specific vision? We'll work with you to create the cake of your dreams.",
+      "cta": "Get a quote"
+    },
+    "ediblePrinting": {
+      "title": "Edible Printing",
+      "description": "Personalize your cake with any image or logo printed on edible paper.",
+      "cta": "Learn more"
+    },
+    "courses": {
+      "title": "Baking Courses",
+      "description": "Join our fun and informative classes to learn the art of cake decorating from the masters.",
+      "cta": "View courses"
+    }
+  },
+  "location": {
+    "title": "Visit Our Studio"
+  },
+  "questionnaire": {
+    "title": "Let's find your perfect cake!",
+    "q1": {
+      "title": "Is the cake for a party of more than 15 people?",
+      "imageAlt": "A large birthday cake for a party",
+      "yes": "Yes, it's a big party",
+      "no": "No, it's a smaller group"
+    },
+    "q2": {
+      "title": "Do you have a specific design in mind?",
+      "imageAlt": "A simple, classic cake",
+      "classic": "I like classic designs",
+      "specific": "I have an idea"
+    }
+  },
+  "customCakeModal": {
+    "title": "Request a Custom Cake",
+    "subtitle": "Describe your ideal cake and upload a reference photo if you have one. We'll get back to you with a quote!",
+    "form": {
+      "description": {
+        "label": "Cake Description",
+        "placeholder": "e.g., A two-tier vanilla cake for a 5-year-old's birthday. It should have a superhero theme with bright colors..."
+      },
+      "upload": {
+        "label": "Reference Image (Optional)",
+        "button": "Upload a file",
+        "drag": "or drag and drop",
+        "hint": "PNG, JPG, GIF up to 10MB"
+      },
+      "email": {
+        "label": "Your Email",
+        "placeholder": "your@email.com"
+      },
+      "phone": {
+        "label": "Your Phone (Optional)",
+        "placeholder": "+420 123 456 789"
+      },
+      "cancelButton": "Cancel",
+      "submitButton": "Send Inquiry"
+    },
+    "toast": {
+      "title": "Inquiry Sent!",
+      "description": "Thank you! We've received your custom cake request and will be in touch shortly."
+    },
+    "contactNote": {
+      "text": "For urgent matters, please call us at",
+      "or": " or email us at "
+    }
+  },
+  "christmas": {
+    "title": "Christmas Cupcake Special!",
+    "subtitle": "Order our limited edition festive cupcakes, perfect for your holiday celebration.",
+    "orderButton": {
+      "available": "Order Now"
+    }
+  },
+  "halloween": {
+    "title": "Spooky Halloween Cupcakes!",
+    "subtitle": "Get our limited edition spooky cupcakes, perfect for your Halloween party.",
+    "orderButton": {
+      "available": "Order cupcakes"
+    }
+  }
+}

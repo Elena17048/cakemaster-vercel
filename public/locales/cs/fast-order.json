@@ -1,0 +1,55 @@
+
+{
+  "title": "Rychlá objednávka",
+  "description": "",
+  "form": {
+    "title": "Sestavte si svůj rychlý dort",
+    "subtitle": "Vyberte si své favority a my se postaráme o zbytek.",
+    "labels": {
+      "flavor": "Vyberte příchuť",
+      "size": "Vyberte velikost",
+      "decorations": "Pevné zdobení: Čerstvé ovoce a makronky",
+      "decorationWishes": "Máte nějaké specifické požadavky na zdobení?",
+      "chocolateDrip": "Čokoládová stékaná poleva",
+      "pickupDate": "Datum vyzvednutí",
+      "email": "E-mail",
+      "phone": "Telefon (nepovinné)"
+    },
+    "placeholders": {
+      "decorations": "např. 'Prosím bez jahod', 'Chtěla bych na dort číslo 30' atd.",
+      "pickupDate": "Vyberte datum vyzvednutí",
+      "email": "vas.email@priklad.cz",
+      "phone": "+420 123 456 789"
+    },
+    "descriptions": {
+      "decorations": "Dejte nám vědět, zda máte barevné preference nebo drobné detaily, které bychom měli zvážit."
+    },
+    "toast": {
+      "title": "🎉 Objednávka odeslána!",
+      "description": "Přijali jsme vaši rychlou objednávku a brzy se vám ozveme s potvrzením."
+    },
+    "total": "Celkem",
+    "selectSizePrompt": "Vyberte velikost",
+    "submitButton": "Odeslat rychlou objednávku",
+    "fixedDecorations": "Dort bude ozdoben směsí čerstvého sezónního ovoce a makronek."
+  },
+  "options": {
+    "flavors": {
+      "chocoRaspberry": "Čokoláda s malinami",
+      "tropicalMangoPassion": "Tropický s mango a marakuji",
+      "oreoCheesecake": "Oreo s cheesecakem",
+      "pistachioRaspberryStrawberry": "Pistaciový s malinami a jahodami",
+      "carrotCherry": "Mrkvový s višněmi",
+      "strawberryVanillaCheesecake": "Jahodový s vanilkovým cheesecakem"
+    },
+    "sizes": {
+      "small_1_5kg": "pro 7-8 lidi (1,5 kg)",
+      "medium_2_5kg": "pro 12-13 lidi (2,5 kg)"
+    },
+    "chocolateDrips": {
+      "none": "Žádná",
+      "white": "Bílá čokoláda",
+      "dark": "Tmavá čokoláda"
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+    "title": "Tisk na jedlý papír",
+    "subtitle": "Oživte své obrázky na našem vysoce kvalitním jedlém cukrovém papíru. Ideální pro personalizaci dortů, cupcaků a sušenek.",
+    "details": {
+        "title": "Podrobnosti o tisku",
+        "subtitle": "Vše, co potřebujete vědět, abyste mohli začít.",
+        "fileTypes": {
+            "title": "Typy souborů",
+            "description": "Přijímáme soubory PDF, JPG a PNG. Pro nejlepší výsledky prosím poskytněte obrázky ve vysokém rozlišení."
+        },
+        "quality": {
+            "title": "Kvalita obrázku",
+            "description": "Konečná kvalita tisku závisí na vašem původním obrázku. Doporučujeme rozlišení alespoň 300 DPI."
+        },
+        "pricing": {
+            "title": "Velikost a ceny",
+            "description": "Tiskneme na jedlé listy formátu A4 za 250 Kč za stránku. Můžeme vám pomoci uspořádat více menších obrázků na jeden list."
+        }
+    },
+    "request": {
+        "title": "Požádat o tisk",
+        "subtitle": "Vyplňte níže uvedený formulář a my se vám ozveme s potvrzením a platebními údaji."
+    },
+    "form": {
+        "name": {
+            "label": "Jméno",
+            "placeholder": "Vaše jméno"
+        },
+        "email": {
+            "label": "Email",
+            "placeholder": "vas.email@priklad.cz"
+        },
+        "upload": {
+            "label": "Soubor s designem",
+            "button": "Nahrát soubor",
+            "drag": "nebo přetáhnout",
+            "hint": "PDF, PNG, JPG do 10 MB."
+        },
+        "notes": {
+            "label": "Poznámky",
+            "placeholder": "Nějaké speciální pokyny? např. 'Potřebuji dva kruhy o průměru 10 cm z tohoto obrázku.'"
+        },
+        "submit": "Odeslat požadavek na tisk",
+        "altEmail": {
+            "text": "Alternativně můžete soubor a pokyny zaslat emailem na "
+        }
+    }
+}

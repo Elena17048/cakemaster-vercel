@@ -1,0 +1,43 @@
+{
+    "title": "Vánoční speciál",
+    "subtitle": "Limitovaná edice svátečních cupcaků, nyní k předobjednání!",
+    "description": {
+        "title": "Chuť vánoční pohody",
+        "p1": "Dostaňte se do sváteční nálady s našimi exkluzivními vánočními perníkovými cupcaky. Tyto lahodné pochoutky mají základ z kořeněného perníkového těsta, završený lahodným krémovým sýrovým krémem a posypaný špetkou sváteční magie.",
+        "p2": "Ideální pro vánoční večírky, rodinná setkání nebo jen jako speciální pochoutka pro vás. Ale pospěšte si, jsou k dispozici pouze po omezenou dobu a v omezeném množství!"
+    },
+    "stock": {
+        "title": "Dostupnost",
+        "remaining": "zbývá",
+        "note": "Předobjednejte si nyní, abyste si zajistili svou várku!"
+    },
+    "orderButton": {
+        "available": "Předobjednat nyní",
+        "soldOut": "Vyprodáno"
+    },
+    "banner": {
+        "text": "Limitovaná nabídka: Předobjednávka vánočních cupcaků je spuštěna!",
+        "textShort": "Vánoční předobjednávka!"
+    },
+    "modal": {
+        "title": "Objednat vánoční cupcaky",
+        "subtitle": "Zajistěte si své sváteční perníkové cupcaky. Omezené skladové zásoby!",
+        "quantity": {
+            "label": "Množství (krabička po 6 ks)",
+            "note": "Maximálně {max} krabiček na objednávku."
+        },
+        "date": {
+            "label": "Datum vyzvednutí"
+        },
+        "time": {
+            "label": "Čas vyzvednutí",
+            "placeholder": "Vyberte čas"
+        },
+        "total": "Celkem",
+        "confirmButton": "Potvrdit předobjednávku",
+        "toast": {
+            "title": "Předobjednávka potvrzena!",
+            "description": "Vaše objednávka na {{count}} krabiček je potvrzena k vyzvednutí dne {{date}} v {{time}}."
+        }
+    }
+}

@@ -1,0 +1,41 @@
+{
+  "title": "Jak se zrodil Cake Master?",
+  "subtitle": "Jsme cukrářská laboratoř, kde se dorty a zákusky mění v malé kousky jedlého umění.",
+  "story": {
+    "section1": {
+      "title": "",
+      "p1": "Ahoj, já jsem Elena a jsem zakladatelkou cukrářské laboratoře Cake Master.",
+      "p2": "„Vyrůstala jsem v rodině, kde se po generace dědila láska k pečení a cukrářskému řemeslu,“ – to vám řekne skoro každá cukrářka. Jenže tohle není ani zdaleka můj příběh. Široko daleko jsem v rodině jediná, kdo ví, že mouka se dá použít i na něco jiného než palačinky."
+    },
+    "section2": {
+      "title": "",
+      "p1": "Když jsme s bratrem jako děti listovali mamčinou kuchařkou a narazili na recepty velkých dortů, které začínaly větou „vemte 18 vajec“, máma nám knihu okamžitě sebrala, aby včas zarazila cukrářské pokusy. Takové množství surovin nám rozhodně nikdy nechtěla svěřit.",
+      "p2": "První dort jsem upekla až v roce 2018 – pro svůj tým v práci. Našla jsem recept na mrkvový dort, který byl napsaný doslova „pro blbce“ – krok za krokem vysvětlený tak, že to muselo vyjít. Tak jsem rozhodla, že to zkusím. A světe div se, vyšlo to! Dokonce tak dobře, že za mnou jeden kolega přišel a prozradil, že lepší mrkváč v životě nejedl. A to ve mně něco zlomilo."
+    },
+    "section3": {
+      "title": "",
+      "p1": "Pak přišlo roční studium cukrářiny na Poděbradské střední hotelové škole (mě bylo 32, spolužákům 16), první výpomoc zkušeným cukrářům a první dorty pro známé a kamarády. Ale trvalo ještě 7 dlouhých let, než jsem sebrala odvahu odejít z velké firmy a dát svým cukrářským ambicím zelenou.",
+      "p2": "A tak vznikl Cake Master – místo, kde se dorty a zákusky mění v malé kousky jedlého umění."
+    }
+  },
+  "values": {
+    "title": "Naše zásady",
+    "quality": {
+      "title": "Nekompromisní kvalita",
+      "description": "Na kvalitě nikdy nešetříme. Využíváme jen ty nejlepší suroviny a pečlivě dbáme na každý detail."
+    },
+    "community": {
+      "title": "Jsme cukrářská laboratoř",
+      "description": "Rádi experimentujeme, zkoušíme a hledáme to nejlepší a nejzajímavější. Unikátní design, nové chutě a odvážné barvy – to je naše vášeň."
+    },
+    "excellence": {
+      "title": "Spolehlivost",
+      "description": "„Pacta sunt servanda“ – smlouvy je nutno dodržovat. My vždy dodržíme to, co jsme slíbili."
+    }
+  },
+  "cta": {
+    "title": "Máte zájem o dort na míru?",
+    "subtitle": "Prohlédněte si naši galerii a objednejte si dort přesně podle vašich představ.",
+    "button": "Objednat dort"
+  }
+}

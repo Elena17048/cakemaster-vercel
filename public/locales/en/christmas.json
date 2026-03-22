@@ -1,0 +1,43 @@
+{
+    "title": "Christmas Special",
+    "subtitle": "Limited edition festive cupcakes, available for pre-order now!",
+    "description": {
+        "title": "A Taste of Christmas Cheer",
+        "p1": "Get into the holiday spirit with our exclusive Christmas Gingerbread Cupcakes. These delightful treats feature a spiced gingerbread cake base, topped with a luscious cream cheese frosting and a sprinkle of festive magic.",
+        "p2": "Perfect for holiday parties, family gatherings, or just as a special treat for yourself. But hurry, they are available for a limited time only and in limited quantities!"
+    },
+    "stock": {
+        "title": "Availability",
+        "remaining": "remaining",
+        "note": "Pre-order now to secure your batch!"
+    },
+    "orderButton": {
+        "available": "Pre-order Now",
+        "soldOut": "Sold Out"
+    },
+    "banner": {
+        "text": "Limited Time: Christmas Cupcake Pre-order is Live!",
+        "textShort": "Christmas Pre-order!"
+    },
+    "modal": {
+        "title": "Order Christmas Cupcakes",
+        "subtitle": "Secure your festive gingerbread cupcakes. Limited stock available!",
+        "quantity": {
+            "label": "Quantity (Box of 6)",
+            "note": "Maximum {max} boxes per order."
+        },
+        "date": {
+            "label": "Pickup Date"
+        },
+        "time": {
+            "label": "Pickup Time",
+            "placeholder": "Select a time"
+        },
+        "total": "Total",
+        "confirmButton": "Confirm Pre-order",
+        "toast": {
+            "title": "Pre-order Confirmed!",
+            "description": "Your order for {{count}} box(es) is confirmed for pickup on {{date}} at {{time}}."
+        }
+    }
+}

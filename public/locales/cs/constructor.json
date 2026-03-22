@@ -1,0 +1,54 @@
+{
+    "title": "Rychlá objednávka klasického dortu",
+    "description": "Naše klasické dorty jsou vždy zdobeny makronkami a čerstvým ovocem. Vyberte si oblíbenou příchuť, velikost a dejte nám vědět o speciálních přáních na zdobení.",
+    "form": {
+        "title": "Sestavte si svůj klasický dort",
+        "subtitle": "Postupujte podle kroků a nakonfigurujte si objednávku klasického dortu.",
+        "labels": {
+            "flavor": "Vyberte si příchuť",
+            "size": "Vyberte si velikost",
+            "decorations": "Fixní zdobení",
+            "decorationWishes": "Přání na zdobení",
+            "chocolateDrip": "Čokoládová poleva",
+            "pickupDate": "Datum vyzvednutí",
+            "email": "Váš email",
+            "phone": "Telefonní číslo (nepovinné)"
+        },
+        "fixedDecorations": "Zdobeno makronkami a čerstvým ovocem.",
+        "descriptions": {
+            "decorations": "například nápis 'Všechno nejlepší', či číslovka 5"
+        },
+        "placeholders": {
+            "decorations": "Popište text nebo čísla, která byste chtěli na dortu...",
+            "pickupDate": "Vyberte datum",
+            "email": "vas.email@priklad.cz",
+            "phone": "+420 123 456 789"
+        },
+        "total": "Celková cena",
+        "selectSizePrompt": "Vyberte velikost",
+        "submitButton": "Odeslat objednávku",
+        "toast": {
+            "title": "Objednávka odeslána!",
+            "description": "Přijali jsme vaši objednávku a brzy vám pošleme potvrzovací email."
+        }
+    },
+    "options": {
+        "flavors": {
+            "chocoRaspberry": "Čokoláda s malinami",
+            "tropicalMangoPassion": "Tropický s mangem a marakujou",
+            "oreoCheesecake": "Oreo s cheesecakem",
+            "pistachioRaspberryStrawberry": "Pistáciový s malinami a jahodami",
+            "carrotCherry": "Mrkvový s višněmi",
+            "strawberryVanillaCheesecake": "Jahodový s vanilkovým cheesecakem"
+        },
+        "sizes": {
+            "small_1_5kg": "Pro 7-8 hostů (1,5 kg)",
+            "medium_2_5kg": "Pro 12-13 hostů (2,5 kg)"
+        },
+        "chocolateDrips": {
+            "none": "Žádná",
+            "white": "Z bílé čokolády",
+            "dark": "Z tmavé čokolády"
+        }
+    }
+}

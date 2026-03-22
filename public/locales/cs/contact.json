@@ -1,0 +1,25 @@
+{
+    "title": "Kontakty",
+    "subtitle": "Máte dotaz, chcete si objednat nebo poradit? Neváhejte se mi ozvat prostřednictvím níže uvedených kanálů.",
+  
+    "telefon": {
+      "title": "Telefon",
+      "subtitle": "Volejte, posílejte zprávy či pište na WhatsApp."
+    },
+  
+    "email": {
+      "title": "E-mail",
+      "subtitle": "Napište mi, ráda se vám ozvu."
+    },
+  
+    "form": {
+      "title": "Kontaktní formulář",
+      "subtitle": "Napište mi, ozvu se vám co nejdříve."
+    },
+  
+    "location": {
+      "title": "Kde mě najdete",
+      "subtitle": "Svoje objednávky vyzvednete tady"
+    }
+  }
+  

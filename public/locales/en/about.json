@@ -1,0 +1,41 @@
+{
+  "title": "How Cake Master Was Born",
+  "subtitle": "We are a pastry laboratory where cakes and desserts are transformed into small pieces of edible art.",
+  "story": {
+    "section1": {
+      "title": "How Cake Master Was Born",
+      "p1": "Hi, I'm Elena, and I'm the founder of the Cake Master pastry laboratory.",
+      "p2": "'I grew up in a family where the love for baking and pastry craftsmanship was passed down for generations' – that's what almost every pastry chef will tell you. But this is not my story at all. In my family, I'm the only one far and wide who knows that flour can be used for something other than pancakes."
+    },
+    "section2": {
+      "title": "The First Carrot Cake",
+      "p1": "When my brother and I were kids, browsing through my mom's cookbook, we came across recipes for large cakes that began with the sentence 'take 18 eggs.' My mom immediately took the book from us to stop any pastry experiments in their tracks. She certainly never wanted to entrust us with such a large quantity of ingredients.",
+      "p2": "I baked my first cake in 2018 – for my team at work. I found a recipe for a carrot cake that was written literally 'for dummies' – explained step-by-step so that it had to work. So I decided to give it a try. And lo and behold, it worked! It turned out so well that a colleague came to me and said he had never eaten a better carrot cake in his life. And that changed something in me."
+    },
+    "section3": {
+      "title": "The Road to Cake Master",
+      "p1": "Then came a year of studying pastry at the Poděbrady Hotel School (I was 32, my classmates were 16), my first time assisting experienced pastry chefs, and my first cakes for friends and acquaintances. But it took another 7 long years before I gathered the courage to leave a large corporation and give my pastry ambitions the green light.",
+      "p2": "And so, Cake Master was born – a place where cakes and desserts are transformed into small pieces of edible art."
+    }
+  },
+  "values": {
+    "title": "Our Principles",
+    "quality": {
+      "title": "Uncompromising Quality",
+      "description": "We never compromise on quality. We use only the best ingredients and pay careful attention to every detail."
+    },
+    "community": {
+      "title": "We are a pastry laboratory",
+      "description": "We love to experiment, try new things, and search for the best and most interesting. Unique design, new flavors, and bold colors – that's our passion."
+    },
+    "excellence": {
+      "title": "Reliability",
+      "description": "'Pacta sunt servanda' – agreements must be kept. We always deliver what we promise."
+    }
+  },
+  "cta": {
+    "title": "Interested in a custom cake?",
+    "subtitle": "Browse our gallery and order a cake exactly to your specifications.",
+    "button": "Order a Cake"
+  }
+}

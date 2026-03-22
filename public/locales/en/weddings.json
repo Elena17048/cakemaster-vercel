@@ -1,0 +1,15 @@
+{
+    "title": "Weddings",
+    "hero": {
+        "title": "Unforgettable Wedding Cakes",
+        "description": "Your wedding day deserves a cake that's as unique and memorable as your love story. At cakemaster.cz, we specialize in crafting bespoke wedding cakes that are not only visually stunning but also exquisitely delicious.\nFrom classic multi-tiered elegance to modern, artistic designs, our team works closely with you to bring your vision to life. We use the finest ingredients to ensure every slice is a moment of pure bliss for you and your guests."
+    },
+    "reviews": {
+        "title": "What Our Couples Say",
+        "subtitle": "We're honored to have been a part of so many beautiful love stories."
+    },
+    "gallery": {
+        "showMore": "Show more"
+    },
+    "error": "Could not load wedding content. Please check back later."
+}

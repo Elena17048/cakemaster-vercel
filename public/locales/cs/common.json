@@ -1,0 +1,27 @@
+
+{
+    "nav": {
+        "home": "Domů",
+        "aboutUs": "O nás",
+        "fastOrder": "Rychlá objednávka",
+        "gallery": "Galerie",
+        "weddings": "Svatby",
+        "corporate": "Firemní",
+        "print": "Jedlý tisk",
+        "courses": "Kurzy",
+        "contact": "Kontakt"
+    },
+    "contact": {
+        "info": {
+            "phone": "+420 774 351 057",
+            "email": "objednavky@cakemaster.cz"
+        },
+        "hours": {
+            "label": "Otevírací doba",
+            "time": "Po-So 10:00 - 18:00"
+        }
+    },
+    "footer": {
+        "rights": "Všechna práva vyhrazena."
+    }
+}

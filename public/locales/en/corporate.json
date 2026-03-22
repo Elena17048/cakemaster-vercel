@@ -1,0 +1,24 @@
+{
+    "title": "Corporate Events",
+    "hero": {
+        "title": "Elevate Your Corporate Events",
+        "description": {
+            "p1": "Impress your clients, partners, and employees with stunning, custom-branded cakes and desserts from cakemaster.cz. Whether it's a product launch, a company anniversary, or a holiday party, our creations add a touch of elegance and a memorable sweet note to any corporate occasion.",
+            "p2": "We understand the importance of brand identity. Our team excels at incorporating your company logo, colors, and themes into delicious, high-quality cakes, cupcakes, and other treats. We offer a seamless ordering process and reliable delivery to ensure your event is a sweet success.",
+            "p3": "Our corporate services include:",
+            "list": [
+                "Custom logo cakes and cupcakes",
+                "Branded dessert tables",
+                "Personalized treats for client gifts",
+                "Catering for large-scale corporate functions"
+            ],
+            "p4": "Let us help you make a lasting impression.",
+            "p5": "Contact us today to discuss your requirements and receive a custom quote."
+        }
+    },
+    "reviews": {
+        "title": "Trusted by Top Companies",
+        "subtitle": "See why businesses choose us to sweeten their events."
+    },
+    "error": "Could not load corporate content. Please check back later."
+}

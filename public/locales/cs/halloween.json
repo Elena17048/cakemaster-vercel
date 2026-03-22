@@ -1,0 +1,59 @@
+{
+    "title": "Halloweenské cupcakes",
+    "subtitle": "Dostaňte se do strašidelné nálady s naší limitovanou edicí halloweenských cupcakes!",
+    "description": {
+        "title": "V každé krabičce najdete 6 příchutí",
+        "p1": "Letos jsme si pro vás připravili speciální halloweenskou krabičku cupcakes. Na co se můžete těšit?",
+        "flavors": [
+            "Čokoláda s malinami",
+            "Čokoláda se slaným karamelem",
+            "Borůvky",
+            "Citron s mákem",
+            "Red velvet s višněmi",
+            "Mrkvový s karamelem"
+        ],
+        "pickup": "Vydání objednávek proběhne 30. a 31.10."
+    },
+    "boxes": {
+        "selectTitle": "Vyberte velikost krabice",
+        "box_6": {
+            "title": "Krabice 6 kusů",
+            "price": "540 Kč"
+        },
+        "box_12": {
+            "title": "Krabice 12 kusů",
+            "price": "1050 Kč"
+        }
+    },
+    "form": {
+        "quantity": "Počet krabic",
+        "total": "Celková cena"
+    },
+    "orderButton": {
+        "available": "Objednat",
+        "soldOut": "Vyprodáno"
+    },
+    "modal": {
+        "title": "Dokončete svou objednávku",
+        "subtitle": "Prosím, vyplňte Vaše kontaktní údaje pro dokončení objednávky.",
+        "form": {
+            "name": "Jméno a Příjmení",
+            "email": "Email",
+            "phone": "Telefon (volitelné)"
+        },
+        "date": {
+            "label": "Kdy si přejete objednávku vyzvednout?",
+            "placeholder": "Vyberte datum"
+        },
+        "total": "Celkem",
+        "confirmButton": "Potvrdit objednávku",
+        "toast": {
+            "title": "Objednávka přijata!",
+            "description": "Vaše objednávka na {{count}} cupcakes byla přijata. Brzy se vám ozveme pro potvrzení."
+        }
+    },
+    "banner": {
+        "text": "Strašidelné slevy! Objednejte si halloweenskou krabičku!",
+        "textShort": "Halloweenské Cupcakes"
+    }
+}
